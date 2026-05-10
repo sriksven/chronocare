@@ -310,56 +310,194 @@ function AdminFlow() {
 
   const STAGGER = 0.4;
 
+  type RowItem =
+    | { kind: 'lane'; lane: typeof lanes[number]; index: number }
+    | { kind: 'down'; col: 'left' | 'right'; afterIndex: number }
+    | { kind: 'cross'; afterIndex: number };
+
+  const rows: RowItem[] = [
+    { kind: 'lane', lane: lanes[0], index: 0 },
+    { kind: 'down', col: 'left', afterIndex: 0 },
+    { kind: 'lane', lane: lanes[1], index: 1 },
+    { kind: 'cross', afterIndex: 1 },
+    { kind: 'lane', lane: lanes[2], index: 2 },
+    { kind: 'down', col: 'right', afterIndex: 2 },
+    { kind: 'lane', lane: lanes[3], index: 3 },
+    { kind: 'down', col: 'right', afterIndex: 3 },
+    { kind: 'lane', lane: lanes[4], index: 4 },
+  ];
+
   return (
     <div className="border border-rule bg-bg rounded-sm p-8 md:p-10 dotted">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 relative">
-        {lanes.map((l, i) => {
-          const baseDelay = i * STAGGER;
-          return (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: l.side === 'left' ? -30 : 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, delay: baseDelay, ease: [0.16, 1, 0.3, 1] }}
-              className={`${l.side === 'right' ? 'md:col-start-2' : 'md:col-start-1'} relative bg-paper border border-rule rounded-sm px-5 py-4`}
-            >
-              <motion.div
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5, delay: baseDelay + 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute -top-3 -left-3 w-7 h-7 bg-teal-deep text-bg rounded-full flex items-center justify-center font-mono text-[11px] font-bold shadow-sm"
-                aria-hidden
-              >
-                {l.step}
-              </motion.div>
-
-              <div className="font-mono text-[11px] uppercase tracking-widest text-teal-deep font-semibold mb-2">
-                {l.actor}
-              </div>
-              <ul className="space-y-1.5">
-                {l.items.map((item, j) => (
-                  <motion.li
-                    key={j}
-                    initial={{ opacity: 0, x: -6 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+      <div className="space-y-4">
+        {rows.map((r, k) => {
+          if (r.kind === 'lane') {
+            const l = r.lane;
+            const baseDelay = r.index * STAGGER;
+            return (
+              <div key={k} className="grid grid-cols-2 gap-x-12">
+                <motion.div
+                  initial={{ opacity: 0, x: l.side === 'left' ? -30 : 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.6, delay: baseDelay, ease: [0.16, 1, 0.3, 1] }}
+                  className={`${l.side === 'right' ? 'col-start-2' : 'col-start-1'} relative bg-paper border border-rule rounded-sm px-5 py-4`}
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
                     viewport={{ once: true, margin: '-40px' }}
-                    transition={{
-                      duration: 0.35,
-                      delay: baseDelay + 0.3 + j * 0.08,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                    className="text-[13px] text-ink-2 leading-[1.5] flex gap-2"
+                    transition={{ duration: 0.5, delay: baseDelay + 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute -top-3 -left-3 w-7 h-7 bg-teal-deep text-bg rounded-full flex items-center justify-center font-mono text-[11px] font-bold shadow-sm"
+                    aria-hidden
                   >
-                    <span className="text-teal-deep">›</span>
-                    <span>{item}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-          );
+                    {l.step}
+                  </motion.div>
+
+                  <div className="font-mono text-[11px] uppercase tracking-widest text-teal-deep font-semibold mb-2">
+                    {l.actor}
+                  </div>
+                  <ul className="space-y-1.5">
+                    {l.items.map((item, j) => (
+                      <motion.li
+                        key={j}
+                        initial={{ opacity: 0, x: -6 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, margin: '-40px' }}
+                        transition={{
+                          duration: 0.35,
+                          delay: baseDelay + 0.3 + j * 0.08,
+                          ease: [0.16, 1, 0.3, 1],
+                        }}
+                        className="text-[13px] text-ink-2 leading-[1.5] flex gap-2"
+                      >
+                        <span className="text-teal-deep">›</span>
+                        <span>{item}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </div>
+            );
+          }
+
+          if (r.kind === 'down') {
+            const arrowDelay = (r.afterIndex + 1) * STAGGER - 0.15;
+            return (
+              <div key={k} className="grid grid-cols-2 gap-x-12">
+                <DownArrow
+                  side={r.col}
+                  delay={arrowDelay}
+                  label={r.col === 'left' && r.afterIndex === 0 ? 'send' : undefined}
+                />
+              </div>
+            );
+          }
+
+          // Cross arrow: Browser (left) -> Server (right)
+          const crossDelay = (r.afterIndex + 1) * STAGGER - 0.2;
+          return <CrossArrow key={k} delay={crossDelay} label="POST request" />;
         })}
+      </div>
+    </div>
+  );
+}
+
+function DownArrow({
+  side,
+  delay,
+  label,
+}: {
+  side: 'left' | 'right';
+  delay: number;
+  label?: string;
+}) {
+  return (
+    <div className={`${side === 'right' ? 'col-start-2' : 'col-start-1'} flex items-center justify-start gap-3 py-1`}>
+      <svg width="32" height="36" viewBox="0 0 32 36" className="overflow-visible">
+        <motion.line
+          x1="16"
+          y1="0"
+          x2="16"
+          y2="28"
+          stroke="#1a5762"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.5, delay, ease: 'easeOut' }}
+        />
+        <motion.polyline
+          points="10,22 16,30 22,22"
+          stroke="#1a5762"
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          fill="none"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.3, delay: delay + 0.4 }}
+        />
+      </svg>
+      {label && (
+        <motion.span
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.4, delay: delay + 0.3 }}
+          className="font-mono text-[10px] uppercase tracking-widest text-muted"
+        >
+          {label}
+        </motion.span>
+      )}
+    </div>
+  );
+}
+
+function CrossArrow({ delay, label }: { delay: number; label?: string }) {
+  return (
+    <div className="grid grid-cols-2 gap-x-12 items-center py-2">
+      <div className="flex justify-end items-center gap-2">
+        {label && (
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.4, delay: delay + 0.3 }}
+            className="font-mono text-[10px] uppercase tracking-widest text-muted"
+          >
+            {label}
+          </motion.span>
+        )}
+      </div>
+      <div className="flex items-center">
+        <svg width="120" height="44" viewBox="0 0 120 44" className="overflow-visible -ml-12">
+          <motion.path
+            d="M 0 8 C 30 8, 50 36, 100 36"
+            stroke="#1a5762"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            fill="none"
+            initial={{ pathLength: 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.7, delay, ease: 'easeOut' }}
+          />
+          <motion.polyline
+            points="92,30 100,36 96,44"
+            stroke="#1a5762"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            fill="none"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.3, delay: delay + 0.6 }}
+          />
+        </svg>
       </div>
     </div>
   );
