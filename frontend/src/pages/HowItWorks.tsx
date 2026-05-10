@@ -53,8 +53,10 @@ export default function HowItWorks() {
           </h2>
           <p className="text-[16px] text-ink-2 max-w-[640px] leading-[1.6] mb-12">
             One HTTP POST kicks off the 13-step reasoning pipeline. Eight LLM
-            calls, seven FHIR queries, roughly 25 to 35 seconds of wall time.
-            Each step's output feeds the next.
+            calls, seven FHIR queries, roughly 15 seconds of wall time when
+            the server is warm. The five independent branches run concurrently
+            so the overall latency is bounded by the slowest branch, not the
+            sum.
           </p>
           <RequestLifecycle />
         </div>

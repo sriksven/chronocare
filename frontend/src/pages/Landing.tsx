@@ -63,7 +63,7 @@ export default function Landing() {
             </p>
             <p>
               <span className="text-teal-deep font-semibold">Deliver</span>{' '}
-              an evidence-grounded clinical brief in 35 seconds.
+              an evidence-grounded clinical brief in about 15 seconds.
             </p>
           </motion.div>
 
@@ -79,7 +79,7 @@ export default function Landing() {
             </Link>
             <Link to="/how" className="btn-secondary">See how it works</Link>
             <span className="hidden md:inline-block text-[12px] text-muted ml-3">
-              25 to 35 seconds end-to-end
+              ~15 seconds end-to-end (warm)
             </span>
           </motion.div>
 
@@ -259,9 +259,9 @@ const METRICS = [
   { num: '8', label: 'LLM reasoning calls', tooltip: '' },
   { num: '54', label: 'FHIR events analyzed', tooltip: '' },
   {
-    num: '<35s',
+    num: '~15s',
     label: 'end-to-end latency',
-    tooltip: 'Wall-clock from request to brief: 7 parallel FHIR fetches + 8 LLM calls + JSON assembly. Verified in production.',
+    tooltip: 'Wall-clock from request to brief: 7 parallel FHIR fetches + 8 LLM calls fanned out across 5 concurrent branches + JSON assembly. Verified in production at 14-16s warm.',
   },
 ];
 

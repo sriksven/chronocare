@@ -19,7 +19,7 @@ A clinician types one prompt. ChronoCare chains 13 MCP tools and 8 LLM reasoning
 | Why did this happen? | Root Cause Analyzer |
 | What should we do next? | Recommendation Engine |
 
-Output: a unified clinical brief, narrative story, early warning signals, causal hypotheses, and evidence-grounded next steps, in under 35 seconds end-to-end (verified).
+Output: a unified clinical brief, narrative story, early warning signals, causal hypotheses, and evidence-grounded next steps, in about 15 seconds end-to-end when the server is warm (verified live, 14-16s on three consecutive runs after pipeline parallelization).
 
 ---
 
