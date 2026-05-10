@@ -1,0 +1,120 @@
+name: Frontend / GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build vite app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Type check
+        working-directory: frontend
+        run: npm run typecheck
+
+      - name: Build
+        working-directory: frontend
+        run: npm run build
+
+      - name: Verify build artifacts
+        working-directory: frontend
+        run: |
+          set -e
+          test -f dist/index.html || (echo "FAIL: dist/index.html missing"; exit 1)
+          test -d dist/assets || (echo "FAIL: dist/assets missing"; exit 1)
+          grep -q "ChronoCare" dist/index.html || (echo "FAIL: dist/index.html missing brand"; exit 1)
+          js_count=$(ls dist/assets/*.js 2>/dev/null | wc -l)
+          css_count=$(ls dist/assets/*.css 2>/dev/null | wc -l)
+          [ "$js_count" -ge 1 ] || (echo "FAIL: no JS assets"; exit 1)
+          [ "$css_count" -ge 1 ] || (echo "FAIL: no CSS assets"; exit 1)
+          echo "build artifacts ok: $js_count js, $css_count css"
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+  deploy:
+    name: deploy to pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  smoke:
+    name: smoke test live site
+    needs: deploy
+    runs-on: ubuntu-latest
+    env:
+      SITE_URL: ${{ needs.deploy.outputs.page_url }}
+    steps:
+      - name: Wait for CDN propagation
+        run: sleep 30
+
+      - name: Site loads with HTTP 200
+        run: |
+          set -e
+          code=$(curl -s -L -o /dev/null -w "%{http_code}" --max-time 15 "$SITE_URL")
+          echo "GET $SITE_URL -> $code"
+          [ "$code" = "200" ] || (echo "FAIL: site returned $code"; exit 1)
+
+      - name: Site contains brand + react root
+        run: |
+          set -e
+          html=$(curl -s -L --max-time 15 "$SITE_URL")
+          echo "$html" | grep -q "ChronoCare" || (echo "FAIL: brand missing"; exit 1)
+          echo "$html" | grep -q 'id="root"' || (echo "FAIL: react root div missing"; exit 1)
+
+      - name: Static assets reachable
+        run: |
+          set -e
+          html=$(curl -s -L --max-time 15 "$SITE_URL")
+          # extract first js bundle path from index.html
+          js_path=$(echo "$html" | grep -oE '/chronocare/assets/[^"]+\.js' | head -1)
+          [ -n "$js_path" ] || (echo "FAIL: no js path found in html"; exit 1)
+          base=$(echo "$SITE_URL" | sed 's|/chronocare/||')
+          full_url="${base}${js_path}"
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "$full_url")
+          echo "asset $full_url -> $code"
+          [ "$code" = "200" ] || (echo "FAIL: js asset returned $code"; exit 1)

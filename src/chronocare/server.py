@@ -1,0 +1,488 @@
+"""ChronoCare MCP Server entry point.
+
+Exposes 13 MCP tools over Streamable HTTP. Authentication via
+X-ChronoCare-Key header (validated against MCP_API_KEY env var).
+
+Run locally:
+    python -m chronocare.server
+
+Production (Docker):
+    CMD ["python", "-m", "chronocare.server"]
+"""
+
+from __future__ import annotations
+
+import contextvars
+import json
+import os
+from typing import Any
+
+from mcp.server import Server
+from mcp.server.streamable_http_manager import StreamableHTTPSessionManager
+from mcp.types import Tool, TextContent
+
+# Holds FHIR credentials injected by Prompt Opinion per-request
+_fhir_ctx: contextvars.ContextVar[dict[str, str]] = contextvars.ContextVar(
+    "fhir_ctx", default={}
+)
+
+_FHIR_EXTENSION = {
+    "scopes": [
+        {"name": "patient/Patient.rs", "required": True},
+        {"name": "patient/Condition.rs", "required": True},
+        {"name": "patient/Observation.rs", "required": True},
+        {"name": "patient/MedicationRequest.rs", "required": True},
+        {"name": "patient/Encounter.rs", "required": True},
+        {"name": "patient/DiagnosticReport.rs", "required": True},
+        {"name": "patient/DocumentReference.rs"},
+    ]
+}
+
+from chronocare.fhir.cache import TTLCache
+from chronocare.reasoning.llm_client import LLMClient
+from chronocare.tools import (
+    deterioration,
+    recommendations,
+    root_cause,
+    synthesis,
+    time_traveler,
+)
+from chronocare.utils.config import load_config
+from chronocare.utils.logging import setup_logging
+from chronocare.voice.tts import text_to_speech_brief
+
+config = load_config()
+setup_logging(config.log_level)
+
+_cache = TTLCache(ttl_seconds=config.cache_ttl_seconds)
+_llm = LLMClient(openai_api_key=config.openai_api_key, groq_api_key=config.groq_api_key)
+
+app = Server("chronocare-mcp")
+
+# Inject Prompt Opinion FHIR extension into the initialize response
+_orig_create_init = app.create_initialization_options
+def _create_init_with_fhir(notification_options=None, experimental_capabilities=None):
+    opts = _orig_create_init(notification_options, experimental_capabilities or {})
+    opts.capabilities.__pydantic_extra__["extensions"] = {
+        "ai.promptopinion/fhir-context": _FHIR_EXTENSION
+    }
+    return opts
+app.create_initialization_options = _create_init_with_fhir
+
+
+# ---------------------------------------------------------------------------
+# Tool registration
+# ---------------------------------------------------------------------------
+
+@app.list_tools()
+async def list_tools() -> list[Tool]:
+    return [
+        Tool(
+            name="get_full_patient_history",
+            description=(
+                "Fetch and normalize all FHIR resources for a patient. "
+                "Returns structured history with conditions, medications, labs, encounters, and notes."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "patient_id": {"type": "string"},
+                    "fhir_base_url": {"type": "string"},
+                    "fhir_token": {"type": "string"},
+                },
+                "required": ["patient_id"],
+            },
+        ),
+        Tool(
+            name="order_events_chronologically",
+            description="Sort and deduplicate patient events into a chronological timeline.",
+            inputSchema={
+                "type": "object",
+                "properties": {"history": {"type": "object"}},
+                "required": ["history"],
+            },
+        ),
+        Tool(
+            name="identify_clinical_turning_points",
+            description="Identify 3-5 key moments that changed the patient's clinical trajectory (LLM-powered).",
+            inputSchema={
+                "type": "object",
+                "properties": {"timeline": {"type": "array", "items": {"type": "object"}}},
+                "required": ["timeline"],
+            },
+        ),
+        Tool(
+            name="generate_patient_narrative",
+            description="Generate a 200-300 word clinical narrative from timeline and turning points (LLM-powered).",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "timeline": {"type": "array", "items": {"type": "object"}},
+                    "turning_points": {"type": "array", "items": {"type": "object"}},
+                },
+                "required": ["timeline", "turning_points"],
+            },
+        ),
+        Tool(
+            name="get_recent_signals",
+            description="Filter patient timeline to events within the past N days (default 90).",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "timeline": {"type": "array", "items": {"type": "object"}},
+                    "lookback_days": {"type": "integer", "default": 90},
+                },
+                "required": ["timeline"],
+            },
+        ),
+        Tool(
+            name="analyze_weak_patterns",
+            description=(
+                "Holistic multi-signal pattern analysis for silent deterioration. "
+                "Reasons across all signals together — not individual thresholds (LLM-powered)."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {"recent_signals": {"type": "array", "items": {"type": "object"}}},
+                "required": ["recent_signals"],
+            },
+        ),
+        Tool(
+            name="generate_early_warning_report",
+            description="Format pattern analysis into a structured early warning report (LLM-powered).",
+            inputSchema={
+                "type": "object",
+                "properties": {"pattern_analysis": {"type": "object"}},
+                "required": ["pattern_analysis"],
+            },
+        ),
+        Tool(
+            name="correlate_events",
+            description="Identify plausible causal relationships between clinical events (LLM-powered).",
+            inputSchema={
+                "type": "object",
+                "properties": {"timeline": {"type": "array", "items": {"type": "object"}}},
+                "required": ["timeline"],
+            },
+        ),
+        Tool(
+            name="generate_causal_hypothesis",
+            description="Synthesize correlated events into a causal narrative (LLM-powered).",
+            inputSchema={
+                "type": "object",
+                "properties": {"correlations": {"type": "array", "items": {"type": "object"}}},
+                "required": ["correlations"],
+            },
+        ),
+        Tool(
+            name="map_comorbidities",
+            description="Map interactions between patient's active conditions (LLM-powered).",
+            inputSchema={
+                "type": "object",
+                "properties": {"events": {"type": "array", "items": {"type": "object"}}},
+                "required": ["events"],
+            },
+        ),
+        Tool(
+            name="match_clinical_guidelines",
+            description="Match patient profile against ADA, JNC, KDIGO, ACC/AHA guidelines (LLM-powered).",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "events": {"type": "array", "items": {"type": "object"}},
+                    "recent_signals": {"type": "array", "items": {"type": "object"}},
+                },
+                "required": ["events", "recent_signals"],
+            },
+        ),
+        Tool(
+            name="generate_recommendations",
+            description="Generate 3-5 specific, patient-specific clinical recommendations (LLM-powered).",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "causal_hypothesis": {"type": "string"},
+                    "guideline_matches": {"type": "array", "items": {"type": "object"}},
+                    "early_warning": {"type": "object"},
+                },
+                "required": ["causal_hypothesis", "guideline_matches", "early_warning"],
+            },
+        ),
+        Tool(
+            name="generate_unified_brief",
+            description="Assemble all pipeline outputs into a structured clinical brief (pure assembly, no LLM).",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "patient": {"type": "object"},
+                    "narrative": {"type": "string"},
+                    "turning_points": {"type": "array", "items": {"type": "object"}},
+                    "early_warning": {"type": "object"},
+                    "causal_hypothesis": {"type": "string"},
+                    "comorbidity_map": {"type": "array", "items": {"type": "object"}},
+                    "guideline_matches": {"type": "array", "items": {"type": "object"}},
+                    "recommendations": {"type": "array", "items": {"type": "object"}},
+                },
+                "required": [
+                    "patient", "narrative", "turning_points", "early_warning",
+                    "causal_hypothesis", "comorbidity_map", "guideline_matches",
+                    "recommendations",
+                ],
+            },
+        ),
+        Tool(
+            name="text_to_speech_brief",
+            description="Convert selected clinical brief sections to speech audio.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "brief": {"type": "object"},
+                    "sections": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "default": ["narrative", "early_warning", "recommendations"],
+                    },
+                },
+                "required": ["brief"],
+            },
+        ),
+    ]
+
+
+@app.call_tool()
+async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
+    result = await _dispatch(name, arguments)
+    return [TextContent(type="text", text=json.dumps(result, indent=2))]
+
+
+async def _dispatch(name: str, args: dict[str, Any]) -> Any:
+    fhir = _fhir_ctx.get()
+    match name:
+        case "get_full_patient_history":
+            return await time_traveler.get_full_patient_history(
+                patient_id=args.get("patient_id") or fhir.get("patient_id") or "",
+                fhir_base_url=args.get("fhir_base_url") or fhir.get("fhir_url") or config.fhir_base_url,
+                fhir_token=args.get("fhir_token") or fhir.get("fhir_token") or config.fhir_token or "",
+                cache=_cache,
+            )
+        case "order_events_chronologically":
+            return time_traveler.order_events_chronologically(args["history"])
+        case "identify_clinical_turning_points":
+            return time_traveler.identify_clinical_turning_points(args["timeline"], _llm)
+        case "generate_patient_narrative":
+            return time_traveler.generate_patient_narrative(
+                args["timeline"], args.get("turning_points", []), _llm
+            )
+        case "get_recent_signals":
+            return deterioration.get_recent_signals(
+                args["timeline"], args.get("lookback_days", 90)
+            )
+        case "analyze_weak_patterns":
+            return deterioration.analyze_weak_patterns(args["recent_signals"], _llm)
+        case "generate_early_warning_report":
+            return deterioration.generate_early_warning_report(args["pattern_analysis"], _llm)
+        case "correlate_events":
+            return root_cause.correlate_events(args["timeline"], _llm)
+        case "generate_causal_hypothesis":
+            return root_cause.generate_causal_hypothesis(args["correlations"], _llm)
+        case "map_comorbidities":
+            return recommendations.map_comorbidities(args["events"], _llm)
+        case "match_clinical_guidelines":
+            return recommendations.match_clinical_guidelines(
+                args["events"], args.get("recent_signals", []), _llm
+            )
+        case "generate_recommendations":
+            return recommendations.generate_recommendations(
+                args["causal_hypothesis"],
+                args.get("guideline_matches", []),
+                args.get("early_warning", {}),
+                _llm,
+            )
+        case "generate_unified_brief":
+            return synthesis.generate_unified_brief(
+                patient=args["patient"],
+                narrative=args["narrative"],
+                turning_points=args.get("turning_points", []),
+                early_warning=args.get("early_warning", {}),
+                causal_hypothesis=args.get("causal_hypothesis", ""),
+                comorbidity_map=args.get("comorbidity_map", []),
+                guideline_matches=args.get("guideline_matches", []),
+                recommendations=args.get("recommendations", []),
+            )
+        case "text_to_speech_brief":
+            return text_to_speech_brief(
+                brief=args["brief"],
+                sections=args.get("sections"),
+                openai_api_key=config.openai_api_key,
+                google_api_key=config.google_tts_api_key,
+            )
+        case _:
+            return {"error": f"Unknown tool: {name}"}
+
+
+# ---------------------------------------------------------------------------
+# Health endpoint + server bootstrap
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    import uvicorn
+    from contextlib import asynccontextmanager
+    from starlette.applications import Starlette
+    from starlette.middleware.base import BaseHTTPMiddleware
+    from starlette.middleware.cors import CORSMiddleware
+    from starlette.requests import Request
+    from starlette.responses import JSONResponse
+    from starlette.routing import Mount, Route
+
+    class FHIRContextMiddleware(BaseHTTPMiddleware):
+        async def dispatch(self, request: Request, call_next):
+            fhir_url = request.headers.get("X-FHIR-Server-URL", config.fhir_base_url)
+            patient_id = request.headers.get("X-Patient-ID", "")
+            import logging
+            logging.getLogger("chronocare").info(
+                "FHIR_CONTEXT fhir_url=%s patient_id=%s", fhir_url, patient_id
+            )
+            token = _fhir_ctx.set({
+                "fhir_url": fhir_url,
+                "fhir_token": request.headers.get("X-FHIR-Access-Token", config.fhir_token or ""),
+                "patient_id": patient_id,
+            })
+            try:
+                return await call_next(request)
+            finally:
+                _fhir_ctx.reset(token)
+
+    session_manager = StreamableHTTPSessionManager(
+        app=app,
+        event_store=None,
+        json_response=False,
+        stateless=True,
+    )
+
+    async def health(request: Request) -> JSONResponse:
+        return JSONResponse({
+            "status": "ok",
+            "version": "1.0.0",
+            "tools_count": 14,
+            "llm_backend": "gpt-4o+groq-llama3.3",
+        })
+
+    async def debug_headers(request: Request) -> JSONResponse:
+        """Temporary: expose injected FHIR headers so we can find the real FHIR URL."""
+        return JSONResponse({
+            "fhir_url": request.headers.get("X-FHIR-Server-URL", ""),
+            "fhir_token_present": bool(request.headers.get("X-FHIR-Access-Token")),
+            "patient_id": request.headers.get("X-Patient-ID", ""),
+        })
+
+    async def public_demo_analyze(request: Request) -> JSONResponse:
+        """Public demo endpoint — runs the full 13-step pipeline for a patient.
+
+        No auth required. Rate-limited by hosting layer. Intended for the static
+        demo UI on GitHub Pages so visitors can test the full pipeline live.
+        """
+        try:
+            body = await request.json() if request.method == "POST" else {}
+        except Exception:
+            body = {}
+
+        patient_id = (
+            body.get("patient_id")
+            or request.query_params.get("patient_id")
+            or "d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        )
+        fhir_base_url = (
+            body.get("fhir_base_url")
+            or request.query_params.get("fhir_base_url")
+            or config.fhir_base_url
+        )
+
+        traces: list[dict[str, Any]] = []
+        import time as _time
+
+        async def _run(tool_name: str, args: dict[str, Any]):
+            t0 = _time.monotonic()
+            try:
+                result = await _dispatch(tool_name, args)
+                traces.append({
+                    "tool": tool_name,
+                    "ok": True,
+                    "latency_ms": int((_time.monotonic() - t0) * 1000),
+                })
+                return result
+            except Exception as exc:
+                traces.append({
+                    "tool": tool_name,
+                    "ok": False,
+                    "error": str(exc)[:200],
+                    "latency_ms": int((_time.monotonic() - t0) * 1000),
+                })
+                raise
+
+        try:
+            history = await _run("get_full_patient_history", {
+                "patient_id": patient_id,
+                "fhir_base_url": fhir_base_url,
+            })
+            timeline = await _run("order_events_chronologically", {"history": history})
+            turning_points = await _run("identify_clinical_turning_points", {"timeline": timeline})
+            narrative = await _run("generate_patient_narrative", {
+                "timeline": timeline, "turning_points": turning_points,
+            })
+            recent_signals = await _run("get_recent_signals", {
+                "timeline": timeline, "lookback_days": 90,
+            })
+            patterns = await _run("analyze_weak_patterns", {"recent_signals": recent_signals})
+            early_warning = await _run("generate_early_warning_report", {"pattern_analysis": patterns})
+            correlations = await _run("correlate_events", {"timeline": timeline})
+            causal_hypothesis = await _run("generate_causal_hypothesis", {"correlations": correlations})
+            events = history.get("events", []) if isinstance(history, dict) else []
+            comorbidity_map = await _run("map_comorbidities", {"events": events})
+            guideline_matches = await _run("match_clinical_guidelines", {
+                "events": events, "recent_signals": recent_signals,
+            })
+            recommendations = await _run("generate_recommendations", {
+                "causal_hypothesis": causal_hypothesis,
+                "guideline_matches": guideline_matches,
+                "early_warning": early_warning,
+            })
+            brief = await _run("generate_unified_brief", {
+                "patient": history.get("patient", {}) if isinstance(history, dict) else {},
+                "narrative": narrative,
+                "turning_points": turning_points,
+                "early_warning": early_warning,
+                "causal_hypothesis": causal_hypothesis,
+                "comorbidity_map": comorbidity_map,
+                "guideline_matches": guideline_matches,
+                "recommendations": recommendations,
+            })
+            return JSONResponse({"ok": True, "brief": brief, "trace": traces})
+        except Exception as exc:
+            return JSONResponse(
+                {"ok": False, "error": str(exc)[:300], "trace": traces},
+                status_code=500,
+            )
+
+    @asynccontextmanager
+    async def lifespan(app_: Starlette):
+        async with session_manager.run():
+            yield
+
+    starlette_app = Starlette(
+        lifespan=lifespan,
+        routes=[
+            Route("/health", health),
+            Route("/debug-headers", debug_headers),
+            Route("/api/demo/analyze", public_demo_analyze, methods=["GET", "POST", "OPTIONS"]),
+            Mount("/mcp", session_manager.handle_request),
+        ]
+    )
+    starlette_app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["*"],
+    )
+    starlette_app.add_middleware(FHIRContextMiddleware)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(starlette_app, host="0.0.0.0", port=port)

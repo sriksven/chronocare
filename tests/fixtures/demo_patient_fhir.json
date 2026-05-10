@@ -1,0 +1,1591 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "d0be5a00-57c5-4417-adeb-824beb93e4c3",
+        "name": [
+          {
+            "family": "Doe",
+            "given": [
+              "John"
+            ]
+          }
+        ],
+        "birthDate": "1963-04-15",
+        "gender": "male",
+        "address": [
+          {
+            "city": "Boston",
+            "state": "MA"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-2019-03",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "period": {
+          "start": "2019-03-12",
+          "end": "2019-03-12"
+        },
+        "reasonCode": [
+          {
+            "text": "Annual physical \u2014 hypertension diagnosed, BP 148/92"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-2019-09",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "period": {
+          "start": "2019-09-05",
+          "end": "2019-09-05"
+        },
+        "reasonCode": [
+          {
+            "text": "Follow-up HTN \u2014 Lisinopril initiated after lifestyle modification failed"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-2020-07",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "period": {
+          "start": "2020-07-22",
+          "end": "2020-07-22"
+        },
+        "reasonCode": [
+          {
+            "text": "T2DM diagnosed on routine labs \u2014 HbA1c 8.2%, Metformin started"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-2020-10",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "period": {
+          "start": "2020-10-14",
+          "end": "2020-10-14"
+        },
+        "reasonCode": [
+          {
+            "text": "Dyslipidemia identified \u2014 Atorvastatin 20mg added"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-2021-06",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "period": {
+          "start": "2021-06-14",
+          "end": "2021-06-14"
+        },
+        "reasonCode": [
+          {
+            "text": "Routine labs \u2014 creatinine trending up (1.1), eGFR 74"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-2022-11",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "period": {
+          "start": "2022-11-08",
+          "end": "2022-11-08"
+        },
+        "reasonCode": [
+          {
+            "text": "CKD Stage 2 confirmed (eGFR 68, creatinine 1.2) \u2014 nephrology monitoring initiated"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-2023-04",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "period": {
+          "start": "2023-04-20",
+          "end": "2023-04-20"
+        },
+        "reasonCode": [
+          {
+            "text": "Annual review \u2014 HbA1c stable 7.1%, CKD progressing slowly"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-2024-01",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "period": {
+          "start": "2024-01-15",
+          "end": "2024-01-15"
+        },
+        "reasonCode": [
+          {
+            "text": "CKD acceleration \u2014 creatinine 1.5, eGFR 52, UACR 112 (elevated)"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-2024-09",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "period": {
+          "start": "2024-09-10",
+          "end": "2024-09-10"
+        },
+        "reasonCode": [
+          {
+            "text": "Empagliflozin 10mg added \u2014 EMPA-KIDNEY evidence for CKD+T2DM renoprotection"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-2025-03",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "period": {
+          "start": "2025-03-05",
+          "end": "2025-03-05"
+        },
+        "reasonCode": [
+          {
+            "text": "Potassium elevated (5.1) \u2014 hyperkalemia risk on Lisinopril with declining GFR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-2026-01",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "period": {
+          "start": "2026-01-22",
+          "end": "2026-01-22"
+        },
+        "reasonCode": [
+          {
+            "text": "Urgent: CKD Stage 3a (eGFR 42, creatinine 1.7), K+ 5.4, UACR 187 \u2014 nephrology referral placed"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-htn-001",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "I10",
+              "display": "Essential (primary) hypertension"
+            }
+          ],
+          "text": "Hypertension"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "onsetDateTime": "2019-03-12",
+        "note": [
+          {
+            "text": "Stage 1 HTN at diagnosis, BP 148/92. Lifestyle modification \u00d7 6 months, then Lisinopril."
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-dm2-001",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "E11",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "onsetDateTime": "2020-07-22",
+        "note": [
+          {
+            "text": "Diagnosed on routine screen. HbA1c 8.2% at onset. Metformin titrated to 1000mg BID."
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-dyslipidemia",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "E78.5",
+              "display": "Hyperlipidemia, unspecified"
+            }
+          ],
+          "text": "Mixed dyslipidemia"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "onsetDateTime": "2020-10-14",
+        "note": [
+          {
+            "text": "LDL 142, TG 198. Atorvastatin 20mg started. LDL target <100 given CKD+DM CV risk."
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-ckd-001",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "N18.2",
+              "display": "Chronic kidney disease, stage 2"
+            }
+          ],
+          "text": "Chronic kidney disease, stage 2"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "onsetDateTime": "2022-11-08",
+        "note": [
+          {
+            "text": "eGFR 68, creatinine 1.2. Etiology: hypertensive nephrosclerosis + diabetic nephropathy."
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-ckd3-001",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "N18.3",
+              "display": "Chronic kidney disease, stage 3"
+            }
+          ],
+          "text": "Chronic kidney disease, stage 3a"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "onsetDateTime": "2026-01-22",
+        "note": [
+          {
+            "text": "Progression to Stage 3a. eGFR declined ~7 mL/min/year \u2014 accelerated. Nephrology referral placed."
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-bp-2019-03",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "55284-4"
+            }
+          ],
+          "text": "Blood pressure"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2019-03-12",
+        "valueString": "148/92"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-bp-2019-09",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "55284-4"
+            }
+          ],
+          "text": "Blood pressure"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2019-09-05",
+        "valueString": "142/88"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-bp-2021-06",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "55284-4"
+            }
+          ],
+          "text": "Blood pressure"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2021-06-14",
+        "valueString": "136/84"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-bp-2024-01",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "55284-4"
+            }
+          ],
+          "text": "Blood pressure"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2024-01-15",
+        "valueString": "152/94"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-bp-2025-03",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "55284-4"
+            }
+          ],
+          "text": "Blood pressure"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2025-03-05",
+        "valueString": "156/96"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-bp-2026-01",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "55284-4"
+            }
+          ],
+          "text": "Blood pressure"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2026-01-22",
+        "valueString": "160/98"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-hba1c-2020-07",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2020-07-22",
+        "valueQuantity": {
+          "value": 8.2,
+          "unit": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-hba1c-2021-06",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2021-06-14",
+        "valueQuantity": {
+          "value": 7.4,
+          "unit": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-hba1c-2023-04",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2023-04-20",
+        "valueQuantity": {
+          "value": 7.1,
+          "unit": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-hba1c-2025-03",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2025-03-05",
+        "valueQuantity": {
+          "value": 7.9,
+          "unit": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-hba1c-2026-01",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2026-01-22",
+        "valueQuantity": {
+          "value": 8.1,
+          "unit": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-creatinine-2019-03",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2019-03-12",
+        "valueQuantity": {
+          "value": 0.9,
+          "unit": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-creatinine-2021-06",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2021-06-14",
+        "valueQuantity": {
+          "value": 1.1,
+          "unit": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-creatinine-2022-11",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2022-11-08",
+        "valueQuantity": {
+          "value": 1.2,
+          "unit": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-creatinine-2023-04",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2023-04-20",
+        "valueQuantity": {
+          "value": 1.3,
+          "unit": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-creatinine-2024-01",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2024-01-15",
+        "valueQuantity": {
+          "value": 1.5,
+          "unit": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-creatinine-2025-03",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2025-03-05",
+        "valueQuantity": {
+          "value": 1.6,
+          "unit": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-creatinine-001",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2026-01-22",
+        "valueQuantity": {
+          "value": 1.7,
+          "unit": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-egfr-2019-03",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "98979-8"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2019-03-12",
+        "valueQuantity": {
+          "value": 88,
+          "unit": "mL/min/1.73m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-egfr-2021-06",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "98979-8"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2021-06-14",
+        "valueQuantity": {
+          "value": 74,
+          "unit": "mL/min/1.73m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-egfr-2022-11",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "98979-8"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2022-11-08",
+        "valueQuantity": {
+          "value": 68,
+          "unit": "mL/min/1.73m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-egfr-2024-01",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "98979-8"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2024-01-15",
+        "valueQuantity": {
+          "value": 52,
+          "unit": "mL/min/1.73m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-egfr-2025-03",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "98979-8"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2025-03-05",
+        "valueQuantity": {
+          "value": 47,
+          "unit": "mL/min/1.73m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-egfr-2026-01",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "98979-8"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2026-01-22",
+        "valueQuantity": {
+          "value": 42,
+          "unit": "mL/min/1.73m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-potassium-2023-04",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2823-3"
+            }
+          ],
+          "text": "Potassium"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2023-04-20",
+        "valueQuantity": {
+          "value": 4.4,
+          "unit": "mEq/L"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-potassium-2025-03",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2823-3"
+            }
+          ],
+          "text": "Potassium"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2025-03-05",
+        "valueQuantity": {
+          "value": 5.1,
+          "unit": "mEq/L"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-potassium-2026-01",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2823-3"
+            }
+          ],
+          "text": "Potassium"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2026-01-22",
+        "valueQuantity": {
+          "value": 5.4,
+          "unit": "mEq/L"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-uacr-2022-11",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "9318-7"
+            }
+          ],
+          "text": "Urine albumin/creatinine ratio"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2022-11-08",
+        "valueQuantity": {
+          "value": 48,
+          "unit": "mg/g"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-uacr-2024-01",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "9318-7"
+            }
+          ],
+          "text": "Urine albumin/creatinine ratio"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2024-01-15",
+        "valueQuantity": {
+          "value": 112,
+          "unit": "mg/g"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-uacr-2026-01",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "9318-7"
+            }
+          ],
+          "text": "Urine albumin/creatinine ratio"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2026-01-22",
+        "valueQuantity": {
+          "value": 187,
+          "unit": "mg/g"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-bmi-2019-03",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5"
+            }
+          ],
+          "text": "BMI"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2019-03-12",
+        "valueQuantity": {
+          "value": 28.4,
+          "unit": "kg/m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-bmi-2022-11",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5"
+            }
+          ],
+          "text": "BMI"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2022-11-08",
+        "valueQuantity": {
+          "value": 30.1,
+          "unit": "kg/m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-bmi-2026-01",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5"
+            }
+          ],
+          "text": "BMI"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2026-01-22",
+        "valueQuantity": {
+          "value": 31.2,
+          "unit": "kg/m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-bp-001",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "55284-4"
+            }
+          ],
+          "text": "Blood pressure"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2026-03-02",
+        "valueString": "138/88"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-lisinopril-001",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "29046",
+              "display": "Lisinopril"
+            }
+          ],
+          "text": "Lisinopril 20mg daily"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "authoredOn": "2019-09-05",
+        "note": [
+          {
+            "text": "Started for HTN 2019, dose increased to 20mg in 2022. Monitor K+ given CKD."
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-metformin-001",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "860975",
+              "display": "Metformin"
+            }
+          ],
+          "text": "Metformin 1000mg twice daily"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "authoredOn": "2020-07-22",
+        "note": [
+          {
+            "text": "HbA1c improved from 8.2% (2020) to 7.1% (2023). Now trending up again to 8.1%."
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-atorvastatin-001",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "617311",
+              "display": "Atorvastatin"
+            }
+          ],
+          "text": "Atorvastatin 20mg daily"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "authoredOn": "2020-10-14",
+        "note": [
+          {
+            "text": "LDL target <100 mg/dL given CKD + T2DM cardiovascular risk."
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-empagliflozin-001",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "1545653",
+              "display": "Empagliflozin"
+            }
+          ],
+          "text": "Empagliflozin 10mg daily"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "authoredOn": "2024-09-10",
+        "note": [
+          {
+            "text": "EMPA-KIDNEY evidence: 23% reduction in CKD progression in T2DM. Added on CKD acceleration."
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "report-ckd-2022",
+        "status": "final",
+        "code": {
+          "text": "CKD Staging Assessment"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2022-11-08",
+        "conclusion": "CKD Stage 2 (eGFR 68). Etiology: hypertensive nephrosclerosis with early diabetic nephropathy. UACR 48 mg/g (microalbuminuria). Recommend: BP target <130/80, continue ACEI, annual CMP + UACR, dietary sodium restriction."
+      },
+      "request": {
+        "method": "POST",
+        "url": "DiagnosticReport"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "report-ckd-2026",
+        "status": "final",
+        "code": {
+          "text": "Urgent Nephrology Assessment"
+        },
+        "subject": {
+          "reference": "Patient/d0be5a00-57c5-4417-adeb-824beb93e4c3"
+        },
+        "effectiveDateTime": "2026-01-22",
+        "conclusion": "CKD progressed Stage 2\u21923a. eGFR declined from 68 (2022) to 42 (2026): ~7 mL/min/year, above expected ~1-2 mL/min/year for age. Concurrent worsening: UACR 48\u2192187 mg/g, BP 138\u2192160/98, HbA1c 7.1\u21928.1%. Hyperkalemia K+ 5.4 \u2014 likely Lisinopril effect in declining GFR. Action: urgent nephrology referral, reduce Lisinopril dose, continue Empagliflozin, dietary K+ restriction, consider Finerenone for residual albuminuria."
+      },
+      "request": {
+        "method": "POST",
+        "url": "DiagnosticReport"
+      }
+    }
+  ]
+}

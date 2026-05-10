@@ -1,0 +1,113 @@
+name: Backend / Railway
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'frontend/**'
+      - 'docs/**'
+      - '*.md'
+      - '.github/workflows/pages.yml'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - 'frontend/**'
+      - 'docs/**'
+      - '*.md'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: pytest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        env:
+          OPENAI_API_KEY: "test-key"
+          GROQ_API_KEY: "test-key"
+          MCP_API_KEY: "test-mcp-key"
+          FHIR_BASE_URL: "https://test.fhir.example.com"
+        run: pytest tests/ -v --tb=short
+
+  deploy:
+    name: railway up
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --detach
+
+  smoke:
+    name: smoke test live deploy
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    env:
+      URL: https://attractive-ambition-production-5fd7.up.railway.app
+    steps:
+      - name: Wait for deploy to settle
+        run: sleep 90
+
+      - name: /health returns 200 + 14 tools
+        run: |
+          set -e
+          body=$(curl -s --max-time 15 "$URL/health")
+          echo "$body"
+          echo "$body" | grep -q '"status":"ok"' || (echo "FAIL: health status not ok"; exit 1)
+          echo "$body" | grep -q '"tools_count":14' || (echo "FAIL: tools_count != 14"; exit 1)
+
+      - name: /mcp/ enumerates 14 tools
+        run: |
+          set -e
+          count=$(curl -s --max-time 20 -X POST "$URL/mcp/" \
+            -H "X-ChronoCare-Key: chronocare-dev-key" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json, text/event-stream" \
+            -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' \
+            | python3 -c "
+          import sys, json
+          for line in sys.stdin:
+              if line.startswith('data:'):
+                  d = json.loads(line[5:].strip())
+                  print(len(d.get('result', {}).get('tools', [])))
+                  break
+          ")
+          echo "tools=$count"
+          [ "$count" = "14" ] || (echo "FAIL: expected 14 tools, got $count"; exit 1)
+
+      - name: /api/demo/analyze CORS preflight ok
+        run: |
+          set -e
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 \
+            -X OPTIONS "$URL/api/demo/analyze" \
+            -H "Origin: https://sriksven.github.io" \
+            -H "Access-Control-Request-Method: POST" \
+            -H "Access-Control-Request-Headers: content-type")
+          echo "preflight=$code"
+          [ "$code" = "200" ] || (echo "FAIL: CORS preflight returned $code"; exit 1)
+
+      - name: /api/demo/analyze GET responds
+        run: |
+          set -e
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$URL/api/demo/analyze")
+          echo "GET=$code"
+          [ "$code" = "200" ] || (echo "FAIL: endpoint missing, got $code"; exit 1)
