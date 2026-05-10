@@ -1,4 +1,4 @@
-name: Backend / Railway
+name: Backend / Tests
 
 on:
   push:
@@ -40,43 +40,14 @@ jobs:
           FHIR_BASE_URL: "https://test.fhir.example.com"
         run: pytest tests/ -v --tb=short
 
-  deploy:
-    name: railway up
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    env:
-      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      RAILWAY_PROJECT_ID: 9d0a4d24-9860-4360-90ae-2e8b90df6b46
-      RAILWAY_SERVICE_ID: 60961427-c3bf-410e-940a-08fdd0f68423
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Verify token + project access
-        run: |
-          if [ -z "$RAILWAY_TOKEN" ]; then
-            echo "::error::RAILWAY_TOKEN secret is not set"
-            exit 1
-          fi
-          railway whoami || (echo "::error::railway token rejected — check token type"; exit 1)
-
-      - name: Deploy to Railway
-        run: railway up --service "$RAILWAY_SERVICE_ID" --detach
-
   smoke:
     name: smoke test live deploy
-    needs: deploy
+    needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     env:
       URL: https://attractive-ambition-production-5fd7.up.railway.app
     steps:
-      - name: Wait for deploy to settle
-        run: sleep 90
-
       - name: /health returns 200 + 14 tools
         run: |
           set -e
