@@ -48,6 +48,78 @@ body {
   transform-origin: left center;
 }
 
+/* Highlighted phrase — replaces italics with an animated underline */
+.highlight {
+  position: relative;
+  display: inline-block;
+  color: #0f3a44;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.highlight::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 2px;
+  background: linear-gradient(90deg, #1a5762 0%, #1a5762 100%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: underlineDraw 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+}
+.highlight.delay-2::after { animation-delay: 0.7s; }
+.highlight.delay-3::after { animation-delay: 1.0s; }
+.highlight.delay-4::after { animation-delay: 1.3s; }
+
+@keyframes underlineDraw {
+  to { transform: scaleX(1); }
+}
+
+/* Number that animates count-up feel via staggered scale */
+.count-up {
+  display: inline-block;
+  animation: countUpEnter 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes countUpEnter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tooltip wrapper */
+.tip {
+  position: relative;
+  cursor: help;
+  border-bottom: 1px dotted #5a6478;
+}
+.tip:hover .tip-body { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.tip-body {
+  position: absolute;
+  left: 50%; bottom: calc(100% + 8px);
+  transform: translateX(-50%) translateY(4px);
+  background: #0e1622;
+  color: #f8f6f1;
+  padding: 8px 12px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  white-space: nowrap;
+  letter-spacing: 0;
+  text-transform: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease;
+  z-index: 50;
+}
+.tip-body::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 100%;
+  width: 0; height: 0;
+  border: 5px solid transparent;
+  border-top-color: #0e1622;
+  transform: translateX(-50%);
+}
+
 /* button hover */
 .btn-primary {
   display: inline-flex;

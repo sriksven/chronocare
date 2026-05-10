@@ -153,11 +153,11 @@ export default function Admin() {
                 Upload .json
                 <input type="file" accept=".json,application/json" onChange={handleFile} className="hidden" />
               </label>
-              <span className="text-muted">·</span>
+              <span className="text-muted">/</span>
               <button onClick={loadSample} className="text-teal-deep hover:underline">
                 Insert sample
               </button>
-              <span className="text-muted">·</span>
+              <span className="text-muted">/</span>
               <button onClick={clearForm} className="text-muted hover:text-ink">
                 Clear
               </button>

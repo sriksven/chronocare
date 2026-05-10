@@ -6,33 +6,40 @@ export default function HowItWorks() {
   return (
     <div>
       <section className="max-w-[1100px] mx-auto px-8 pt-24 pb-12">
-        <div className="eyebrow mb-6">Architecture</div>
-        <h1 className="font-serif text-[56px] md:text-[72px] leading-[0.98] tracking-tightest font-bold mb-8 max-w-[900px]">
-          Four moving parts.
-          <br />
-          <em className="text-teal-deep">One outcome.</em>
-        </h1>
-        <p className="text-[18px] text-ink-2 leading-[1.6] max-w-[680px]">
-          ChronoCare separates the front-end (Prompt Opinion or this React app),
-          the orchestration layer, the reasoning server (this repo), and the data
-          store (FHIR R4). Each is replaceable; the whole is composable.
-        </p>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="eyebrow mb-6">Architecture</div>
+          <h1 className="font-serif text-[56px] md:text-[72px] leading-[0.98] tracking-tightest font-bold mb-8 max-w-[900px]">
+            Four moving parts.
+            <br />
+            <span className="highlight delay-2">One outcome.</span>
+          </h1>
+          <p className="text-[18px] text-ink-2 leading-[1.6] max-w-[680px]">
+            ChronoCare separates the front-end (Prompt Opinion or this React app),
+            the orchestration layer, the reasoning server (this repo), and the data
+            store (FHIR R4). Each is replaceable; the whole is composable.
+          </p>
+        </motion.div>
       </section>
 
       <section className="max-w-[1100px] mx-auto px-8 py-12">
         <ArchitectureDiagram />
       </section>
 
-      {/* REQUEST LIFECYCLE — the cinematic explanation */}
+      {/* REQUEST LIFECYCLE: the cinematic explanation */}
       <section className="border-t border-rule mt-16 bg-paper">
         <div className="max-w-[1100px] mx-auto px-8 py-24">
           <div className="eyebrow mb-4">Request lifecycle</div>
           <h2 className="font-serif text-[44px] md:text-[52px] leading-[1.05] tracking-tighter font-bold mb-6 max-w-[820px]">
-            What happens when you click <em className="text-teal-deep">"Run analysis."</em>
+            What happens when you click <span className="highlight">"Run analysis."</span>
           </h2>
           <p className="text-[16px] text-ink-2 max-w-[640px] leading-[1.6] mb-12">
             One HTTP POST kicks off a 13-step pipeline. Eight LLM calls, seven
-            FHIR queries, ~25–35s of wall time. Each step's output feeds the next.
+            FHIR queries, roughly 25 to 35 seconds of wall time. Each step's
+            output feeds the next.
           </p>
           <RequestLifecycle />
         </div>
@@ -91,7 +98,7 @@ export default function HowItWorks() {
             Admins upload synthetic FHIR R4 bundles via the dashboard. The server
             validates, rewrites POST entries to PUT (preserving IDs), and pushes
             the data to the configured FHIR server. Patient records propagate
-            instantly — the next analyze run sees them.
+            instantly. The next analyze run sees them.
           </p>
           <AdminFlow />
           <div className="mt-10">
@@ -161,7 +168,7 @@ const LAYERS = [
   {
     name: 'FHIR R4 + LLMs',
     role: 'Data + reasoning capacity',
-    desc: 'Patient data lives in any FHIR R4 server (the demo uses HAPI public R4). Reasoning capacity routes across two providers — OpenAI for prose and deep reasoning, Groq for fast structured JSON. Multi-provider also gives partial-failure resilience.',
+    desc: 'Patient data lives in any FHIR R4 server (the demo uses HAPI public R4). Reasoning capacity routes across two providers: OpenAI for prose and deep reasoning, Groq for fast structured JSON. Multi-provider also gives partial-failure resilience.',
     tags: ['HAPI FHIR R4', 'OpenAI gpt-4o, gpt-4o-mini', 'Groq llama-3.3-70b-versatile'],
   },
 ];
@@ -172,7 +179,7 @@ function ArchitectureDiagram() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
         <Box label="USER" tag="clinician / admin" subtle />
         <Arrow />
-        <Box label="FRONTEND" tag="this React app · or Prompt Opinion chat" />
+        <Box label="FRONTEND" tag="React app or Prompt Opinion chat" />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center mt-6">
         <div />
@@ -185,7 +192,7 @@ function ArchitectureDiagram() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center mt-6">
         <div />
-        <Box label="ChronoCore" tag="A2A agent · GPT-4.1" highlight />
+        <Box label="ChronoCore" tag="A2A agent, GPT-4.1" highlight />
         <Box label="FHIR Context" tag="patient_id + token" />
       </div>
       <div className="flex justify-center mt-6">
@@ -194,7 +201,7 @@ function ArchitectureDiagram() {
       <div className="mt-6 max-w-[640px] mx-auto">
         <Box
           label="ChronoCare MCP server (Railway)"
-          tag="14 MCP tools · /mcp/ + /api/demo/analyze + /api/admin/patients"
+          tag="14 MCP tools , /mcp/ + /api/demo/analyze + /api/admin/patients"
           highlight
           big
         />
@@ -205,7 +212,7 @@ function ArchitectureDiagram() {
         <div className="flex justify-center"><Down /></div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch mt-6">
-        <Box label="HAPI FHIR R4" tag="patient data · synthetic" />
+        <Box label="HAPI FHIR R4" tag="patient data, synthetic" />
         <Box label="OpenAI" tag="gpt-4o, gpt-4o-mini" />
         <Box label="Groq" tag="llama-3.3-70b" />
       </div>
@@ -217,13 +224,13 @@ function RequestLifecycle() {
   const steps = [
     { actor: 'Browser', text: 'User clicks "Run analysis"', detail: 'POST /api/demo/analyze body: {patient_id, fhir_base_url}' },
     { actor: 'Railway server', text: 'Validates request, dispatches to pipeline', detail: 'Sets up FHIR context, traces each tool call' },
-    { actor: 'Tools 1–2', text: 'Fetch + normalize patient history', detail: '7 parallel HTTP GETs to HAPI · LOINC/ICD-10/RxNorm decoding · single sorted timeline' },
-    { actor: 'Tools 3–4', text: 'Identify turning points + write narrative', detail: 'Llama-3.3-70b for structured JSON · GPT-4o for prose handoff' },
-    { actor: 'Tools 5–7', text: 'Detect silent deterioration', detail: 'Filter to recent 90d · holistic multi-signal pattern analysis (GPT-4o) · structured early warning report' },
-    { actor: 'Tools 8–9', text: 'Reason about cause', detail: 'Find causal pairs (Llama) · synthesize causal narrative (GPT-4o)' },
-    { actor: 'Tools 10–12', text: 'Map context + recommend', detail: 'Comorbidity interactions · cross-check ADA/JNC/KDIGO/ACC-AHA · 3–5 cited recommendations' },
-    { actor: 'Tool 13', text: 'Assemble unified brief', detail: 'Pure-Python JSON assembly · schema v1.0 · no LLM call' },
-    { actor: 'Browser', text: 'Render the brief', detail: 'Animated trace becomes "all done" — patient banner, narrative, risk panel, recs cards' },
+    { actor: 'Tools 1 to 2', text: 'Fetch and normalize patient history', detail: '7 parallel HTTP GETs to HAPI, LOINC/ICD-10/RxNorm decoding, single sorted timeline' },
+    { actor: 'Tools 3-4', text: 'Identify turning points + write narrative', detail: 'Llama-3.3-70b for structured JSON , GPT-4o for prose handoff' },
+    { actor: 'Tools 5-7', text: 'Detect silent deterioration', detail: 'Filter to recent 90d , holistic multi-signal pattern analysis (GPT-4o) , structured early warning report' },
+    { actor: 'Tools 8-9', text: 'Reason about cause', detail: 'Find causal pairs (Llama) , synthesize causal narrative (GPT-4o)' },
+    { actor: 'Tools 10-12', text: 'Map context + recommend', detail: 'Comorbidity interactions , cross-check ADA/JNC/KDIGO/ACC-AHA , 3-5 cited recommendations' },
+    { actor: 'Tool 13', text: 'Assemble unified brief', detail: 'Pure-Python JSON assembly , schema v1.0 , no LLM call' },
+    { actor: 'Browser', text: 'Render the brief', detail: 'Animated trace becomes "all done." Patient banner, narrative, risk panel, recommendation cards' },
   ];
 
   return (
@@ -322,7 +329,7 @@ function PatientIdCard({
       <div className="flex items-baseline justify-between gap-3 mb-1">
         <div className="font-serif text-[18px] font-bold tracking-tighter">{name}</div>
         <div className="text-[11px] text-muted whitespace-nowrap">
-          {age} · {sex}
+          {age} , {sex}
         </div>
       </div>
       <div className="text-[12px] text-ink-2 mb-3 leading-[1.5]">{story}</div>

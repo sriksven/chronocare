@@ -63,7 +63,7 @@ export default function Demo() {
       }
     } catch (e: any) {
       clearInterval(tickTimer);
-      setError(`${e?.message || 'Network error'} — server may be cold-starting; retry in 30s.`);
+      setError(`${e?.message || 'Network error'}. Server may be cold-starting, retry in 30s.`);
     } finally {
       setRunning(false);
     }
@@ -85,7 +85,7 @@ export default function Demo() {
         </h1>
         <p className="text-[16px] text-ink-2 leading-[1.6] max-w-[640px] mb-10">
           Hits the live MCP server on Railway. The 13-step pipeline runs server-side; the UI
-          shows each tool's status as it completes. Total wall time: <strong>25–35 seconds.</strong>
+          shows each tool's status as it completes. Total wall time: <strong>25-35 seconds.</strong>
         </p>
       </section>
 
@@ -142,7 +142,7 @@ export default function Demo() {
                     <div className="flex items-baseline justify-between gap-3 mb-1">
                       <div className="font-serif text-[18px] font-bold tracking-tighter">{p.name}</div>
                       <div className="text-[12px] text-muted whitespace-nowrap">
-                        {p.age} · {p.sex}
+                        {p.age} / {p.sex}
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-1.5 mb-2">
@@ -300,11 +300,11 @@ function BriefView({
   return (
     <div>
       <div className="border border-rule bg-paper rounded-sm p-8 border-l-4 border-l-teal-deep mb-6">
-        <div className="font-serif text-[36px] font-bold tracking-tighter">{p.name || '—'}</div>
+        <div className="font-serif text-[36px] font-bold tracking-tighter">{p.name || '-'}</div>
         <div className="flex flex-wrap gap-x-8 gap-y-1 text-[13px] text-muted mt-2">
-          <span><strong className="text-ink font-medium">{p.birth_date || '—'}</strong> · DOB</span>
-          <span><strong className="text-ink font-medium">{p.gender || '—'}</strong> · sex</span>
-          <span className="font-mono">{p.id || '—'}</span>
+          <span>DOB <strong className="text-ink font-medium">{p.birth_date || '-'}</strong></span>
+          <span>Sex <strong className="text-ink font-medium">{p.gender || '-'}</strong></span>
+          <span className="font-mono">{p.id || '-'}</span>
         </div>
       </div>
 
@@ -334,7 +334,7 @@ function BriefView({
       <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-6 mb-6">
         <Card title="Clinical narrative">
           <div className="font-serif text-[17px] leading-[1.7] text-ink-2 space-y-3">
-            {(brief.clinical_narrative || '—').split(/\n\n+/).map((p, i) => (
+            {(brief.clinical_narrative || '-').split(/\n\n+/).map((p, i) => (
               <p key={i}>{p}</p>
             ))}
           </div>
@@ -351,15 +351,15 @@ function BriefView({
           </div>
           <dl className="border-t border-rule p-7 grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 text-[13px]">
             <dt className="text-[10px] uppercase tracking-widest text-muted font-semibold pt-1">Trend</dt>
-            <dd>{ew.trend_direction || '—'}</dd>
+            <dd>{ew.trend_direction || '-'}</dd>
             <dt className="text-[10px] uppercase tracking-widest text-muted font-semibold pt-1">Time</dt>
-            <dd>{ew.time_sensitivity || '—'}</dd>
+            <dd>{ew.time_sensitivity || '-'}</dd>
             <dt className="text-[10px] uppercase tracking-widest text-muted font-semibold pt-1">Signals</dt>
             <dd className="font-mono text-[12px]">
-              {(ew.key_signals || []).length ? (ew.key_signals || []).join(' · ') : '—'}
+              {(ew.key_signals || []).length ? (ew.key_signals || []).join(', ') : '-'}
             </dd>
             <dt className="text-[10px] uppercase tracking-widest text-muted font-semibold pt-1">Monitor</dt>
-            <dd>{ew.recommended_monitoring || '—'}</dd>
+            <dd>{ew.recommended_monitoring || '-'}</dd>
           </dl>
         </div>
       </div>
@@ -486,7 +486,7 @@ function BriefView({
       {trace && (
         <details className="mt-6">
           <summary className="cursor-pointer eyebrow py-3 border-t border-rule">
-            Tool execution trace · raw timing data
+            Tool execution trace, raw timing data
           </summary>
           <div className="font-mono text-[12px] py-3 grid grid-cols-[auto_1fr_auto] gap-x-4 gap-y-1">
             {trace.map((t, i) => (
