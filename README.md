@@ -28,7 +28,7 @@ Output: a unified clinical brief, narrative story, early warning signals, causal
 Three ways to see the system run:
 
 1. **Custom UI**, https://sriksven.github.io/chronocare/ (React + Vite, deployed on GitHub Pages). The `/demo` page calls the live MCP server and renders the unified clinical brief with a 4-patient picker.
-2. **Prompt Opinion General Chat**, paste `I need a full clinical analysis of demo patient d0be5a00-57c5-4417-adeb-824beb93e4c3` and the ChronoCore A2A agent chains all 13 tools.
+2. **Prompt Opinion Marketplace**, both the **ChronoCare MCP** server and the **ChronoCore** A2A agent are published and installable. Add the agent to any workspace, paste `I need a full clinical analysis of demo patient d0be5a00-57c5-4417-adeb-824beb93e4c3`, and ChronoCore chains all 13 tools.
 3. **Direct CLI**, `curl -X POST .../api/demo/analyze -d '{"patient_id":"…"}'` returns the full unified brief JSON.
 
 **Demo patients on HAPI public R4:**

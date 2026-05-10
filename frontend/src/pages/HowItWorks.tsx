@@ -169,8 +169,51 @@ export default function HowItWorks() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* MARKETPLACE */}
       <section className="border-t border-rule">
+        <div className="max-w-[1100px] mx-auto px-8 py-24">
+          <div className="eyebrow mb-4">Available on the marketplace</div>
+          <h2 className="font-serif text-[40px] leading-[1.05] tracking-tighter font-bold mb-6 max-w-[820px]">
+            Install ChronoCore in your own Prompt Opinion workspace.
+          </h2>
+          <p className="text-[16px] text-ink-2 max-w-[680px] leading-[1.6] mb-8">
+            Both the <strong>ChronoCare MCP</strong> server and the{' '}
+            <strong>ChronoCore</strong> A2A agent are published to the Prompt
+            Opinion Marketplace. Install the agent into any workspace, point
+            it at a FHIR R4 server (or use the HAPI public sandbox), and the
+            full 13-step pipeline runs against your data.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[820px]">
+            <div className="border border-rule bg-paper rounded-sm p-6">
+              <div className="font-mono text-[11px] uppercase tracking-widest text-teal-deep font-semibold mb-2">
+                MCP Server
+              </div>
+              <div className="font-serif text-[22px] font-bold tracking-tighter mb-2">
+                ChronoCare MCP
+              </div>
+              <div className="text-[13px] text-ink-2 leading-[1.55]">
+                14 tools for clinical reasoning over FHIR. Streamable HTTP. Plug
+                into any MCP-compatible agent.
+              </div>
+            </div>
+            <div className="border border-rule bg-paper rounded-sm p-6">
+              <div className="font-mono text-[11px] uppercase tracking-widest text-teal-deep font-semibold mb-2">
+                A2A Agent
+              </div>
+              <div className="font-serif text-[22px] font-bold tracking-tighter mb-2">
+                ChronoCore
+              </div>
+              <div className="text-[13px] text-ink-2 leading-[1.55]">
+                GPT-4.1 driven. Reads patient FHIR data, calls 13 reasoning
+                tools in sequence, returns a unified clinical brief.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="border-t border-rule bg-paper">
         <div className="max-w-[1100px] mx-auto px-8 py-24 text-center">
           <p className="font-serif text-[36px] tracking-tighter font-bold mb-6">
             Ready to see it run?
