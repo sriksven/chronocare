@@ -174,47 +174,79 @@ const LAYERS = [
 ];
 
 function ArchitectureDiagram() {
+  // Each layer animates in top-to-bottom in a single sweep when scrolled into view.
+  const reveal = (delay: number) => ({
+    initial: { opacity: 0, y: 14 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: '-80px' as const },
+    transition: { duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+  });
+
+  const drawArrow = (delay: number) => ({
+    initial: { scaleY: 0, opacity: 0 },
+    whileInView: { scaleY: 1, opacity: 1 },
+    viewport: { once: true, margin: '-80px' as const },
+    transition: { duration: 0.4, delay, ease: 'easeOut' as const },
+  });
+
   return (
     <div className="border border-rule bg-paper rounded-sm p-8 md:p-12 dotted">
+      {/* Row 1: User -> Frontend */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-        <Box label="USER" tag="clinician / admin" subtle />
-        <Arrow />
-        <Box label="FRONTEND" tag="React app or Prompt Opinion chat" />
+        <motion.div {...reveal(0)}><Box label="USER" tag="clinician / admin" subtle /></motion.div>
+        <motion.div
+          initial={{ scaleX: 0, opacity: 0 }}
+          whileInView={{ scaleX: 1, opacity: 1 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.4, delay: 0.15, ease: 'easeOut' }}
+          className="origin-left"
+        >
+          <Arrow />
+        </motion.div>
+        <motion.div {...reveal(0.25)}><Box label="FRONTEND" tag="React app or Prompt Opinion chat" /></motion.div>
       </div>
+
+      {/* arrows down */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center mt-6">
         <div />
-        <div className="flex justify-center">
-          <Down />
-        </div>
-        <div className="flex justify-center">
-          <Down />
-        </div>
+        <motion.div {...drawArrow(0.4)} className="flex justify-center origin-top"><Down /></motion.div>
+        <motion.div {...drawArrow(0.5)} className="flex justify-center origin-top"><Down /></motion.div>
       </div>
+
+      {/* Row 2: ChronoCore + FHIR Context */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center mt-6">
         <div />
-        <Box label="ChronoCore" tag="A2A agent, GPT-4.1" highlight />
-        <Box label="FHIR Context" tag="patient_id + token" />
+        <motion.div {...reveal(0.55)}>
+          <Box label="ChronoCore" tag="A2A agent, GPT-4.1" highlight pulse />
+        </motion.div>
+        <motion.div {...reveal(0.7)}><Box label="FHIR Context" tag="patient_id + token" /></motion.div>
       </div>
-      <div className="flex justify-center mt-6">
-        <Down />
-      </div>
-      <div className="mt-6 max-w-[640px] mx-auto">
+
+      <motion.div {...drawArrow(0.85)} className="flex justify-center mt-6 origin-top"><Down /></motion.div>
+
+      {/* Center hub */}
+      <motion.div {...reveal(1.0)} className="mt-6 max-w-[640px] mx-auto">
         <Box
           label="ChronoCare MCP server (Railway)"
-          tag="14 MCP tools , /mcp/ + /api/demo/analyze + /api/admin/patients"
+          tag="14 MCP tools, /mcp/ + /api/demo/analyze + /api/admin/patients"
           highlight
           big
+          pulse
         />
-      </div>
+      </motion.div>
+
+      {/* arrows down to bottom row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch mt-6">
-        <div className="flex justify-center"><Down /></div>
-        <div className="flex justify-center"><Down /></div>
-        <div className="flex justify-center"><Down /></div>
+        <motion.div {...drawArrow(1.2)} className="flex justify-center origin-top"><Down /></motion.div>
+        <motion.div {...drawArrow(1.3)} className="flex justify-center origin-top"><Down /></motion.div>
+        <motion.div {...drawArrow(1.4)} className="flex justify-center origin-top"><Down /></motion.div>
       </div>
+
+      {/* Bottom row: data + LLM providers */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch mt-6">
-        <Box label="HAPI FHIR R4" tag="patient data, synthetic" />
-        <Box label="OpenAI" tag="gpt-4o, gpt-4o-mini" />
-        <Box label="Groq" tag="llama-3.3-70b" />
+        <motion.div {...reveal(1.5)}><Box label="HAPI FHIR R4" tag="patient data, synthetic" /></motion.div>
+        <motion.div {...reveal(1.6)}><Box label="OpenAI" tag="gpt-4o, gpt-4o-mini" /></motion.div>
+        <motion.div {...reveal(1.7)}><Box label="Groq" tag="llama-3.3-70b" /></motion.div>
       </div>
     </div>
   );
@@ -269,38 +301,65 @@ function RequestLifecycle() {
 
 function AdminFlow() {
   const lanes = [
-    { actor: 'Admin', side: 'left' as const, items: ['Opens /admin', 'Pastes admin key', 'Pastes / uploads bundle'] },
-    { actor: 'Browser', side: 'left' as const, items: ['Stores key in localStorage', 'POST /api/admin/patients with X-Admin-Key'] },
-    { actor: 'Server', side: 'right' as const, items: ['Verifies X-Admin-Key', 'Validates Bundle (must have Patient + id)', 'Rewrites POST → PUT to preserve IDs', 'POSTs to HAPI / configured FHIR'] },
-    { actor: 'FHIR', side: 'right' as const, items: ['Stores resources', 'Returns per-entry status (201/200)'] },
-    { actor: 'Server → Browser', side: 'right' as const, items: ['{ ok, patient_id, entries_uploaded }', 'Dashboard shows success card'] },
+    { step: 1, actor: 'Admin', side: 'left' as const, items: ['Opens /admin', 'Pastes admin key', 'Pastes / uploads bundle'] },
+    { step: 2, actor: 'Browser', side: 'left' as const, items: ['Stores key in localStorage', 'POST /api/admin/patients with X-Admin-Key'] },
+    { step: 3, actor: 'Server', side: 'right' as const, items: ['Verifies X-Admin-Key', 'Validates Bundle (must have Patient + id)', 'Rewrites POST to PUT to preserve IDs', 'POSTs to HAPI / configured FHIR'] },
+    { step: 4, actor: 'FHIR', side: 'right' as const, items: ['Stores resources', 'Returns per-entry status (201/200)'] },
+    { step: 5, actor: 'Server to Browser', side: 'right' as const, items: ['{ ok, patient_id, entries_uploaded }', 'Dashboard shows success card'] },
   ];
+
+  const STAGGER = 0.4;
 
   return (
     <div className="border border-rule bg-bg rounded-sm p-8 md:p-10 dotted">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-        {lanes.map((l, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.5, delay: i * 0.08 }}
-            className={`${l.side === 'right' ? 'md:col-start-2' : 'md:col-start-1'} bg-paper border border-rule rounded-sm px-5 py-4`}
-          >
-            <div className="font-mono text-[11px] uppercase tracking-widest text-teal-deep font-semibold mb-2">
-              {l.actor}
-            </div>
-            <ul className="space-y-1.5">
-              {l.items.map((item, j) => (
-                <li key={j} className="text-[13px] text-ink-2 leading-[1.5] flex gap-2">
-                  <span className="text-teal-deep">›</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 relative">
+        {lanes.map((l, i) => {
+          const baseDelay = i * STAGGER;
+          return (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: l.side === 'left' ? -30 : 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.6, delay: baseDelay, ease: [0.16, 1, 0.3, 1] }}
+              className={`${l.side === 'right' ? 'md:col-start-2' : 'md:col-start-1'} relative bg-paper border border-rule rounded-sm px-5 py-4`}
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.5, delay: baseDelay + 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute -top-3 -left-3 w-7 h-7 bg-teal-deep text-bg rounded-full flex items-center justify-center font-mono text-[11px] font-bold shadow-sm"
+                aria-hidden
+              >
+                {l.step}
+              </motion.div>
+
+              <div className="font-mono text-[11px] uppercase tracking-widest text-teal-deep font-semibold mb-2">
+                {l.actor}
+              </div>
+              <ul className="space-y-1.5">
+                {l.items.map((item, j) => (
+                  <motion.li
+                    key={j}
+                    initial={{ opacity: 0, x: -6 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    transition={{
+                      duration: 0.35,
+                      delay: baseDelay + 0.3 + j * 0.08,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    className="text-[13px] text-ink-2 leading-[1.5] flex gap-2"
+                  >
+                    <span className="text-teal-deep">›</span>
+                    <span>{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
@@ -347,19 +406,29 @@ function Box({
   highlight,
   subtle,
   big,
+  pulse,
 }: {
   label: string;
   tag: string;
   highlight?: boolean;
   subtle?: boolean;
   big?: boolean;
+  pulse?: boolean;
 }) {
   return (
     <div
-      className={`border ${
+      className={`relative border ${
         highlight ? 'border-teal-deep bg-teal-soft' : subtle ? 'border-rule bg-bg' : 'border-rule bg-paper'
       } rounded-sm ${big ? 'px-8 py-6' : 'px-5 py-4'} text-center`}
     >
+      {pulse && (
+        <motion.span
+          aria-hidden
+          className="absolute inset-0 rounded-sm border-2 border-teal-deep pointer-events-none"
+          animate={{ opacity: [0.4, 0, 0.4], scale: [1, 1.04, 1] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      )}
       <div className={`font-serif font-bold tracking-tighter ${big ? 'text-[20px]' : 'text-[16px]'}`}>
         {label}
       </div>
