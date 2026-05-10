@@ -64,37 +64,41 @@ export default function Landing() {
       </section>
 
       {/* THE PROBLEM */}
-      <section className="border-t border-rule">
-        <div className="max-w-[1200px] mx-auto px-8 py-32">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16">
-            <div className="md:col-span-4">
-              <div className="eyebrow mb-4">The problem</div>
-              <h2 className="font-serif text-[40px] leading-[1.05] tracking-tighter font-bold">
-                Modern EHRs answer
-                <br />
-                <span className="highlight">"what is happening,"</span>
-                <br />
-                not "what has been"
-                <br />
-                and not "what is coming."
-              </h2>
-            </div>
-            <div className="md:col-span-7 md:col-start-6 space-y-10">
-              {QUOTES.map((q, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-50px' }}
-                  transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div className="font-serif text-[22px] leading-[1.45] text-ink-2 mb-3">
-                    "{q.quote}"
-                  </div>
-                  <p className="text-[15px] text-muted leading-[1.65] max-w-md">{q.detail}</p>
-                </motion.div>
-              ))}
-            </div>
+      <section className="border-t border-rule relative overflow-hidden">
+        <div className="max-w-[1200px] mx-auto px-8 py-32 relative">
+          <div className="max-w-[920px] mb-20">
+            <div className="eyebrow mb-6">The problem</div>
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="font-serif text-[44px] md:text-[68px] leading-[1.02] tracking-tighter font-bold"
+            >
+              EHRs answer one question.
+              <br />
+              They <span className="highlight">miss two</span>.
+            </motion.h2>
+          </div>
+
+          <ThreeTenses />
+
+          <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-10">
+            {QUOTES.map((q, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                className="border-l-2 border-rule pl-5"
+              >
+                <div className="font-serif text-[20px] leading-[1.4] text-ink mb-3">
+                  "{q.quote}"
+                </div>
+                <p className="text-[13px] text-muted leading-[1.6]">{q.detail}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -240,6 +244,92 @@ const BUILT_ON = [
   { name: 'Prompt Opinion', tag: 'platform' },
   { name: 'Railway', tag: 'hosting' },
 ];
+
+function ThreeTenses() {
+  const tenses = [
+    {
+      label: 'Past',
+      question: 'What has been happening?',
+      status: 'gap' as const,
+      sub: 'Lost in the chart',
+      detail: 'Hundreds of FHIR resources across years. Three clinicians saw three snapshots. Nobody saw the cascade.',
+    },
+    {
+      label: 'Present',
+      question: 'What is happening?',
+      status: 'covered' as const,
+      sub: 'EHRs are good at this',
+      detail: 'Vitals, recent labs, current meds, today\'s problems. The snapshot is excellent.',
+    },
+    {
+      label: 'Future',
+      question: 'What is coming?',
+      status: 'gap' as const,
+      sub: 'Invisible until it isn\'t',
+      detail: 'Creatinine drift inside the reference range. Trajectory is catastrophic. Each individual reading reads "normal."',
+    },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {tenses.map((t, i) => {
+        const isCovered = t.status === 'covered';
+        return (
+          <motion.div
+            key={t.label}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.8, delay: i * 0.18, ease: [0.16, 1, 0.3, 1] }}
+            className={`relative border rounded-sm overflow-hidden ${
+              isCovered
+                ? 'border-teal-deep bg-teal-soft/40'
+                : 'border-rule bg-bg'
+            }`}
+          >
+            <div className="px-7 pt-7 pb-5 flex items-start justify-between gap-3">
+              <div className="text-[10px] uppercase tracking-widest text-muted font-bold">
+                {t.label}
+              </div>
+              <motion.div
+                initial={{ scale: 0, rotate: -90 }}
+                whileInView={{ scale: 1, rotate: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.6, delay: i * 0.18 + 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className={`flex items-center justify-center w-7 h-7 rounded-full text-[13px] font-bold ${
+                  isCovered
+                    ? 'bg-teal-deep text-bg'
+                    : 'bg-bg border border-ink-3 text-ink-3'
+                }`}
+                aria-hidden
+              >
+                {isCovered ? '✓' : '✕'}
+              </motion.div>
+            </div>
+            <div className="px-7 pb-7">
+              <div className="font-serif text-[26px] leading-[1.15] tracking-tighter font-bold mb-3">
+                "{t.question}"
+              </div>
+              <div className={`text-[12px] uppercase tracking-widest font-semibold mb-4 ${isCovered ? 'text-teal-deep' : 'text-muted'}`}>
+                {t.sub}
+              </div>
+              <p className="text-[14px] text-ink-2 leading-[1.55]">{t.detail}</p>
+            </div>
+            {isCovered && (
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 1, delay: i * 0.18 + 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute bottom-0 left-0 right-0 h-1 bg-teal-deep origin-left"
+              />
+            )}
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
 
 function HeroBackdrop() {
   return (
