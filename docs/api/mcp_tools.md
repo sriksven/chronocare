@@ -7,6 +7,16 @@ All 14 tools exposed by the ChronoCare MCP server.
 **Auth:** `X-ChronoCare-Key: <MCP_API_KEY>` header
 **Accept:** `application/json, text/event-stream` (SSE responses)
 
+## Auxiliary HTTP endpoints
+
+The same Railway server also exposes plain HTTP endpoints (no MCP envelope) for the React frontend:
+
+| Endpoint | Method | Auth | Purpose |
+|---|---|---|---|
+| `/health` | GET | none | Liveness probe; returns `{status, version, tools_count, llm_backend}` |
+| `/api/demo/analyze` | POST/GET | none (public, CORS *) | Runs the full 13-step pipeline server-side and returns `{ok, brief, trace}`. Body: `{patient_id, fhir_base_url}` |
+| `/api/admin/patients` | POST | `X-Admin-Key: <ADMIN_KEY>` | Uploads a FHIR R4 bundle. Body: `{bundle, fhir_base_url?}`. Returns `{ok, patient_id, name, entries_uploaded, post_to_put_rewrites}` |
+
 ---
 
 ## Time Traveler Tools

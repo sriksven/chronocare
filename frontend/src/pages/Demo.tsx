@@ -279,6 +279,29 @@ function BriefView({
         </div>
       </div>
 
+      {/* At-a-glance metrics row */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <Stat
+          label="Risk level"
+          value={(brief.early_warning?.risk_level || 'unknown')}
+          tone={
+            risk === 'low' ? 'low' : risk === 'medium' ? 'med' : risk === 'high' || risk === 'emergent' ? 'high' : 'neutral'
+          }
+        />
+        <Stat
+          label="Turning points"
+          value={String((brief.turning_points || []).length)}
+        />
+        <Stat
+          label="Recommendations"
+          value={String((brief.recommendations || []).length)}
+        />
+        <Stat
+          label="Guideline matches"
+          value={String((brief.guideline_matches || []).length)}
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-6 mb-6">
         <Card title="Clinical narrative">
           <div className="font-serif text-[17px] leading-[1.7] text-ink-2 space-y-3">
@@ -462,6 +485,29 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
     <div className="border border-rule bg-paper rounded-sm p-7">
       <div className="eyebrow mb-3">{title}</div>
       {children}
+    </div>
+  );
+}
+
+function Stat({
+  label,
+  value,
+  tone = 'neutral',
+}: {
+  label: string;
+  value: string;
+  tone?: 'low' | 'med' | 'high' | 'neutral';
+}) {
+  const toneClass: Record<string, string> = {
+    low: 'border-l-risk-low',
+    med: 'border-l-risk-med',
+    high: 'border-l-risk-high',
+    neutral: 'border-l-teal-deep',
+  };
+  return (
+    <div className={`bg-paper border border-rule border-l-2 ${toneClass[tone]} rounded-sm px-5 py-4`}>
+      <div className="text-[10px] uppercase tracking-widest text-muted font-semibold mb-1">{label}</div>
+      <div className="font-serif text-[28px] font-bold tracking-tighter capitalize">{value}</div>
     </div>
   );
 }

@@ -5,11 +5,13 @@ export default function Landing() {
   return (
     <div className="grain">
       {/* HERO */}
-      <section className="max-w-[1200px] mx-auto px-8 pt-28 pb-32 relative">
+      <section className="max-w-[1200px] mx-auto px-8 pt-28 pb-32 relative overflow-hidden">
+        <HeroBackdrop />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10"
         >
           <div className="eyebrow mb-8">A clinical reasoning engine · Built for Agents Assemble</div>
           <h1 className="font-serif text-[64px] md:text-[88px] leading-[0.95] tracking-tightest font-bold max-w-[1000px]">
@@ -227,6 +229,125 @@ export default function Landing() {
         </div>
       </section>
     </div>
+  );
+}
+
+function HeroBackdrop() {
+  return (
+    <svg
+      aria-hidden
+      className="absolute right-0 top-12 w-[680px] max-w-[55%] h-[420px] opacity-90 pointer-events-none"
+      viewBox="0 0 680 420"
+      fill="none"
+    >
+      <defs>
+        <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#1a5762" stopOpacity="0" />
+          <stop offset="50%" stopColor="#1a5762" stopOpacity="0.45" />
+          <stop offset="100%" stopColor="#1a5762" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="lineGradient2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#a86c14" stopOpacity="0" />
+          <stop offset="60%" stopColor="#a86c14" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#a86c14" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+
+      {/* faint vertical timeline grid */}
+      {[80, 200, 320, 440, 560].map((x, i) => (
+        <line
+          key={i}
+          x1={x}
+          x2={x}
+          y1={20}
+          y2={400}
+          stroke="#0e1622"
+          strokeOpacity={0.06}
+          strokeDasharray="2 6"
+        />
+      ))}
+
+      {/* a "creatinine" trajectory drifting up */}
+      <motion.path
+        d="M 30 320 Q 110 318 180 312 T 320 295 T 460 270 T 620 230"
+        stroke="url(#lineGradient)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ duration: 2.5, delay: 0.3, ease: 'easeOut' }}
+      />
+      {/* a "BP" wave with subtle pattern */}
+      <motion.path
+        d="M 30 200 Q 90 180 160 195 T 290 200 T 420 175 T 560 165 T 640 150"
+        stroke="url(#lineGradient2)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ duration: 2.5, delay: 0.7, ease: 'easeOut' }}
+      />
+
+      {/* event markers — turning points */}
+      {[
+        { x: 110, y: 318, label: '2019' },
+        { x: 240, y: 295, label: '2021' },
+        { x: 400, y: 275, label: '2023' },
+        { x: 560, y: 245, label: '2026' },
+      ].map((e, i) => (
+        <motion.g
+          key={i}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 1.2 + i * 0.25, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <circle cx={e.x} cy={e.y} r="5" fill="#0f3a44" />
+          <circle cx={e.x} cy={e.y} r="11" fill="#0f3a44" fillOpacity="0.12" />
+          <text
+            x={e.x}
+            y={e.y + 30}
+            fontSize="10"
+            fontFamily="JetBrains Mono, monospace"
+            fill="#5a6478"
+            textAnchor="middle"
+            letterSpacing="0.05em"
+          >
+            {e.label}
+          </text>
+        </motion.g>
+      ))}
+
+      {/* horizon "today" marker */}
+      <motion.line
+        x1="640"
+        y1="60"
+        x2="640"
+        y2="380"
+        stroke="#0e1622"
+        strokeOpacity="0.18"
+        strokeDasharray="4 4"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 1, delay: 2 }}
+      />
+      <motion.text
+        x="640"
+        y="48"
+        fontSize="9"
+        fontFamily="Inter, sans-serif"
+        fontWeight="600"
+        letterSpacing="0.16em"
+        fill="#0e1622"
+        textAnchor="end"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        transition={{ delay: 2.4 }}
+      >
+        TODAY
+      </motion.text>
+    </svg>
   );
 }
 

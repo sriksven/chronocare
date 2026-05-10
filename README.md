@@ -25,14 +25,22 @@ Output: a unified clinical brief — narrative story, early warning signals, cau
 
 ## Demo
 
-The frontend is **Prompt Opinion's General Chat** — there is no custom UI. ChronoCore (an A2A agent on Prompt Opinion) calls this MCP server when the user asks for clinical analysis.
+Three ways to see the system run:
 
-**Demo patient (HAPI public R4):** `d0be5a00-57c5-4417-adeb-824beb93e4c3` — John Doe, 62yo male with HTN + T2DM + CKD progression across 2019–2026.
+1. **Custom UI** — https://sriksven.github.io/chronocare/ (React + Vite, deployed on GitHub Pages). The `/demo` page calls the live MCP server and renders the unified clinical brief with a 4-patient picker.
+2. **Prompt Opinion General Chat** — paste `I need a full clinical analysis of demo patient d0be5a00-57c5-4417-adeb-824beb93e4c3` and the ChronoCore A2A agent chains all 13 tools.
+3. **Direct CLI** — `curl -X POST .../api/demo/analyze -d '{"patient_id":"…"}'` returns the full unified brief JSON.
 
-**Smoke test prompt (paste into Prompt Opinion General Chat):**
-```
-I need a full clinical analysis of demo patient d0be5a00-57c5-4417-adeb-824beb93e4c3
-```
+**Demo patients on HAPI public R4:**
+
+| Patient | ID | Clinical archetype |
+|---|---|---|
+| John Doe (62, M) | `d0be5a00-57c5-4417-adeb-824beb93e4c3` | HTN → CKD silent multi-year cascade |
+| Maria Rodriguez (58, F) | `a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c` | T2DM poor control → early nephropathy |
+| Robert Chen (71, M) | `b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7` | CHF + AFib + COPD → cardiorenal syndrome |
+| Sarah Williams (45, F) | `f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e` | Prediabetes + borderline HTN (control case) |
+
+**Admin dashboard:** https://sriksven.github.io/chronocare/#/admin (requires the `ADMIN_KEY` env var set on Railway). Lets you upload new FHIR bundles via the browser.
 
 ---
 

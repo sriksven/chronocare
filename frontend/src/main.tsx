@@ -6,6 +6,7 @@ import Landing from './pages/Landing';
 import HowItWorks from './pages/HowItWorks';
 import Tools from './pages/Tools';
 import Demo from './pages/Demo';
+import Admin from './pages/Admin';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/how" element={<HowItWorks />} />
           <Route path="/tools" element={<Tools />} />
           <Route path="/demo" element={<Demo />} />
+          <Route path="/admin" element={<Admin />} />
         </Route>
       </Routes>
     </HashRouter>

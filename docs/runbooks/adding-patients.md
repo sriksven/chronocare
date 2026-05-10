@@ -1,8 +1,16 @@
 # Admin: Adding a new demo patient
 
-There are three ways to get a patient into ChronoCare's demo. They differ
-only in how you produce the FHIR bundle. Once you have a bundle, the rest
-is one command.
+There are **two interfaces** for adding patients:
+
+- **Admin dashboard** (browser): https://sriksven.github.io/chronocare/#/admin —
+  paste a FHIR bundle, click upload, done. Requires the admin key
+  (`ADMIN_KEY` env var on the Railway server).
+- **CLI** (terminal): `python3 scripts/admin_add_patient.py <bundle.json>` —
+  same logic; convenient for batch ingestion or generated bundles.
+
+Both call the same backend endpoint and produce identical results. Pick
+whichever fits the moment. The bundle source can be hand-written, Synthea-
+generated, or an external (de-identified) export.
 
 ## Quick reference
 
@@ -13,19 +21,43 @@ Source of patient data ────────────┼─ Hand-written b
 
                 ↓
 
-   tests/fixtures/<name>_fhir.json   (any valid FHIR R4 transaction Bundle
-                                      with a Patient.id field)
+   FHIR R4 transaction Bundle (must contain a Patient resource with an id)
 
                 ↓
-
-   python3 scripts/admin_add_patient.py <bundle.json> --register --story "…" --conditions "…"
-
-                ↓
+   ┌──────────────────────────┐         ┌──────────────────────────────┐
+   │  Admin dashboard          │   or    │  CLI                         │
+   │  /admin page in frontend  │         │  scripts/admin_add_patient   │
+   └──────────────┬───────────┘         └──────────────┬───────────────┘
+                  └────────────── same backend ─────────┘
+                                  ↓
    ┌─────────────────────────┬────────────────────────────────────┐
    │ Uploaded to FHIR server │ Registered in frontend catalog     │
-   │ (HAPI public by default)│ (so the picker shows the new card) │
+   │ (HAPI public by default)│ (only via CLI --register flag, or  │
+   │                         │  manual edit of patients.ts)        │
    └─────────────────────────┴────────────────────────────────────┘
 ```
+
+---
+
+## Option 0 — Admin dashboard (no terminal needed)
+
+1. Open **https://sriksven.github.io/chronocare/#/admin**
+2. Enter the admin key (the value of `ADMIN_KEY` set on Railway —
+   set via `railway variables --set "ADMIN_KEY=..."`).
+   The key is stored in `localStorage` so you only enter it once per browser.
+3. Either:
+   - **Upload .json** — pick a FHIR bundle file
+   - **Paste JSON** — drop the bundle into the textarea
+   - **Insert sample** — load a minimal bundle to see the format
+4. Click **Add patient →**.
+5. The dashboard displays the resulting Patient ID, FHIR URL, and how many
+   entries were uploaded.
+
+**Note:** The dashboard's add-patient flow uploads to the FHIR server but
+does **not** automatically update the frontend catalog (`patients.ts`).
+To make the new patient appear in the picker on `/demo`, also append a
+row to `frontend/src/lib/patients.ts` and rebuild. For full automation,
+use the CLI with the `--register` flag.
 
 ---
 

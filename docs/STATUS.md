@@ -148,9 +148,22 @@ The narrative cites real patient data: "March 12, 2019, with a diagnosis of hype
 |---|---|---|
 | 1 | Record 3-min demo video | user |
 | 2 | Write Devpost description + submit | user |
-| 3 | First git commit (entire tree currently uncommitted) | optional |
 
 Deadline: 2026-05-11.
+
+---
+
+## What's shipped beyond the original spec
+
+These were added during the build:
+
+- **React/Vite frontend** (`frontend/`) — 5 routes: Landing, How it works, Tools catalog, Live demo, Admin dashboard. Hand-crafted clinical aesthetic with custom Tailwind theme. Animated SVG hero on the landing page.
+- **`POST /api/demo/analyze`** — public endpoint that runs the full 13-step pipeline server-side. Used by the React `/demo` page so visitors can test the system without Prompt Opinion.
+- **`POST /api/admin/patients`** — admin endpoint for adding new patients. Auth via `X-Admin-Key` header (matches `ADMIN_KEY` env var). Used by the React `/admin` page.
+- **CLI admin tool** (`scripts/admin_add_patient.py`) — command-line equivalent of the admin dashboard for bulk/automated ingestion.
+- **Patient picker UI** — Demo page shows all 4 demo patients (John, Maria, Robert, Sarah) as selectable cards.
+- **Patient generator** (`scripts/generate_demo_patients.py`) — reproducible synthetic FHIR bundle generation.
+- **CI/CD** — `Frontend / GitHub Pages` builds Vite app, deploys to Pages, smoke-tests live URL. `Backend / Tests` runs pytest, smoke-tests live Railway endpoints. Path-filtered triggers prevent unnecessary cross-runs.
 
 ---
 

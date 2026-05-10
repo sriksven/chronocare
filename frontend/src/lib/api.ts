@@ -55,6 +55,34 @@ export async function runAnalysis(
   return r.json();
 }
 
+export interface AdminAddResponse {
+  ok: boolean;
+  patient_id?: string;
+  name?: string;
+  entries_total?: number;
+  entries_uploaded?: number;
+  post_to_put_rewrites?: number;
+  fhir_base_url?: string;
+  error?: string;
+  body?: string;
+}
+
+export async function adminAddPatient(
+  adminKey: string,
+  bundle: object,
+  fhir_base_url?: string,
+): Promise<AdminAddResponse> {
+  const r = await fetch(`${API_BASE}/api/admin/patients`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Admin-Key': adminKey,
+    },
+    body: JSON.stringify({ bundle, fhir_base_url }),
+  });
+  return r.json();
+}
+
 export const PIPELINE_STEPS: { tool: string; label: string }[] = [
   { tool: 'get_full_patient_history', label: 'Fetch patient history from FHIR' },
   { tool: 'order_events_chronologically', label: 'Build chronological timeline' },

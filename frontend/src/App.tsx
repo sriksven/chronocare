@@ -96,6 +96,7 @@ export default function App() {
               <li><a href="https://github.com/sriksven/chronocare" target="_blank" rel="noopener" className="text-ink-2 hover:text-ink">GitHub repo ↗</a></li>
               <li><a href="https://attractive-ambition-production-5fd7.up.railway.app/health" target="_blank" rel="noopener" className="text-ink-2 hover:text-ink">Health endpoint ↗</a></li>
               <li><a href="https://attractive-ambition-production-5fd7.up.railway.app/mcp/" target="_blank" rel="noopener" className="text-ink-2 hover:text-ink">MCP endpoint ↗</a></li>
+              <li><Link to="/admin" className="text-muted hover:text-ink-2 text-[12px]">Admin</Link></li>
             </ul>
           </div>
         </div>

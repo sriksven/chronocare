@@ -18,6 +18,7 @@ class Config:
     log_level: str
     cache_ttl_seconds: int
     google_tts_api_key: str | None
+    admin_key: str | None
 
 
 def load_config() -> Config:
@@ -38,4 +39,5 @@ def load_config() -> Config:
         log_level=os.environ.get("LOG_LEVEL", "INFO"),
         cache_ttl_seconds=int(os.environ.get("CACHE_TTL_SECONDS", "300")),
         google_tts_api_key=os.environ.get("GOOGLE_TTS_API_KEY"),
+        admin_key=os.environ.get("ADMIN_KEY"),
     )

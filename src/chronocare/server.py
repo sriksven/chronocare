@@ -17,6 +17,7 @@ import json
 import os
 from typing import Any
 
+import httpx
 from mcp.server import Server
 from mcp.server.streamable_http_manager import StreamableHTTPSessionManager
 from mcp.types import Tool, TextContent
@@ -375,6 +376,84 @@ if __name__ == "__main__":
             "patient_id": request.headers.get("X-Patient-ID", ""),
         })
 
+    async def admin_add_patient(request: Request) -> JSONResponse:
+        """Admin: upload a FHIR R4 bundle as a new patient.
+
+        Auth: X-Admin-Key header must match ADMIN_KEY env var.
+        Body: { "bundle": <FHIR transaction Bundle>,
+                "fhir_base_url": <optional override> }
+        """
+        if not config.admin_key:
+            return JSONResponse(
+                {"ok": False, "error": "ADMIN_KEY not configured on server"},
+                status_code=503,
+            )
+        if request.headers.get("X-Admin-Key") != config.admin_key:
+            return JSONResponse({"ok": False, "error": "unauthorized"}, status_code=401)
+
+        try:
+            body = await request.json()
+        except Exception as exc:
+            return JSONResponse({"ok": False, "error": f"invalid json: {exc}"}, status_code=400)
+
+        bundle = body.get("bundle")
+        if not isinstance(bundle, dict) or bundle.get("resourceType") != "Bundle":
+            return JSONResponse({"ok": False, "error": "missing or invalid 'bundle' (must be a FHIR Bundle)"}, status_code=400)
+
+        entries = bundle.get("entry") or []
+        if not entries:
+            return JSONResponse({"ok": False, "error": "bundle has no entries"}, status_code=400)
+
+        patients = [e["resource"] for e in entries if e.get("resource", {}).get("resourceType") == "Patient"]
+        if len(patients) != 1:
+            return JSONResponse({"ok": False, "error": f"bundle must have exactly 1 Patient (found {len(patients)})"}, status_code=400)
+        patient_resource = patients[0]
+        pid = patient_resource.get("id")
+        if not pid:
+            return JSONResponse({"ok": False, "error": "Patient resource missing 'id'"}, status_code=400)
+
+        # Rewrite POST -> PUT so the FHIR server preserves the supplied IDs
+        rewritten = 0
+        for e in entries:
+            res = e.get("resource", {})
+            rid = res.get("id")
+            if rid and (e.get("request") or {}).get("method") == "POST":
+                e["request"] = {"method": "PUT", "url": f"{res['resourceType']}/{rid}"}
+                rewritten += 1
+
+        target_fhir = body.get("fhir_base_url") or config.fhir_base_url
+        headers = {"Content-Type": "application/fhir+json", "Accept": "application/fhir+json"}
+        if config.fhir_token:
+            headers["Authorization"] = f"Bearer {config.fhir_token}"
+
+        try:
+            async with httpx.AsyncClient(timeout=180, follow_redirects=True) as client:
+                resp = await client.post(target_fhir.rstrip("/") + "/", json=bundle, headers=headers)
+        except Exception as exc:
+            return JSONResponse({"ok": False, "error": f"upload failed: {exc}"}, status_code=502)
+
+        if resp.status_code not in (200, 201):
+            return JSONResponse(
+                {"ok": False, "error": f"FHIR server returned {resp.status_code}", "body": resp.text[:600]},
+                status_code=502,
+            )
+
+        result = resp.json()
+        result_entries = result.get("entry", [])
+        success = sum(1 for r in result_entries if (r.get("response", {}).get("status", "")).split(" ", 1)[0] in {"200", "201"})
+        name_field = patient_resource.get("name", [{}])[0]
+        display_name = " ".join(name_field.get("given", []) + [name_field.get("family", "")]).strip() or "(unnamed)"
+
+        return JSONResponse({
+            "ok": True,
+            "patient_id": pid,
+            "name": display_name,
+            "entries_total": len(entries),
+            "entries_uploaded": success,
+            "post_to_put_rewrites": rewritten,
+            "fhir_base_url": target_fhir,
+        })
+
     async def public_demo_analyze(request: Request) -> JSONResponse:
         """Public demo endpoint — runs the full 13-step pipeline for a patient.
 
@@ -474,6 +553,7 @@ if __name__ == "__main__":
             Route("/health", health),
             Route("/debug-headers", debug_headers),
             Route("/api/demo/analyze", public_demo_analyze, methods=["GET", "POST", "OPTIONS"]),
+            Route("/api/admin/patients", admin_add_patient, methods=["POST", "OPTIONS"]),
             Mount("/mcp", session_manager.handle_request),
         ]
     )
