@@ -5,62 +5,115 @@ export default function Landing() {
   return (
     <div className="grain">
       {/* HERO */}
-      <section className="max-w-[1200px] mx-auto px-8 pt-28 pb-32 relative overflow-hidden">
-        <HeroBackdrop />
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10"
-        >
-          <div className="eyebrow mb-8">A clinical reasoning engine, built for Agents Assemble</div>
-          <h1 className="font-serif text-[64px] md:text-[88px] leading-[0.95] tracking-tightest font-bold max-w-[1000px]">
-            Understand the past.
-            <br />
-            <span className="highlight delay-2">Prevent the future.</span>
+      <section className="relative overflow-hidden border-b border-rule">
+        {/* Backdrop is absolute and constrained to the right half */}
+        <div className="absolute inset-y-0 right-0 w-full md:w-[55%] pointer-events-none">
+          <HeroBackdrop />
+        </div>
+
+        <div className="max-w-[1200px] mx-auto px-8 pt-24 pb-28 relative z-10">
+          {/* Top status row */}
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center gap-4 mb-12"
+          >
+            <span className="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-semibold text-risk-low bg-risk-low/10 px-3 py-1.5 rounded-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-risk-low animate-pulse" />
+              live system
+            </span>
+            <span className="eyebrow">a clinical reasoning engine for FHIR</span>
+          </motion.div>
+
+          {/* Headline — staggered word-by-word reveal */}
+          <h1 className="font-serif text-[60px] md:text-[92px] leading-[0.96] tracking-tightest font-bold max-w-[900px]">
+            <motion.span
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="block"
+            >
+              Understand the past.
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+              className="block"
+            >
+              <span className="highlight delay-2">Prevent the future.</span>
+            </motion.span>
           </h1>
-          <p className="mt-10 text-[19px] md:text-[20px] text-ink-2 leading-[1.55] max-w-[680px] font-medium">
-            ChronoCare reconstructs a patient's full medical story across years of FHIR
-            data and detects silent deterioration that thresholds miss, synthesizing an
-            evidence-grounded clinical brief in under 35 seconds.
-          </p>
-          <div className="mt-12 flex flex-wrap items-center gap-4">
+
+          {/* Body — three short statements */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.6 }}
+            className="mt-12 max-w-[600px] space-y-3 text-[18px] md:text-[19px] text-ink-2 leading-[1.5] font-medium"
+          >
+            <p>
+              <span className="text-teal-deep font-semibold">Reconstruct</span>{' '}
+              a patient's full medical story across years of FHIR data.
+            </p>
+            <p>
+              <span className="text-teal-deep font-semibold">Detect</span>{' '}
+              silent deterioration that thresholds miss.
+            </p>
+            <p>
+              <span className="text-teal-deep font-semibold">Deliver</span>{' '}
+              an evidence-grounded clinical brief in 35 seconds.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.9 }}
+            className="mt-12 flex flex-wrap items-center gap-3"
+          >
             <Link to="/demo" className="btn-primary">
               Try the live demo
               <span aria-hidden>→</span>
             </Link>
             <Link to="/how" className="btn-secondary">See how it works</Link>
-          </div>
-        </motion.div>
+            <span className="hidden md:inline-block text-[12px] text-muted ml-3">
+              25 to 35 seconds end-to-end
+            </span>
+          </motion.div>
 
-        {/* FLOATING METRICS */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 1 }}
-          className="mt-32 grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-rule pt-12"
-        >
-          {METRICS.map((m, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="font-serif text-[42px] font-bold tracking-tightest">{m.num}</div>
-              <div className="text-xs uppercase tracking-widest text-muted mt-1 flex items-center gap-1">
-                {m.tooltip ? (
-                  <span className="tip">
-                    {m.label}
-                    <span className="tip-body">{m.tooltip}</span>
-                  </span>
-                ) : (
-                  m.label
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+          {/* Floating metrics */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.0, duration: 1 }}
+            className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-8 border-t border-rule pt-10 max-w-[920px]"
+          >
+            {METRICS.map((m, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.1 + i * 0.08, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div className="font-serif text-[42px] font-bold tracking-tightest text-ink">
+                  {m.num}
+                </div>
+                <div className="text-[10px] uppercase tracking-widest text-muted mt-1 font-semibold">
+                  {m.tooltip ? (
+                    <span className="tip">
+                      {m.label}
+                      <span className="tip-body">{m.tooltip}</span>
+                    </span>
+                  ) : (
+                    m.label
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </section>
 
       {/* THE PROBLEM */}
@@ -83,23 +136,17 @@ export default function Landing() {
 
           <ThreeTenses />
 
-          <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-10">
-            {QUOTES.map((q, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-                className="border-l-2 border-rule pl-5"
-              >
-                <div className="font-serif text-[20px] leading-[1.4] text-ink mb-3">
-                  "{q.quote}"
-                </div>
-                <p className="text-[13px] text-muted leading-[1.6]">{q.detail}</p>
-              </motion.div>
-            ))}
-          </div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-16 max-w-[680px] font-serif text-[20px] md:text-[22px] leading-[1.5] text-ink-2"
+          >
+            ChronoCare fills the two missing tenses. It reconstructs the past
+            from FHIR data and projects the future from weak-signal patterns
+            today's thresholds miss.
+          </motion.p>
         </div>
       </section>
 
@@ -208,21 +255,6 @@ const METRICS = [
     num: '<35s',
     label: 'end-to-end latency',
     tooltip: 'Wall-clock from request to brief: 7 parallel FHIR fetches + 8 LLM calls + JSON assembly. Verified in production.',
-  },
-];
-
-const QUOTES = [
-  {
-    quote: 'Every individual reading was within reference range, but the trajectory was catastrophic.',
-    detail: "A patient's creatinine drifts from 0.9 to 1.3 mg/dL over 36 months. Each lab is flagged \"normal.\" The slope is invisible.",
-  },
-  {
-    quote: 'Hypertension diagnosed in 2019 became Stage 2 CKD by 2022.',
-    detail: 'Three different clinicians saw three snapshots. None saw the cascade.',
-  },
-  {
-    quote: 'The chart has the answer. No one has time to read it.',
-    detail: 'Hundreds of FHIR resources. A 12-minute visit. A reasoning gap that gets paid in late diagnoses.',
   },
 ];
 
@@ -335,8 +367,9 @@ function HeroBackdrop() {
   return (
     <svg
       aria-hidden
-      className="absolute right-0 top-12 w-[680px] max-w-[55%] h-[420px] opacity-90 pointer-events-none"
-      viewBox="0 0 680 420"
+      className="absolute inset-0 w-full h-full opacity-80"
+      viewBox="0 0 680 600"
+      preserveAspectRatio="xMaxYMid meet"
       fill="none"
     >
       <defs>
