@@ -28,10 +28,25 @@ def correlate_events(
     timeline_json = json.dumps(timeline[:100], indent=2)
     system, user = correlate_events_prompt(timeline_json)
     try:
-        result = llm.call_llm_json(system, user, max_tokens=700, analysis=True, backend="groq")
+        # Switched from groq llama-3.3 to openai gpt-4o-mini: llama was too
+        # conservative on causal inference and frequently returned []. Mini is
+        # cheap, fast, and follows the structured-JSON contract more reliably.
+        result = llm.call_llm_json(
+            system, user, max_tokens=900, analysis=True, backend="openai-mini"
+        )
+        # Some models wrap the array in {"correlations": [...]} — unwrap.
+        if isinstance(result, dict):
+            for v in result.values():
+                if isinstance(v, list):
+                    result = v
+                    break
         if not isinstance(result, list):
             return []
-        # Sort high confidence first
+        # Filter out malformed entries that lack the required keys.
+        result = [
+            r for r in result
+            if isinstance(r, dict) and r.get("cause_event") and r.get("effect_event")
+        ]
         order = {"high": 0, "medium": 1, "low": 2}
         return sorted(result, key=lambda x: order.get(x.get("confidence", "low"), 2))
     except (ValueError, RuntimeError):

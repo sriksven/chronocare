@@ -104,17 +104,29 @@ def correlate_events_prompt(timeline_json: str) -> tuple[str, str]:
         "You are a clinical epidemiologist specializing in causal inference in patient "
         "outcomes. You identify plausible causal relationships between clinical events. "
         "You assign confidence levels honestly: high only when the causal pathway is "
-        "well-established in clinical literature. You ONLY reference events in the "
-        "provided timeline."
+        "well-established in clinical literature; medium when biologically plausible "
+        "but unverified; low for hypothetical associations worth flagging. You ONLY "
+        "reference events in the provided timeline."
     )
     user = (
         f"Patient timeline:\n{timeline_json}\n\n"
         "Identify pairs of events where one likely caused or contributed to the other. "
-        "Focus on clinically meaningful relationships (medication changes → lab changes, "
-        "uncontrolled conditions → new diagnoses, etc.).\n\n"
-        "Respond with JSON array. Each element:\n"
-        '{"cause_event": "...", "cause_date": "...", '
-        '"effect_event": "...", "effect_date": "...", '
+        "Be generous about plausible associations. Examples to look for:\n"
+        "- A new diagnosis preceded by years of uncontrolled risk factors "
+        "(uncontrolled HTN -> CKD; chronic hyperglycemia -> retinopathy/nephropathy; "
+        "obesity + sedentary -> T2DM)\n"
+        "- A medication start preceded by an out-of-range lab "
+        "(elevated LDL -> statin; elevated A1c -> metformin/SGLT2)\n"
+        "- A lab improvement preceded by a medication start or dose adjustment\n"
+        "- A condition acceleration preceded by another active condition "
+        "(HTN accelerating CKD; CKD worsening AFib via electrolyte shifts)\n"
+        "- An exacerbation/hospitalization preceded by missed monitoring or therapy gap\n\n"
+        "Provide at least 3 correlations if the timeline plausibly supports them. "
+        "Low confidence is fine and useful to flag. Only return an empty array if "
+        "the timeline is genuinely too sparse (under 5 events).\n\n"
+        "Respond with a JSON array (not an object, not wrapped). Each element:\n"
+        '{"cause_event": "...", "cause_date": "YYYY-MM-DD", '
+        '"effect_event": "...", "effect_date": "YYYY-MM-DD", '
         '"confidence": "low|medium|high", "rationale": "..."}'
     )
     return system, user
