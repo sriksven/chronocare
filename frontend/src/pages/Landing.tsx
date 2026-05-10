@@ -136,17 +136,24 @@ export default function Landing() {
 
           <ThreeTenses />
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-16 max-w-[680px] font-serif text-[20px] md:text-[22px] leading-[1.5] text-ink-2"
+            transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-20 border-l-4 border-teal-deep pl-8 md:pl-10 max-w-[920px]"
           >
-            ChronoCare fills the two missing tenses. It reconstructs the past
-            from FHIR data and projects the future from weak-signal patterns
-            today's thresholds miss.
-          </motion.p>
+            <div className="eyebrow mb-4 text-teal-deep">What ChronoCare does</div>
+            <h3 className="font-serif text-[36px] md:text-[52px] leading-[1.05] tracking-tighter font-bold text-ink mb-6">
+              ChronoCare fills <span className="highlight">the two missing tenses</span>.
+            </h3>
+            <p className="font-serif text-[19px] md:text-[22px] leading-[1.45] text-ink-2 max-w-[760px]">
+              It <strong className="text-ink font-bold">reconstructs the past</strong>{' '}
+              from FHIR data, and{' '}
+              <strong className="text-ink font-bold">projects the future</strong>{' '}
+              from weak-signal patterns today's thresholds miss.
+            </p>
+          </motion.div>
         </div>
       </section>
 
@@ -406,17 +413,8 @@ function GapCard({
       </div>
 
       <div className="relative px-7 pb-8">
-        <div className="font-serif text-[30px] leading-[1.08] tracking-tighter font-bold mb-3 text-ink relative inline-block">
+        <div className="font-serif text-[30px] leading-[1.08] tracking-tighter font-bold mb-3 text-ink">
           "{question}"
-          <motion.span
-            aria-hidden
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, delay: index * 0.18 + 1.0, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute left-0 right-0 top-1/2 h-[2.5px] bg-risk-high/80 origin-left"
-            style={{ transform: 'translateY(-1px)' }}
-          />
         </div>
         <p className="text-[14px] text-ink-2 leading-[1.55]">{detail}</p>
       </div>
