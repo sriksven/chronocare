@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "chronocare"
 version = "1.0.0"
 requires-python = ">=3.11"
-description = "Clinical intelligence MCP server for the Agents Assemble Hackathon"
+description = "Clinical intelligence MCP server for hackathon submission"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -2,7 +2,7 @@
 
 > "Understanding the past to prevent the future"
 
-ChronoCare is a dual-layer clinical intelligence engine that reconstructs a patient's full medical story and detects silent deterioration before alarms go off. Built for the **Agents Assemble Hackathon** (submission deadline: May 11, 2026).
+ChronoCare is a dual-layer clinical intelligence engine that reconstructs a patient's full medical story and detects silent deterioration before alarms go off. Built for a hackathon.
 
 **Live deployment:** https://attractive-ambition-production-5fd7.up.railway.app/mcp/
 
@@ -155,5 +155,4 @@ See [docs/runbooks/deployment.md](docs/runbooks/deployment.md) for the full proc
 
 - **Submission path:** A2A Agent (ChronoCore) powered by a custom MCP Server (this repo)
 - **Platform:** Prompt Opinion
-- **Deadline:** May 11, 2026
 - **Team:** Krishna Venkatesh
