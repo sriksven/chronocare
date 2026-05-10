@@ -53,6 +53,9 @@ Icon
 .Spotlight-V100
 .Trashes
 
+# Internal docs (not shipped to the public repo)
+docs/
+
 # Synthea output (large generated files)
 data/synthea/output/
 
