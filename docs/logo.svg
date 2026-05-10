@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>ChronoCare</title>
+  <desc>A patient's clinical trajectory rising across time, with three turning points and a "today" horizon. Brand colors: deep teal background, cream foreground.</desc>
+
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="96" ry="96" fill="#0f3a44"/>
+
+  <!-- Subtle grain (optional, very faint dot pattern) -->
+  <defs>
+    <pattern id="dotgrid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#f8f6f1" fill-opacity="0.04"/>
+    </pattern>
+  </defs>
+  <rect width="512" height="512" rx="96" ry="96" fill="url(#dotgrid)"/>
+
+  <!-- Vertical year ticks (timeline grid, very subtle) -->
+  <g stroke="#f8f6f1" stroke-opacity="0.08" stroke-width="1.5" stroke-dasharray="3 8">
+    <line x1="128" y1="80" x2="128" y2="432"/>
+    <line x1="232" y1="80" x2="232" y2="432"/>
+    <line x1="336" y1="80" x2="336" y2="432"/>
+  </g>
+
+  <!-- The trajectory: rising curve from bottom-left to top-right -->
+  <path d="M 64 360 C 140 358, 200 340, 232 318 S 320 270, 358 230 S 432 152, 460 130"
+        stroke="#f8f6f1"
+        stroke-width="10"
+        stroke-linecap="round"
+        fill="none"/>
+
+  <!-- Turning points: three event markers in escalating colors (low / medium / high risk) -->
+  <g>
+    <!-- 2019 — low/calm (clinical teal) -->
+    <circle cx="128" cy="354" r="26" fill="#1a5762" fill-opacity="0.20"/>
+    <circle cx="128" cy="354" r="13" fill="#1a5762"/>
+
+    <!-- 2022 — medium/amber -->
+    <circle cx="232" cy="318" r="28" fill="#a86c14" fill-opacity="0.22"/>
+    <circle cx="232" cy="318" r="14" fill="#a86c14"/>
+
+    <!-- 2026 — high/crimson -->
+    <circle cx="336" cy="230" r="30" fill="#9c2f2f" fill-opacity="0.24"/>
+    <circle cx="336" cy="230" r="15" fill="#9c2f2f"/>
+  </g>
+
+  <!-- "Today" horizon line on the right -->
+  <line x1="440" y1="80" x2="440" y2="432"
+        stroke="#f8f6f1" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="6 6"/>
+</svg>
