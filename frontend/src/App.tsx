@@ -73,7 +73,7 @@ export default function App() {
       </main>
 
       <footer className="border-t border-rule mt-32">
-        <div className="max-w-[1200px] mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
+        <div className="max-w-[1200px] mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
           <div>
             <div className="font-serif text-lg font-bold tracking-tightest mb-2">
               Chrono<span className="text-teal-deep">Care</span>
@@ -97,12 +97,6 @@ export default function App() {
               <li><a href="https://attractive-ambition-production-5fd7.up.railway.app/health" target="_blank" rel="noopener" className="text-ink-2 hover:text-ink">Health endpoint ↗</a></li>
               <li><a href="https://attractive-ambition-production-5fd7.up.railway.app/mcp/" target="_blank" rel="noopener" className="text-ink-2 hover:text-ink">MCP endpoint ↗</a></li>
             </ul>
-          </div>
-          <div>
-            <div className="eyebrow mb-3">Built for</div>
-            <p className="text-ink-2 text-[13px]">
-              Agents Assemble Hackathon, May 2026. Krishna Venkatesh.
-            </p>
           </div>
         </div>
         <div className="border-t border-rule">
