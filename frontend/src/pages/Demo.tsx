@@ -85,7 +85,7 @@ export default function Demo() {
         </h1>
         <p className="text-[16px] text-ink-2 leading-[1.6] max-w-[640px] mb-10">
           Hits the live MCP server on Railway. The 13-step pipeline runs server-side; the UI
-          shows each tool's status as it completes. Total wall time: <strong>25-35 seconds.</strong>
+          shows each tool's status as it completes. The 13-step reasoning pipeline runs server-side. Total wall time: <strong>25-35 seconds.</strong>
         </p>
       </section>
 

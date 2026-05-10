@@ -11,25 +11,40 @@ export default function HowItWorks() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="eyebrow mb-6">Architecture</div>
+          <div className="eyebrow mb-6">How it works</div>
           <h1 className="font-serif text-[56px] md:text-[72px] leading-[0.98] tracking-tightest font-bold mb-8 max-w-[900px]">
-            Four moving parts.
+            One prompt in.
             <br />
-            <span className="highlight delay-2">One outcome.</span>
+            <span className="highlight delay-2">One brief out.</span>
           </h1>
           <p className="text-[18px] text-ink-2 leading-[1.6] max-w-[680px]">
-            ChronoCare separates the front-end (Prompt Opinion or this React app),
-            the orchestration layer, the reasoning server (this repo), and the data
-            store (FHIR R4). Each is replaceable; the whole is composable.
+            You give us a patient. We do the rest. Below is the same system
+            explained three ways: in plain English, as a request lifecycle, and
+            as a system architecture.
           </p>
         </motion.div>
       </section>
 
-      <section className="max-w-[1100px] mx-auto px-8 py-12">
+      {/* PLAIN ENGLISH */}
+      <section className="border-t border-rule">
+        <div className="max-w-[1100px] mx-auto px-8 py-24">
+          <div className="eyebrow mb-4">In plain English</div>
+          <h2 className="font-serif text-[40px] md:text-[48px] leading-[1.05] tracking-tighter font-bold mb-14 max-w-[760px]">
+            Four steps. Thirty seconds. One brief.
+          </h2>
+          <PlainEnglishSteps />
+        </div>
+      </section>
+
+      <section className="max-w-[1100px] mx-auto px-8 pt-24 pb-12">
+        <div className="eyebrow mb-4">System diagram</div>
+        <h2 className="font-serif text-[36px] leading-[1.1] tracking-tighter font-bold mb-8 max-w-[760px]">
+          Four moving parts. Each replaceable.
+        </h2>
         <ArchitectureDiagram />
       </section>
 
-      {/* REQUEST LIFECYCLE: the cinematic explanation */}
+      {/* REQUEST LIFECYCLE */}
       <section className="border-t border-rule mt-16 bg-paper">
         <div className="max-w-[1100px] mx-auto px-8 py-24">
           <div className="eyebrow mb-4">Request lifecycle</div>
@@ -37,20 +52,44 @@ export default function HowItWorks() {
             What happens when you click <span className="highlight">"Run analysis."</span>
           </h2>
           <p className="text-[16px] text-ink-2 max-w-[640px] leading-[1.6] mb-12">
-            One HTTP POST kicks off a 13-step pipeline. Eight LLM calls, seven
-            FHIR queries, roughly 25 to 35 seconds of wall time. Each step's
-            output feeds the next.
+            One HTTP POST kicks off the 13-step reasoning pipeline. Eight LLM
+            calls, seven FHIR queries, roughly 25 to 35 seconds of wall time.
+            Each step's output feeds the next.
           </p>
           <RequestLifecycle />
         </div>
       </section>
 
+      {/* THE 14 TOOLS */}
+      <section id="tools" className="border-t border-rule scroll-mt-16">
+        <div className="max-w-[1100px] mx-auto px-8 py-24">
+          <div className="eyebrow mb-4">The catalog</div>
+          <h2 className="font-serif text-[44px] md:text-[52px] leading-[1.05] tracking-tighter font-bold mb-6 max-w-[820px]">
+            Fourteen tools. <span className="highlight">Each does one thing well.</span>
+          </h2>
+          <p className="text-[16px] text-ink-2 max-w-[700px] leading-[1.6] mb-12">
+            Thirteen run as the pipeline whenever you click "Run analysis."
+            One is optional and runs only when you ask for audio output.
+            Every tool is exposed via MCP over Streamable HTTP at{' '}
+            <a
+              href="https://attractive-ambition-production-5fd7.up.railway.app/mcp/"
+              target="_blank"
+              rel="noopener"
+              className="text-teal-deep link-underline font-mono text-[14px]"
+            >
+              /mcp/
+            </a>.
+          </p>
+          <ToolsCatalog />
+        </div>
+      </section>
+
       {/* PER-LAYER WALK */}
-      <section className="border-t border-rule">
+      <section className="border-t border-rule bg-paper">
         <div className="max-w-[1100px] mx-auto px-8 py-24">
           <div className="eyebrow mb-4">The four layers</div>
           <h2 className="font-serif text-[40px] leading-[1.05] tracking-tighter font-bold mb-12">
-            Each does one thing well.
+            Deeper dive into each layer.
           </h2>
           <div className="space-y-24">
             {LAYERS.map((l, i) => (
@@ -88,7 +127,7 @@ export default function HowItWorks() {
       </section>
 
       {/* ADMIN FLOW */}
-      <section className="border-t border-rule bg-paper">
+      <section className="border-t border-rule">
         <div className="max-w-[1100px] mx-auto px-8 py-24">
           <div className="eyebrow mb-4">Admin flow</div>
           <h2 className="font-serif text-[44px] leading-[1.05] tracking-tighter font-bold mb-6 max-w-[820px]">
@@ -110,7 +149,7 @@ export default function HowItWorks() {
       </section>
 
       {/* DEMO PATIENT IDS */}
-      <section className="border-t border-rule">
+      <section className="border-t border-rule bg-paper">
         <div className="max-w-[1100px] mx-auto px-8 py-24">
           <div className="eyebrow mb-4">Demo patients on HAPI</div>
           <h2 className="font-serif text-[36px] leading-[1.1] tracking-tighter font-bold mb-6">
@@ -131,7 +170,7 @@ export default function HowItWorks() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-rule bg-paper">
+      <section className="border-t border-rule">
         <div className="max-w-[1100px] mx-auto px-8 py-24 text-center">
           <p className="font-serif text-[36px] tracking-tighter font-bold mb-6">
             Ready to see it run?
@@ -143,6 +182,176 @@ export default function HowItWorks() {
         </div>
       </section>
     </div>
+  );
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Plain English: a four-step explanation with icons and one-line per step
+// ───────────────────────────────────────────────────────────────────────────
+
+function PlainEnglishSteps() {
+  const steps = [
+    {
+      number: '01',
+      title: 'You give us a patient',
+      simple: 'Just a patient ID. Nothing else.',
+      detail: 'No setup, no installation, no model fine-tuning. Pick from four demo patients on HAPI public R4, or paste any FHIR R4 patient ID.',
+    },
+    {
+      number: '02',
+      title: 'We pull every record',
+      simple: "Years of FHIR data, fetched in parallel.",
+      detail: 'Conditions, observations, medications, encounters, diagnostic reports. Codes (LOINC, ICD-10, RxNorm) decoded into human-readable names. Sorted into one chronological timeline.',
+    },
+    {
+      number: '03',
+      title: 'AI reads it together',
+      simple: 'Eight focused calls. Whole-patient view, not one lab at a time.',
+      detail: "Some calls are GPT-4o for prose and deep reasoning, some are Llama-3.3-70b for fast structured output. Each looks at the whole timeline so it can catch patterns that single-visit thresholds miss.",
+    },
+    {
+      number: '04',
+      title: 'You get a brief',
+      simple: 'Specific dates. Specific values. Specific recommendations.',
+      detail: 'Patient narrative, early-warning risk assessment, turning points, causal hypothesis, comorbidity map, guideline gaps, prioritized recommendations. Cited from the data, not generic advice.',
+    },
+  ];
+
+  return (
+    <div className="space-y-3">
+      {steps.map((s, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, x: -16 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="grid grid-cols-1 md:grid-cols-[80px_1fr_1fr] gap-6 md:gap-10 items-start border border-rule bg-paper rounded-sm px-6 py-6 hover:border-teal-deep transition-colors"
+        >
+          <div className="font-mono text-[36px] text-teal-deep font-medium tracking-tighter leading-[1]">
+            {s.number}
+          </div>
+          <div>
+            <div className="font-serif text-[24px] font-bold tracking-tighter leading-[1.15] mb-2">
+              {s.title}
+            </div>
+            <div className="text-[15px] text-ink-2 leading-[1.55]">{s.simple}</div>
+          </div>
+          <div className="text-[13px] text-muted leading-[1.6]">
+            {s.detail}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Tools catalog: 13-step pipeline + 1 optional voice tool
+// ───────────────────────────────────────────────────────────────────────────
+
+const PIPELINE_TOOLS = [
+  { num: '01', name: 'get_full_patient_history', engine: 'FHIR', phase: 'Reconstruct', desc: 'Parallel-fetches Patient + 6 resource types from a FHIR R4 server. Normalizes LOINC, ICD-10, and RxNorm codes. Returns a flat, sorted event timeline.' },
+  { num: '02', name: 'order_events_chronologically', engine: 'Pure Python', phase: 'Reconstruct', desc: 'Sorts and dedupes the timeline by date. No LLM, deterministic.' },
+  { num: '03', name: 'identify_clinical_turning_points', engine: 'Llama-3.3-70b', phase: 'Reconstruct', desc: 'Three to five inflection moments where the trajectory changed: HTN diagnosed, eGFR crossed 60, dose adjusted. With dates and rationale.' },
+  { num: '04', name: 'generate_patient_narrative', engine: 'GPT-4o', phase: 'Reconstruct', desc: '200 to 300 word clinical narrative, the "story" handoff a clinician would tell a colleague. Cites specific dates and labs.' },
+  { num: '05', name: 'get_recent_signals', engine: 'Pure Python', phase: 'Detect', desc: 'Filters timeline to events within the past N days (default 90). Sets the window for deterioration analysis.' },
+  { num: '06', name: 'analyze_weak_patterns', engine: 'GPT-4o', phase: 'Detect', desc: 'The core AI step. Holistic multi-signal reasoning, looks at BP, creatinine, BMI, HbA1c together, not one at a time. Catches drift that thresholds miss.' },
+  { num: '07', name: 'generate_early_warning_report', engine: 'Llama-3.3-70b', phase: 'Detect', desc: 'Formalizes pattern analysis into a structured risk report: risk_level, key_signals, trend_direction, time_sensitivity.' },
+  { num: '08', name: 'correlate_events', engine: 'Llama-3.3-70b', phase: 'Explain', desc: 'Identifies plausible causal pairs across the timeline: "uncontrolled HTN 2021 -> CKD diagnosis 2022."' },
+  { num: '09', name: 'generate_causal_hypothesis', engine: 'GPT-4o', phase: 'Explain', desc: 'About 150 words of causal narrative synthesized from the top correlations. Explains the trajectory.' },
+  { num: '10', name: 'map_comorbidities', engine: 'Llama-3.3-70b', phase: 'Recommend', desc: 'Maps interactions between active conditions: HTN with CKD acceleration, T2DM with HTN compounding effects.' },
+  { num: '11', name: 'match_clinical_guidelines', engine: 'GPT-4o-mini', phase: 'Recommend', desc: 'Cross-checks the patient profile against ADA, JNC, KDIGO, ACC/AHA. Flags actions per guideline as met or gap.' },
+  { num: '12', name: 'generate_recommendations', engine: 'GPT-4o', phase: 'Recommend', desc: 'Three to five patient-specific actions with priority, urgency, rationale, and the specific finding that triggered it.' },
+  { num: '13', name: 'generate_unified_brief', engine: 'Pure Python', phase: 'Synthesize', desc: 'Assembles all prior outputs into the final structured brief (schema v1.0). No LLM, deterministic JSON assembly.' },
+];
+
+const VOICE_TOOL = {
+  num: '14',
+  name: 'text_to_speech_brief',
+  engine: 'OpenAI TTS',
+  phase: 'Voice',
+  desc: 'Optional. Renders selected brief sections to speech. OpenAI TTS primary (uses existing key), Google Cloud TTS as fallback.',
+};
+
+const PHASE_COLOR: Record<string, string> = {
+  Reconstruct: 'bg-teal-soft text-teal-deep',
+  Detect: 'bg-[#fdf6e7] text-[#a86c14]',
+  Explain: 'bg-[#f4eedd] text-[#7a5e1a]',
+  Recommend: 'bg-[#ecdfd2] text-[#774e2a]',
+  Synthesize: 'bg-[#d9d2c5] text-[#3d3d3d]',
+  Voice: 'bg-[#e8e8f5] text-[#3d4a8a]',
+};
+
+function ToolsCatalog() {
+  return (
+    <>
+      {/* 13-step pipeline */}
+      <div className="mb-6 inline-flex items-center gap-3 text-[11px] uppercase tracking-widest text-teal-deep font-bold bg-teal-soft px-3 py-1.5 rounded-sm">
+        <span className="w-1.5 h-1.5 rounded-full bg-teal-deep" />
+        13-step pipeline (auto-runs on Run analysis)
+      </div>
+
+      <div className="space-y-3 mb-12">
+        {PIPELINE_TOOLS.map((t, i) => (
+          <ToolRow key={t.name} tool={t} index={i} />
+        ))}
+      </div>
+
+      {/* Optional voice tool — visually separated */}
+      <div className="mb-6 inline-flex items-center gap-3 text-[11px] uppercase tracking-widest text-muted font-bold bg-rule/60 px-3 py-1.5 rounded-sm">
+        <span className="w-1.5 h-1.5 rounded-full bg-muted" />
+        Optional, on-demand only
+      </div>
+
+      <ToolRow tool={VOICE_TOOL} index={13} />
+
+      <div className="mt-6 max-w-[720px] border-l-2 border-teal-deep/40 pl-5 py-2">
+        <div className="text-[10px] uppercase tracking-widest text-muted font-semibold mb-2">
+          Where voice gets used
+        </div>
+        <p className="text-[14px] text-ink-2 leading-[1.6]">
+          The voice tool is not part of the auto-pipeline. After a brief is
+          generated, you can invoke <code className="font-mono text-[12px]">text_to_speech_brief</code>{' '}
+          directly through the MCP endpoint with the brief as input. Useful for
+          shift-change handoff, accessibility, or when a clinician wants the
+          summary read aloud while reviewing a chart. Returns a base64 audio
+          payload plus the transcript.
+        </p>
+      </div>
+    </>
+  );
+}
+
+function ToolRow({
+  tool,
+  index,
+}: {
+  tool: { num: string; name: string; engine: string; phase: string; desc: string };
+  index: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.35, delay: Math.min(index * 0.025, 0.4) }}
+      className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 border border-rule bg-paper p-6 rounded-sm hover:border-teal-deep transition-colors"
+    >
+      <div className="md:col-span-1 font-mono text-[26px] text-teal-deep tracking-tighter">
+        {tool.num}
+      </div>
+      <div className="md:col-span-4">
+        <div className="font-mono text-[14px] font-medium text-ink mb-2 break-all">{tool.name}</div>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className={`text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-sm ${PHASE_COLOR[tool.phase] || 'bg-rule text-ink-2'}`}>
+            {tool.phase}
+          </span>
+          <span className="text-[11px] text-muted font-mono">{tool.engine}</span>
+        </div>
+      </div>
+      <div className="md:col-span-7 text-[14px] text-ink-2 leading-[1.65]">{tool.desc}</div>
+    </motion.div>
   );
 }
 
