@@ -37,7 +37,6 @@ export default function App() {
           </Link>
           <nav className="flex items-center gap-6">
             {navItem('/how', 'How it works')}
-            {navItem('/tools', 'Tools')}
             {navItem('/demo', 'Try it')}
             <a
               href="https://github.com/sriksven/chronocare"
@@ -96,7 +95,7 @@ export default function App() {
             <div className="eyebrow mb-3">Explore</div>
             <ul className="space-y-2 text-[13px]">
               <li><Link to="/how" className="text-ink-2 hover:text-ink">How it works</Link></li>
-              <li><Link to="/tools" className="text-ink-2 hover:text-ink">14 MCP tools</Link></li>
+              <li><Link to="/how#tools" className="text-ink-2 hover:text-ink">14 MCP tools</Link></li>
               <li><Link to="/demo" className="text-ink-2 hover:text-ink">Live demo</Link></li>
             </ul>
           </div>

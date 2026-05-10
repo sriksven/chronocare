@@ -318,45 +318,39 @@ function CoveredCard({
   sub: string;
   detail: string;
 }) {
+  // Quiet, recessive treatment — present is shown for contrast only.
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.8, delay: index * 0.18, ease: [0.16, 1, 0.3, 1] }}
-      className="relative border-2 border-teal-deep bg-teal-soft/50 rounded-sm overflow-hidden shadow-[0_8px_24px_-12px_rgba(15,58,68,0.25)]"
+      className="relative border border-rule bg-paper rounded-sm overflow-hidden opacity-90"
     >
-      <div className="px-7 pt-7 pb-5 flex items-start justify-between gap-3">
-        <div className="text-[10px] uppercase tracking-widest text-teal-deep font-bold">
+      <div className="px-6 pt-6 pb-4 flex items-start justify-between gap-3">
+        <div className="text-[10px] uppercase tracking-widest text-muted font-bold">
           {label}
         </div>
         <motion.div
-          initial={{ scale: 0, rotate: -90 }}
-          whileInView={{ scale: 1, rotate: 0 }}
+          initial={{ scale: 0 }}
+          whileInView={{ scale: 1 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, delay: index * 0.18 + 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center justify-center w-8 h-8 rounded-full bg-teal-deep text-bg text-[14px] font-bold"
+          transition={{ duration: 0.4, delay: index * 0.18 + 0.5 }}
+          className="flex items-center justify-center w-6 h-6 rounded-full bg-risk-low/15 text-risk-low text-[12px] font-bold"
           aria-hidden
         >
           ✓
         </motion.div>
       </div>
-      <div className="px-7 pb-8">
-        <div className="font-serif text-[28px] leading-[1.1] tracking-tighter font-bold mb-3 text-ink">
+      <div className="px-6 pb-6">
+        <div className="font-serif text-[22px] leading-[1.15] tracking-tighter font-medium mb-2 text-ink-2">
           "{question}"
         </div>
-        <div className="text-[11px] uppercase tracking-widest font-bold text-teal-deep mb-4">
+        <div className="text-[10px] uppercase tracking-widest font-semibold text-risk-low mb-3">
           {sub}
         </div>
-        <p className="text-[14px] text-ink leading-[1.55]">{detail}</p>
+        <p className="text-[13px] text-muted leading-[1.55]">{detail}</p>
       </div>
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 1, delay: index * 0.18 + 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute bottom-0 left-0 right-0 h-1.5 bg-teal-deep origin-left"
-      />
     </motion.div>
   );
 }
@@ -374,86 +368,67 @@ function GapCard({
   stamp: string;
   detail: string;
 }) {
+  // Loud, amplified treatment — these are THE problem ChronoCare solves.
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0.95 * 0 }}
+      initial={{ opacity: 0, y: 24, scale: 0.97 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.8, delay: index * 0.18, ease: [0.16, 1, 0.3, 1] }}
-      className="relative rounded-sm overflow-hidden bg-transparent"
-      style={{
-        backgroundImage:
-          'repeating-linear-gradient(135deg, rgba(14,22,34,0.025) 0 8px, transparent 8px 16px)',
-      }}
+      className="relative border-2 border-risk-high bg-risk-high/[0.06] rounded-sm overflow-hidden shadow-[0_12px_32px_-12px_rgba(156,47,47,0.25)]"
     >
-      {/* Dashed outline drawn as an SVG so the dashes feel deliberate, not generic CSS */}
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none"
+      {/* Pulsing alert ring */}
+      <motion.span
         aria-hidden
-        preserveAspectRatio="none"
-      >
-        <motion.rect
-          x="1"
-          y="1"
-          width="calc(100% - 2px)"
-          height="calc(100% - 2px)"
-          fill="none"
-          stroke="#5a6478"
-          strokeOpacity="0.5"
-          strokeWidth="1.5"
-          strokeDasharray="6 4"
-          rx="2"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 1.4, delay: index * 0.18 + 0.2, ease: 'easeOut' }}
-        />
-      </svg>
+        className="absolute inset-0 rounded-sm border-2 border-risk-high/40 pointer-events-none"
+        animate={{ opacity: [0.5, 0, 0.5] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: index * 0.3 }}
+      />
 
       <div className="relative px-7 pt-7 pb-5 flex items-start justify-between gap-3">
-        <div className="text-[10px] uppercase tracking-widest text-muted font-bold">
+        <div className="text-[10px] uppercase tracking-widest text-risk-high font-bold">
           {label}
         </div>
         <motion.div
-          initial={{ opacity: 0, x: 8 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, scale: 0.6 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.5, delay: index * 0.18 + 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold text-risk-high border border-risk-high/40 bg-risk-high/5 px-2 py-1 rounded-sm"
+          transition={{ duration: 0.5, delay: index * 0.18 + 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold text-bg bg-risk-high px-2.5 py-1 rounded-sm"
           aria-hidden
         >
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-            <line x1="2" y1="2" x2="8" y2="8" stroke="currentColor" strokeWidth="1.5" />
-            <line x1="8" y1="2" x2="2" y2="8" stroke="currentColor" strokeWidth="1.5" />
+            <line x1="2" y1="2" x2="8" y2="8" stroke="currentColor" strokeWidth="2" />
+            <line x1="8" y1="2" x2="2" y2="8" stroke="currentColor" strokeWidth="2" />
           </svg>
           {stamp}
         </motion.div>
       </div>
 
       <div className="relative px-7 pb-8">
-        <div className="font-serif text-[28px] leading-[1.1] tracking-tighter font-bold mb-3 text-ink-3 relative inline-block">
+        <div className="font-serif text-[30px] leading-[1.08] tracking-tighter font-bold mb-3 text-ink relative inline-block">
           "{question}"
           <motion.span
             aria-hidden
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, delay: index * 0.18 + 1.1, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute left-0 right-0 top-1/2 h-[2px] bg-risk-high/60 origin-left"
+            transition={{ duration: 0.7, delay: index * 0.18 + 1.0, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute left-0 right-0 top-1/2 h-[2.5px] bg-risk-high/80 origin-left"
             style={{ transform: 'translateY(-1px)' }}
           />
         </div>
-        <p className="text-[14px] text-muted leading-[1.55]">{detail}</p>
-
-        {/* Suggestive "blind spot" wash on the right side */}
-        <div
-          className="absolute -right-2 top-0 bottom-0 w-16 pointer-events-none opacity-60"
-          style={{
-            background: 'linear-gradient(90deg, transparent 0%, rgba(248,246,241,0.9) 60%, rgba(248,246,241,1) 100%)',
-          }}
-          aria-hidden
-        />
+        <p className="text-[14px] text-ink-2 leading-[1.55]">{detail}</p>
       </div>
+
+      {/* Bottom warning bar */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.9, delay: index * 0.18 + 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute bottom-0 left-0 right-0 h-1.5 bg-risk-high origin-left"
+      />
     </motion.div>
   );
 }
