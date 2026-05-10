@@ -306,17 +306,40 @@ function ToolsCatalog() {
 
       <ToolRow tool={VOICE_TOOL} index={13} />
 
-      <div className="mt-6 max-w-[720px] border-l-2 border-teal-deep/40 pl-5 py-2">
+      <div className="mt-6 max-w-[760px] border-l-2 border-teal-deep/40 pl-5 py-2">
         <div className="text-[10px] uppercase tracking-widest text-muted font-semibold mb-2">
-          Where voice gets used
+          Where voice gets triggered
         </div>
-        <p className="text-[14px] text-ink-2 leading-[1.6]">
-          The voice tool is not part of the auto-pipeline. After a brief is
-          generated, you can invoke <code className="font-mono text-[12px]">text_to_speech_brief</code>{' '}
-          directly through the MCP endpoint with the brief as input. Useful for
-          shift-change handoff, accessibility, or when a clinician wants the
-          summary read aloud while reviewing a chart. Returns a base64 audio
-          payload plus the transcript.
+        <p className="text-[14px] text-ink-2 leading-[1.6] mb-3">
+          The voice tool is not part of the auto-pipeline. It only runs when
+          something explicitly asks for it. There are two paths:
+        </p>
+        <ul className="space-y-2 text-[14px] text-ink-2 leading-[1.55]">
+          <li className="flex gap-2">
+            <span className="text-teal-deep mt-0.5">›</span>
+            <span>
+              <strong className="text-ink">In the Demo page:</strong>{' '}
+              click the <em className="font-medium">Listen to brief</em> button
+              in the patient banner after the brief renders. The button calls{' '}
+              <code className="font-mono text-[12px]">POST /api/demo/voice</code>,
+              which invokes <code className="font-mono text-[12px]">text_to_speech_brief</code>{' '}
+              with the narrative + early warning + recommendations sections.
+            </span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-teal-deep mt-0.5">›</span>
+            <span>
+              <strong className="text-ink">Programmatically:</strong>{' '}
+              call the MCP endpoint at{' '}
+              <code className="font-mono text-[12px]">/mcp/</code>{' '}
+              with the tool name and the brief as input. Useful for shift-change
+              handoff, accessibility, or any agent that wants audio output.
+            </span>
+          </li>
+        </ul>
+        <p className="text-[13px] text-muted leading-[1.55] mt-3">
+          Returns a base64 audio payload (MP3) plus a transcript fallback for
+          environments where audio playback isn't available.
         </p>
       </div>
     </>

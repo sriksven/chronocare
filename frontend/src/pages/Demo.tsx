@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   PIPELINE_STEPS,
+  playBrief,
   runAnalysis,
   type ToolTrace,
   type UnifiedBrief,
@@ -297,15 +298,102 @@ function BriefView({
     unknown: 'bg-rule text-muted',
   };
 
+  // Voice playback state
+  const [voiceState, setVoiceState] = useState<'idle' | 'loading' | 'playing' | 'error'>('idle');
+  const [voiceError, setVoiceError] = useState<string>('');
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  async function handleListen() {
+    if (voiceState === 'playing') {
+      audioRef.current?.pause();
+      audioRef.current = null;
+      setVoiceState('idle');
+      return;
+    }
+    setVoiceState('loading');
+    setVoiceError('');
+    try {
+      const r = await playBrief(brief);
+      if (!r.ok || !r.supported || !r.audio_bytes) {
+        setVoiceState('error');
+        setVoiceError(r.error || 'Voice synthesis unavailable on the server');
+        return;
+      }
+      const audioBlob = base64ToBlob(r.audio_bytes, 'audio/mpeg');
+      const url = URL.createObjectURL(audioBlob);
+      const audio = new Audio(url);
+      audio.onended = () => {
+        setVoiceState('idle');
+        URL.revokeObjectURL(url);
+        audioRef.current = null;
+      };
+      audio.onerror = () => {
+        setVoiceState('error');
+        setVoiceError('Audio playback failed');
+        URL.revokeObjectURL(url);
+      };
+      audioRef.current = audio;
+      await audio.play();
+      setVoiceState('playing');
+    } catch (e: any) {
+      setVoiceState('error');
+      setVoiceError(e?.message || 'Network error');
+    }
+  }
+
   return (
     <div>
       <div className="border border-rule bg-paper rounded-sm p-8 border-l-4 border-l-teal-deep mb-6">
-        <div className="font-serif text-[36px] font-bold tracking-tighter">{p.name || '-'}</div>
-        <div className="flex flex-wrap gap-x-8 gap-y-1 text-[13px] text-muted mt-2">
-          <span>DOB <strong className="text-ink font-medium">{p.birth_date || '-'}</strong></span>
-          <span>Sex <strong className="text-ink font-medium">{p.gender || '-'}</strong></span>
-          <span className="font-mono">{p.id || '-'}</span>
+        <div className="flex items-start justify-between gap-6 flex-wrap">
+          <div>
+            <div className="font-serif text-[36px] font-bold tracking-tighter">{p.name || '-'}</div>
+            <div className="flex flex-wrap gap-x-8 gap-y-1 text-[13px] text-muted mt-2">
+              <span>DOB <strong className="text-ink font-medium">{p.birth_date || '-'}</strong></span>
+              <span>Sex <strong className="text-ink font-medium">{p.gender || '-'}</strong></span>
+              <span className="font-mono">{p.id || '-'}</span>
+            </div>
+          </div>
+          <button
+            onClick={handleListen}
+            disabled={voiceState === 'loading'}
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-sm border text-[13px] font-medium transition-all ${
+              voiceState === 'playing'
+                ? 'bg-teal-deep text-bg border-teal-deep'
+                : 'border-teal-deep text-teal-deep hover:bg-teal-deep hover:text-bg'
+            } ${voiceState === 'loading' ? 'opacity-60 cursor-wait' : ''}`}
+            title="Invokes the text_to_speech_brief MCP tool (the optional 14th tool)"
+          >
+            {voiceState === 'loading' ? (
+              <>
+                <span className="w-3 h-3 rounded-full border-2 border-current border-t-transparent animate-spin" />
+                Synthesizing...
+              </>
+            ) : voiceState === 'playing' ? (
+              <>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                  <rect x="3" y="3" width="3" height="8" />
+                  <rect x="8" y="3" width="3" height="8" />
+                </svg>
+                Stop
+              </>
+            ) : (
+              <>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                  <path d="M7 1a3 3 0 0 0-3 3v3a3 3 0 1 0 6 0V4a3 3 0 0 0-3-3zM3 7a4 4 0 0 0 8 0M7 11v2M5 13h4" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+                </svg>
+                Listen to brief
+              </>
+            )}
+          </button>
         </div>
+        {voiceState === 'error' && (
+          <div className="mt-3 text-[12px] text-risk-high">{voiceError}</div>
+        )}
+        {voiceState === 'playing' && (
+          <div className="mt-3 text-[11px] uppercase tracking-widest text-muted">
+            playing via text_to_speech_brief, OpenAI TTS
+          </div>
+        )}
       </div>
 
       {/* At-a-glance metrics row */}
@@ -507,6 +595,14 @@ function BriefView({
       </div>
     </div>
   );
+}
+
+function base64ToBlob(b64: string, mime: string): Blob {
+  const byteString = atob(b64);
+  const buffer = new ArrayBuffer(byteString.length);
+  const arr = new Uint8Array(buffer);
+  for (let i = 0; i < byteString.length; i++) arr[i] = byteString.charCodeAt(i);
+  return new Blob([buffer], { type: mime });
 }
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {

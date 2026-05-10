@@ -83,6 +83,27 @@ export async function adminAddPatient(
   return r.json();
 }
 
+export interface VoiceResponse {
+  ok: boolean;
+  supported?: boolean;
+  audio_bytes?: string | null;
+  transcript?: string;
+  backend?: string;
+  error?: string;
+}
+
+export async function playBrief(
+  brief: UnifiedBrief,
+  sections: string[] = ['narrative', 'early_warning', 'recommendations'],
+): Promise<VoiceResponse> {
+  const r = await fetch(`${API_BASE}/api/demo/voice`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ brief, sections }),
+  });
+  return r.json();
+}
+
 export const PIPELINE_STEPS: { tool: string; label: string }[] = [
   { tool: 'get_full_patient_history', label: 'Fetch patient history from FHIR' },
   { tool: 'order_events_chronologically', label: 'Build chronological timeline' },

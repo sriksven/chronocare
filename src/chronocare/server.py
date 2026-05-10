@@ -454,6 +454,40 @@ if __name__ == "__main__":
             "fhir_base_url": target_fhir,
         })
 
+    async def public_demo_voice(request: Request) -> JSONResponse:
+        """Public demo endpoint: synthesize speech from a unified brief.
+
+        Body: { "brief": <unified brief>, "sections": ["narrative", ...] }
+        Returns: { ok, audio_bytes (base64 MP3), transcript, backend, supported }
+        """
+        try:
+            body = await request.json()
+        except Exception as exc:
+            return JSONResponse({"ok": False, "error": f"invalid json: {exc}"}, status_code=400)
+
+        brief = body.get("brief")
+        if not isinstance(brief, dict):
+            return JSONResponse(
+                {"ok": False, "error": "missing or invalid 'brief' (must be an object)"},
+                status_code=400,
+            )
+
+        sections = body.get("sections")
+        if sections is not None and not isinstance(sections, list):
+            return JSONResponse(
+                {"ok": False, "error": "'sections' must be an array of strings"},
+                status_code=400,
+            )
+
+        result = text_to_speech_brief(
+            brief=brief,
+            sections=sections,
+            openai_api_key=config.openai_api_key,
+            google_api_key=config.google_tts_api_key,
+        )
+        result["ok"] = True
+        return JSONResponse(result)
+
     async def public_demo_analyze(request: Request) -> JSONResponse:
         """Public demo endpoint — runs the full 13-step pipeline for a patient.
 
@@ -553,6 +587,7 @@ if __name__ == "__main__":
             Route("/health", health),
             Route("/debug-headers", debug_headers),
             Route("/api/demo/analyze", public_demo_analyze, methods=["GET", "POST", "OPTIONS"]),
+            Route("/api/demo/voice", public_demo_voice, methods=["POST", "OPTIONS"]),
             Route("/api/admin/patients", admin_add_patient, methods=["POST", "OPTIONS"]),
             Mount("/mcp", session_manager.handle_request),
         ]
