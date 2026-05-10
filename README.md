@@ -156,3 +156,8 @@ See [docs/runbooks/deployment.md](docs/runbooks/deployment.md) for the full proc
 - **Submission path:** A2A Agent (ChronoCore) powered by a custom MCP Server (this repo)
 - **Platform:** Prompt Opinion
 - **Team:** Krishna Venkatesh
+
+### Submission documents
+
+- [ChronoCare Report](ChronoCare_Report.pdf), full project report covering problem framing, architecture, and outcomes.
+- [AllRise Submission](AllRise_Submission.pdf), hackathon submission packet.
