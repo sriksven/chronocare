@@ -19,7 +19,7 @@ A clinician types one prompt. ChronoCare chains 13 MCP tools and 8 LLM reasoning
 | Why did this happen? | Root Cause Analyzer |
 | What should we do next? | Recommendation Engine |
 
-Output: a unified clinical brief — narrative story, early warning signals, causal hypotheses, and evidence-grounded next steps — in under 35 seconds end-to-end (verified).
+Output: a unified clinical brief, narrative story, early warning signals, causal hypotheses, and evidence-grounded next steps, in under 35 seconds end-to-end (verified).
 
 ---
 
@@ -27,9 +27,9 @@ Output: a unified clinical brief — narrative story, early warning signals, cau
 
 Three ways to see the system run:
 
-1. **Custom UI** — https://sriksven.github.io/chronocare/ (React + Vite, deployed on GitHub Pages). The `/demo` page calls the live MCP server and renders the unified clinical brief with a 4-patient picker.
-2. **Prompt Opinion General Chat** — paste `I need a full clinical analysis of demo patient d0be5a00-57c5-4417-adeb-824beb93e4c3` and the ChronoCore A2A agent chains all 13 tools.
-3. **Direct CLI** — `curl -X POST .../api/demo/analyze -d '{"patient_id":"…"}'` returns the full unified brief JSON.
+1. **Custom UI**, https://sriksven.github.io/chronocare/ (React + Vite, deployed on GitHub Pages). The `/demo` page calls the live MCP server and renders the unified clinical brief with a 4-patient picker.
+2. **Prompt Opinion General Chat**, paste `I need a full clinical analysis of demo patient d0be5a00-57c5-4417-adeb-824beb93e4c3` and the ChronoCore A2A agent chains all 13 tools.
+3. **Direct CLI**, `curl -X POST .../api/demo/analyze -d '{"patient_id":"…"}'` returns the full unified brief JSON.
 
 **Demo patients on HAPI public R4:**
 
@@ -62,10 +62,10 @@ cd chronocare
 cp .env.example .env
 # Fill in OPENAI_API_KEY, GROQ_API_KEY, MCP_API_KEY, FHIR_BASE_URL
 
-# Option A — Docker
+# Option A, Docker
 docker compose up --build
 
-# Option B — Python directly
+# Option B, Python directly
 pip install -r requirements.txt
 python -m chronocare.server
 ```
@@ -106,7 +106,7 @@ ChronoCare MCP Server (Railway)
 ```
 chronocare/
 ├── src/chronocare/
-│   ├── server.py            # MCP server entry point — 14 tools registered
+│   ├── server.py            # MCP server entry point, 14 tools registered
 │   ├── tools/               # 13 reasoning + synthesis tools
 │   │   ├── time_traveler.py
 │   │   ├── deterioration.py
@@ -117,7 +117,7 @@ chronocare/
 │   │   ├── llm_client.py    # Multi-model routing (OpenAI + Groq)
 │   │   └── prompts.py       # All prompt templates
 │   ├── fhir/                # FHIR R4 client + normalizer + cache
-│   ├── voice/tts.py         # 14th tool — OpenAI / Google TTS
+│   ├── voice/tts.py         # 14th tool, OpenAI / Google TTS
 │   └── utils/               # Config + structured logging
 ├── tests/                   # Unit + integration (42 tests, all green)
 ├── data/code_mappings/      # LOINC, ICD-10, RxNorm lookups
@@ -135,7 +135,7 @@ chronocare/
 
 Live on [Railway](https://railway.app):
 - URL: `https://attractive-ambition-production-5fd7.up.railway.app`
-- MCP endpoint: `/mcp/` (note trailing slash — Streamable HTTP requirement)
+- MCP endpoint: `/mcp/` (note trailing slash, Streamable HTTP requirement)
 - Health: `GET /health` → `{"status": "ok", "tools_count": 14, "llm_backend": "gpt-4o+groq-llama3.3"}`
 - Auth: `X-ChronoCare-Key: <MCP_API_KEY>` header
 

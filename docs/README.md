@@ -1,4 +1,4 @@
-# ChronoCare — Docs
+# ChronoCare, Docs
 
 Architecture, ADRs, runbooks, API reference, and research notes.
 
@@ -20,7 +20,7 @@ Architecture, ADRs, runbooks, API reference, and research notes.
 - [Unified Brief Schema](api/brief_schema.md)
 - [Deployment Runbook](runbooks/deployment.md)
 - [Debug Runbook](runbooks/debugging.md)
-- [Day-by-Day Sprint Plan](research/sprint_plan.md) — also contains the ChronoCore A2A system prompt
+- [Day-by-Day Sprint Plan](research/sprint_plan.md), also contains the ChronoCore A2A system prompt
 - [ADR-001: Python over Node for MCP](adr/001-python-mcp-server.md)
-- [ADR-002: Multi-model routing — GPT-4o + Groq Llama-3.3-70b](adr/002-claude-haiku.md)
+- [ADR-002: Multi-model routing, GPT-4o + Groq Llama-3.3-70b](adr/002-claude-haiku.md)
 - [ADR-003: In-memory cache over Redis](adr/003-in-memory-cache.md)

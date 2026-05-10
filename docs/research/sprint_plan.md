@@ -37,7 +37,7 @@ Deadline: May 11, 2026
 - [ ] Railway project created (need account)
 - [ ] Deploy and verify health endpoint live
 
-## Day 3-5 — Implementation Notes
+## Day 3-5, Implementation Notes
 
 The code scaffold in `src/` is complete. Each tool implementation is in:
 - Tools 1-4: `src/chronocare/tools/time_traveler.py`
@@ -49,7 +49,7 @@ The code scaffold in `src/` is complete. Each tool implementation is in:
 LLM prompts are in `src/chronocare/reasoning/prompts.py`. Each can be tuned
 independently without changing tool logic.
 
-## Day 7 — A2A Agent System Prompt (copy-paste into Prompt Opinion)
+## Day 7, A2A Agent System Prompt (copy-paste into Prompt Opinion)
 
 ```
 You are ChronoCore, an advanced clinical intelligence agent. You have access
@@ -73,7 +73,7 @@ When asked to analyze a patient, you will:
 11. Use generate_unified_brief to synthesize everything
 
 Always reason step by step. Cite specific dates and values from the patient
-data. Never make generic recommendations — every output must reference this
+data. Never make generic recommendations, every output must reference this
 specific patient's findings. Maintain clinical precision and appropriate
 uncertainty language ("suggests", "warrants investigation", "consider").
 ```
@@ -87,7 +87,7 @@ Run this exact scenario before submitting:
 3. Select General Chat agent
 4. Type: "I need a full clinical analysis of this patient"
 5. Confirm General Chat routes to ChronoCore via A2A
-6. Time the response — must be < 30 seconds
+6. Time the response, must be < 30 seconds
 7. Verify: narrative mentions 3+ years of history
 8. Verify: warning section references specific lab values (Creatinine 1.3, BP 138/88)
 9. Verify: recommendations cite specific findings (not generic advice)

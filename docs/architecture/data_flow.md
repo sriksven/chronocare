@@ -62,7 +62,7 @@ INPUT: patient_id + fhir_token (from SHARP context)
                         │
                         ▼
 [Tool 13] generate_unified_brief
-  • Pure JSON assembly — no LLM
+  • Pure JSON assembly, no LLM
   • All prior outputs → structured brief
 OUTPUT: {patient_summary, clinical_narrative, turning_points,
          early_warning, causal_hypothesis, comorbidity_map,
@@ -85,7 +85,7 @@ FHIR API call → Normalize → Cache(TTL=300s) → Return
 
 ## LLM Context Management
 
-Each LLM call receives only what it needs — no full conversation history.
+Each LLM call receives only what it needs, no full conversation history.
 
 | Call | Input context | Token budget |
 |---|---|---|

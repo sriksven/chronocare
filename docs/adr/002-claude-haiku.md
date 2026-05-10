@@ -1,4 +1,4 @@
-# ADR-002: Multi-model routing — GPT-4o + Groq Llama-3.3-70b
+# ADR-002: Multi-model routing, GPT-4o + Groq Llama-3.3-70b
 
 **Date:** 2026-05-03 (revised from original Claude Haiku decision)  
 **Status:** Accepted
@@ -21,12 +21,12 @@ Route calls by task type:
 | Causal hypothesis | OpenAI | gpt-4o | Nuanced causal narrative |
 | Comorbidity map | Groq | llama-3.3-70b-versatile | Fast structured JSON |
 | Guideline matching | OpenAI | gpt-4o-mini | Sufficient for rule-lookup; cheaper |
-| Recommendations | OpenAI | gpt-4o | Most critical output — needs best reasoning |
+| Recommendations | OpenAI | gpt-4o | Most critical output, needs best reasoning |
 
 ## Rationale
 
 **Why split at all?**  
-Four of the eight calls produce structured JSON where the main requirement is reliable JSON output and speed — not narrative quality. Groq Llama-3.3-70b is faster and cheaper for these steps. The other four calls either need deep reasoning (weak patterns, recommendations) or high-quality prose (narrative, causal hypothesis) — those go to GPT-4o.
+Four of the eight calls produce structured JSON where the main requirement is reliable JSON output and speed, not narrative quality. Groq Llama-3.3-70b is faster and cheaper for these steps. The other four calls either need deep reasoning (weak patterns, recommendations) or high-quality prose (narrative, causal hypothesis), those go to GPT-4o.
 
 **Why GPT-4o-mini for guidelines?**  
 Guideline matching is essentially a retrieval+lookup task: "does this condition appear in ADA guidelines?" GPT-4o-mini handles this well at lower cost.
@@ -38,5 +38,5 @@ Two providers also improves resilience: if OpenAI has an outage, Groq calls stil
 
 - Two API keys required (`OPENAI_API_KEY`, `GROQ_API_KEY`)
 - `llm_client.py` holds both client instances; routing is by `backend=` parameter at each call site
-- Prompts require no changes — both providers use the standard `{"role": "system"}` + `{"role": "user"}` message format
-- Test mocks pass through the same `LLMClient` interface — no test changes needed
+- Prompts require no changes, both providers use the standard `{"role": "system"}` + `{"role": "user"}` message format
+- Test mocks pass through the same `LLMClient` interface, no test changes needed

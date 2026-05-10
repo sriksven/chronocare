@@ -23,17 +23,17 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │              ChronoCare MCP SERVER (Railway)                     │
 │                                                                  │
-│  src/chronocare/server.py — 14 tools                            │
-│  src/chronocare/tools/     — tool implementations               │
-│  src/chronocare/fhir/      — FHIR client + normalizer + cache   │
-│  src/chronocare/reasoning/ — LLM client + prompts               │
-│  src/chronocare/voice/     — TTS layer                          │
+│  src/chronocare/server.py, 14 tools                            │
+│  src/chronocare/tools/    , tool implementations               │
+│  src/chronocare/fhir/     , FHIR client + normalizer + cache   │
+│  src/chronocare/reasoning/, LLM client + prompts               │
+│  src/chronocare/voice/    , TTS layer                          │
 └──────────────┬──────────────────────────────────────────────────┘
                │ FHIR REST API calls
                ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │         FHIR R4 SERVER (any conformant endpoint)                │
-│   Demo target: HAPI public R4 — https://hapi.fhir.org/baseR4    │
+│   Demo target: HAPI public R4, https://hapi.fhir.org/baseR4    │
 │   Resources: Patient | Condition | Observation | MedicationReq  │
 │              Encounter | DiagnosticReport | DocumentReference   │
 └─────────────────────────────────────────────────────────────────┘
@@ -41,19 +41,19 @@
                │ Uploaded via tests/fixtures/demo_patient_fhir.json (PUT bundle)
 ┌─────────────────────────────────────────────────────────────────┐
 │               SYNTHETIC DATA                                    │
-│   FHIR R4 bundle, fully synthetic — no PHI                      │
+│   FHIR R4 bundle, fully synthetic, no PHI                      │
 │   John Doe, 62yo male, HTN (2019) + T2DM + CKD progression      │
 │   Patient ID: d0be5a00-57c5-4417-adeb-824beb93e4c3              │
 └─────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
-│   LLM Layer — multi-provider routing                            │
-│   • OpenAI gpt-4o          — narrative, weak patterns,          │
+│   LLM Layer, multi-provider routing                            │
+│   • OpenAI gpt-4o         , narrative, weak patterns,          │
 │                              causal hypothesis, recommendations │
-│   • OpenAI gpt-4o-mini     — guideline matching                 │
-│   • Groq llama-3.3-70b     — turning points, early warning,     │
+│   • OpenAI gpt-4o-mini    , guideline matching                 │
+│   • Groq llama-3.3-70b    , turning points, early warning,     │
 │                              correlations, comorbidities        │
-│   8 LLM calls per pipeline, ~25–35s end-to-end                  │
+│   8 LLM calls per pipeline, ~25-35s end-to-end                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -65,7 +65,7 @@ See [ADRs](../adr/) for the full rationale behind each decision.
 Best ecosystem for the OpenAI/Groq SDKs, FHIR libraries, and `structlog`. See [ADR-001](../adr/001-python-mcp-server.md).
 
 ### Why split LLM calls across OpenAI and Groq?
-Four calls produce structured JSON where speed beats prose quality — Groq Llama-3.3-70b handles those. Four calls need deep reasoning or quality prose — those go to GPT-4o / GPT-4o-mini. Two providers also gives partial-failure resilience. Full rationale in [ADR-002](../adr/002-claude-haiku.md).
+Four calls produce structured JSON where speed beats prose quality, Groq Llama-3.3-70b handles those. Four calls need deep reasoning or quality prose, those go to GPT-4o / GPT-4o-mini. Two providers also gives partial-failure resilience. Full rationale in [ADR-002](../adr/002-claude-haiku.md).
 
 ### Why in-memory cache?
 Demo environment is stateless and single-instance. No need for Redis overhead. See [ADR-003](../adr/003-in-memory-cache.md).

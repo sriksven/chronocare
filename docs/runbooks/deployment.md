@@ -28,10 +28,10 @@ Set in Railway → Project → Service → Variables:
 |---|---|---|
 | `OPENAI_API_KEY` | yes | OpenAI key (used for GPT-4o, GPT-4o-mini, and TTS) |
 | `GROQ_API_KEY` | yes | Groq key (Llama-3.3-70b for fast structured calls) |
-| `MCP_API_KEY` | yes | Random 32-char string — set as auth header in Prompt Opinion |
+| `MCP_API_KEY` | yes | Random 32-char string, set as auth header in Prompt Opinion |
 | `FHIR_BASE_URL` | yes | `https://hapi.fhir.org/baseR4` for the demo patient |
 | `FHIR_TOKEN` | no | Bearer token if your FHIR server requires auth (HAPI public does not) |
-| `GOOGLE_TTS_API_KEY` | no | Optional fallback TTS — primary backend uses `OPENAI_API_KEY` |
+| `GOOGLE_TTS_API_KEY` | no | Optional fallback TTS, primary backend uses `OPENAI_API_KEY` |
 | `ADMIN_KEY` | no | Enables `POST /api/admin/patients` (and the `/admin` page in the frontend). Generate via `openssl rand -hex 16`. If unset, the admin endpoint returns 503. |
 | `LOG_LEVEL` | no | Defaults to `INFO` |
 | `CACHE_TTL_SECONDS` | no | Defaults to `300` |
@@ -54,7 +54,7 @@ railway variables \
 5. Authentication Type: **API Key**
 6. API Key Header Name: `X-ChronoCare-Key`
 7. API Key Header Value: your `MCP_API_KEY`
-8. Click **Reconnect** — all 14 tools should appear; "PromptOpinion FHIR Context Supported" badge should show.
+8. Click **Reconnect**, all 14 tools should appear; "PromptOpinion FHIR Context Supported" badge should show.
 
 **FHIR Context Extension toggle:** leave OFF for the HAPI demo (otherwise PO injects its own workspace FHIR URL/token, overriding `FHIR_BASE_URL`). Turn ON only when pointing at a real Prompt Opinion FHIR workspace with valid OAuth credentials.
 
@@ -72,7 +72,7 @@ Expected output: `All tools present. MCP server OK.`
 
 - 500 MB RAM, 2 vCPU
 - 5 GB egress/month
-- Container sleeps after ~15 min of inactivity (cold start ~5–10s)
+- Container sleeps after ~15 min of inactivity (cold start ~5-10s)
 
 **Demo tip:** `curl /health` 30 seconds before a demo to warm the container.
 

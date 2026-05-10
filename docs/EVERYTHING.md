@@ -1,4 +1,4 @@
-# ChronoCare — Everything
+# ChronoCare, Everything
 
 Single source of truth. Architecture, code, data, tools, agents, tests,
 CI/CD, admin, voice, deployment, env vars, metrics, and what's been
@@ -11,7 +11,7 @@ verified live. If something exists in the project, it's documented here.
 ChronoCare is a clinical reasoning engine that reconstructs a patient's
 full medical story from FHIR data, detects silent deterioration that
 single-visit thresholds miss, and synthesizes an evidence-grounded
-clinical brief in 25–35 seconds.
+clinical brief in 25-35 seconds.
 
 - **14 MCP tools** exposed over Streamable HTTP (13 reasoning, 1 optional voice)
 - **8 LLM calls per pipeline**, routed across **OpenAI** (GPT-4o, GPT-4o-mini, TTS-1) and **Groq** (Llama-3.3-70b)
@@ -79,7 +79,7 @@ ChronoCare MCP server  (Railway, Python 3.11)
 
 ### MCP server entry point
 
-`src/chronocare/server.py` — Starlette app that:
+`src/chronocare/server.py`, Starlette app that:
 - Mounts the MCP session manager at `/mcp/`
 - Exposes auxiliary HTTP routes for the React frontend (`/api/demo/*`, `/api/admin/*`)
 - Adds CORS middleware (origin `*`) to support browser calls from GitHub Pages
@@ -94,8 +94,8 @@ The 13-step **reasoning pipeline** (auto-runs when you click Run analysis):
 |---|---|---|---|---|
 | 01 | `get_full_patient_history` | FHIR REST | Reconstruct | Parallel-fetches Patient + 6 resource types, normalizes LOINC/ICD-10/RxNorm, returns a flat sorted timeline |
 | 02 | `order_events_chronologically` | Pure Python | Reconstruct | Sorts and dedupes the timeline |
-| 03 | `identify_clinical_turning_points` | Llama-3.3-70b | Reconstruct | 3–5 inflection moments with dates and rationale |
-| 04 | `generate_patient_narrative` | GPT-4o | Reconstruct | 200–300 word clinical handoff prose |
+| 03 | `identify_clinical_turning_points` | Llama-3.3-70b | Reconstruct | 3-5 inflection moments with dates and rationale |
+| 04 | `generate_patient_narrative` | GPT-4o | Reconstruct | 200-300 word clinical handoff prose |
 | 05 | `get_recent_signals` | Pure Python | Detect | Filters timeline to past N days (default 90) |
 | 06 | `analyze_weak_patterns` | GPT-4o | Detect | Holistic multi-signal pattern analysis |
 | 07 | `generate_early_warning_report` | Llama-3.3-70b | Detect | Structured risk report (level, signals, trend, urgency) |
@@ -103,7 +103,7 @@ The 13-step **reasoning pipeline** (auto-runs when you click Run analysis):
 | 09 | `generate_causal_hypothesis` | GPT-4o | Explain | ~150 word causal narrative synthesizing top correlations |
 | 10 | `map_comorbidities` | Llama-3.3-70b | Recommend | Condition-condition interaction map |
 | 11 | `match_clinical_guidelines` | GPT-4o-mini | Recommend | Cross-checks vs ADA/JNC/KDIGO/ACC-AHA |
-| 12 | `generate_recommendations` | GPT-4o | Recommend | 3–5 cited actions with priority/urgency/finding |
+| 12 | `generate_recommendations` | GPT-4o | Recommend | 3-5 cited actions with priority/urgency/finding |
 | 13 | `generate_unified_brief` | Pure Python | Synthesize | Deterministic JSON assembly (schema v1.0) |
 
 The **optional 14th tool** (on-demand, not in the auto-pipeline):
@@ -134,7 +134,7 @@ Multi-provider also gives **partial-failure resilience**: a transient OpenAI out
 
 `src/chronocare/fhir/client.py`:
 
-- Async `httpx.AsyncClient`, 10–15s timeouts
+- Async `httpx.AsyncClient`, 10-15s timeouts
 - Authorization header is **only** added when `FHIR_TOKEN` is non-empty (so HAPI public works auth-free)
 - Resource types fetched: Patient, Condition, Observation, MedicationRequest, Encounter, DocumentReference, DiagnosticReport
 - 404 handled gracefully (empty list, not crash)
@@ -151,14 +151,14 @@ Multi-provider also gives **partial-failure resilience**: a transient OpenAI out
 
 ### Cache
 
-`src/chronocare/fhir/cache.py` — 38 lines, in-memory dict + TTL (default 300s). No Redis. ADR-003 explains why.
+`src/chronocare/fhir/cache.py`, 38 lines, in-memory dict + TTL (default 300s). No Redis. ADR-003 explains why.
 
 ### HTTP endpoints
 
 | Method | Path | Auth | Purpose |
 |---|---|---|---|
 | GET | `/health` | none | Liveness probe; returns `{status, version, tools_count, llm_backend}` |
-| POST | `/mcp/` | `X-ChronoCare-Key` | MCP Streamable HTTP — tool listing + tool calls |
+| POST | `/mcp/` | `X-ChronoCare-Key` | MCP Streamable HTTP, tool listing + tool calls |
 | GET/POST | `/api/demo/analyze` | none (CORS *) | Runs full 13-step pipeline, returns `{ok, brief, trace}` |
 | POST | `/api/demo/voice` | none (CORS *) | Synthesizes speech from a brief, returns `{ok, audio_bytes (base64), transcript, backend, supported}` |
 | POST | `/api/admin/patients` | `X-Admin-Key` | Validates + uploads a FHIR R4 transaction Bundle |
@@ -205,10 +205,10 @@ Bundle size: ~360KB JS / ~28KB CSS / gzipped to ~110KB total.
 - Fonts: Source Serif Pro (display, serif), Inter (body, sans), JetBrains Mono (data, code)
 
 Custom utility classes in `src/index.css`:
-- `.highlight` — animated underline that draws in 0.4s after content (replaces `<em>` italics across all pages)
-- `.tip` / `.tip-body` — hover tooltip
-- `.btn-primary` / `.btn-secondary` — consistent CTAs
-- `.dotted` — subtle dot-grid background for diagram containers
+- `.highlight`, animated underline that draws in 0.4s after content (replaces `<em>` italics across all pages)
+- `.tip` / `.tip-body`, hover tooltip
+- `.btn-primary` / `.btn-secondary`, consistent CTAs
+- `.dotted`, subtle dot-grid background for diagram containers
 
 ### State
 
@@ -277,8 +277,8 @@ The same MCP server can target any FHIR R4 endpoint (Prompt Opinion's workspace 
 | Patient | ID | Clinical archetype |
 |---|---|---|
 | **John Doe** (62, M) | `d0be5a00-57c5-4417-adeb-824beb93e4c3` | HTN diagnosed 2019 → CKD progression by 2022. The original silent multi-year cardiometabolic cascade. |
-| **Maria Rodriguez** (58, F) | `a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c` | T2DM since 2020, struggled with control until SGLT2 added 2023. UACR rising — early diabetic nephropathy. |
-| **Robert Chen** (71, M) | `b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7` | CHF (EF 35%) + AFib + COPD. Cardiorenal syndrome emerging — BNP rising, eGFR falling. |
+| **Maria Rodriguez** (58, F) | `a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c` | T2DM since 2020, struggled with control until SGLT2 added 2023. UACR rising, early diabetic nephropathy. |
+| **Robert Chen** (71, M) | `b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7` | CHF (EF 35%) + AFib + COPD. Cardiorenal syndrome emerging, BNP rising, eGFR falling. |
 | **Sarah Williams** (45, F) | `f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e` | Prediabetes + borderline HTN caught at 2024 physical. Lifestyle intervention success. Control case. |
 
 Bundle counts: 57 / 39 / 42 / 25 entries respectively. All generated from `scripts/generate_demo_patients.py` (reproducible). All uploaded to HAPI via `POST → PUT` rewrite so the supplied IDs are preserved.
@@ -294,22 +294,22 @@ Two independent pipelines, path-filtered so backend changes don't trigger fronte
 Triggers: push to `main` (excluding `frontend/**`, `docs/**`, `*.md`).
 
 Jobs:
-1. **`pytest`** — Python 3.11, install requirements, run `pytest tests/ -v`. 42 tests must pass.
-2. **`smoke test live deploy`** — runs after tests. Hits the live Railway URL:
+1. **`pytest`**, Python 3.11, install requirements, run `pytest tests/ -v`. 42 tests must pass.
+2. **`smoke test live deploy`**, runs after tests. Hits the live Railway URL:
    - `/health` returns 200 with `tools_count: 14`
    - `/mcp/` enumerates 14 tools
    - `/api/demo/analyze` OPTIONS preflight returns 200 with CORS headers
 
-**Note on auto-deploy:** The Railway deploy step was removed because we couldn't generate a valid project-scoped Railway token. Backend deploys are manual via `railway up --detach` from a developer machine. CI tests + smoke checks still run on every push — they just don't push code, they verify the last manual deploy.
+**Note on auto-deploy:** The Railway deploy step was removed because we couldn't generate a valid project-scoped Railway token. Backend deploys are manual via `railway up --detach` from a developer machine. CI tests + smoke checks still run on every push, they just don't push code, they verify the last manual deploy.
 
 ### Frontend / GitHub Pages (`.github/workflows/pages.yml`)
 
 Triggers: push to `main` touching `frontend/**` or this workflow file.
 
 Jobs:
-1. **`build vite app`** — Node 20, `npm ci`, `tsc --noEmit`, `vite build`, verify dist artifacts (HTML contains brand, JS+CSS exist), upload Pages artifact
-2. **`deploy to pages`** — `actions/deploy-pages@v4`, configured Pages source: GitHub Actions
-3. **`smoke test live site`** — verifies `https://sriksven.github.io/chronocare/` returns 200, contains "ChronoCare", first JS asset loads
+1. **`build vite app`**, Node 20, `npm ci`, `tsc --noEmit`, `vite build`, verify dist artifacts (HTML contains brand, JS+CSS exist), upload Pages artifact
+2. **`deploy to pages`**, `actions/deploy-pages@v4`, configured Pages source: GitHub Actions
+3. **`smoke test live site`**, verifies `https://sriksven.github.io/chronocare/` returns 200, contains "ChronoCare", first JS asset loads
 
 Concurrency: `pages` group, cancel-in-progress (only one Pages deploy at a time).
 
@@ -390,7 +390,7 @@ Idempotent: re-running with the same bundle PUTs over existing data, doesn't cre
 ### Patient generation
 
 `scripts/generate_demo_patients.py` produces the 3 non-default demo patients (Maria, Robert, Sarah) programmatically. To add a new demo patient:
-1. Edit the script — add a function (`patient + encounter + condition + observation + bp + med + diagnostic` helpers available)
+1. Edit the script, add a function (`patient + encounter + condition + observation + bp + med + diagnostic` helpers available)
 2. Add the row to the `PATIENTS` list at the bottom
 3. Run it: writes `tests/fixtures/<name>_fhir.json` and updates `frontend/src/lib/patients.ts`
 
@@ -414,7 +414,7 @@ After a brief renders, the patient banner shows a **"Listen to brief"** button:
                   ↓
         Frontend decodes → Blob → Audio.play()
                   ↓
-              [playing — click to stop]
+              [playing, click to stop]
 ```
 
 Status line below the banner: *"playing via text_to_speech_brief, OpenAI TTS"*.
@@ -436,7 +436,7 @@ This is the path Prompt Opinion's ChronoCore would use if asked "read me that br
 
 ### Backend
 
-`src/chronocare/voice/tts.py` — primary backend OpenAI TTS-1 (uses the existing `OPENAI_API_KEY`), Google Cloud TTS as fallback (`GOOGLE_TTS_API_KEY`). If neither is set, returns `supported: false` with the transcript only.
+`src/chronocare/voice/tts.py`, primary backend OpenAI TTS-1 (uses the existing `OPENAI_API_KEY`), Google Cloud TTS as fallback (`GOOGLE_TTS_API_KEY`). If neither is set, returns `supported: false` with the transcript only.
 
 ---
 
@@ -464,10 +464,10 @@ chronocare/
 ├── src/chronocare/
 │   ├── server.py                 # MCP server entry + HTTP routes
 │   ├── tools/
-│   │   ├── time_traveler.py      # Tools 1–4
-│   │   ├── deterioration.py      # Tools 5–7
-│   │   ├── root_cause.py         # Tools 8–9
-│   │   ├── recommendations.py    # Tools 10–12
+│   │   ├── time_traveler.py      # Tools 1-4
+│   │   ├── deterioration.py      # Tools 5-7
+│   │   ├── root_cause.py         # Tools 8-9
+│   │   ├── recommendations.py    # Tools 10-12
 │   │   └── synthesis.py          # Tool 13
 │   ├── reasoning/
 │   │   ├── llm_client.py         # Multi-provider routing
@@ -539,7 +539,7 @@ pip install -r requirements.txt
 python -m chronocare.server
 # Listens on http://localhost:8000
 
-# In another terminal — run tests
+# In another terminal, run tests
 pytest tests/ -v
 ```
 
@@ -596,7 +596,7 @@ These are not aspirational. They are observed, in production.
 
 | Metric | Value | How verified |
 |---|---|---|
-| End-to-end pipeline latency | 25–35s | `/api/demo/analyze` on John Doe, repeated |
+| End-to-end pipeline latency | 25-35s | `/api/demo/analyze` on John Doe, repeated |
 | Tools enumerable | 14 | `tools/list` JSON-RPC against `/mcp/` |
 | Backend tests passing | 42/42 | `pytest tests/ -v` |
 | FHIR resources fetched per request | 7 types in parallel | Logs show 7 GETs to HAPI per `get_full_patient_history` |
@@ -644,8 +644,8 @@ The work happened across one intensive build session. In rough order:
 1. Backend MCP server with 14 tools, multi-model LLM routing, FHIR client, normalizer, in-memory cache, structured logging. 42 tests written.
 2. Deployed to Railway. Verified `/health` and tool enumeration.
 3. Switched FHIR backend from Prompt Opinion's workspace FHIR (couldn't generate OAuth client credentials in time) to HAPI public R4 sandbox.
-4. Wrote a hand-curated demo patient bundle (John Doe — HTN → CKD), uploaded to HAPI.
-5. Registered the MCP server in Prompt Opinion. Created the ChronoCore A2A agent. Verified end-to-end via General Chat — full 13-step pipeline executes in ~25 seconds, narrative cites specific dates.
+4. Wrote a hand-curated demo patient bundle (John Doe, HTN → CKD), uploaded to HAPI.
+5. Registered the MCP server in Prompt Opinion. Created the ChronoCore A2A agent. Verified end-to-end via General Chat, full 13-step pipeline executes in ~25 seconds, narrative cites specific dates.
 6. Added 3 more demo patients (Maria, Robert, Sarah) covering different clinical archetypes. Built reproducible generator script.
 7. Built React/Vite frontend with 4 pages: Landing, How it works, Demo, Admin. Hand-crafted clinical aesthetic with custom Tailwind theme + Framer Motion animations.
 8. Added `POST /api/demo/analyze` endpoint so the frontend could drive the pipeline directly (in addition to the Prompt Opinion path).

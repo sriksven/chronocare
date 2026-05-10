@@ -2,10 +2,10 @@
 
 There are **two interfaces** for adding patients:
 
-- **Admin dashboard** (browser): https://sriksven.github.io/chronocare/#/admin —
+- **Admin dashboard** (browser): https://sriksven.github.io/chronocare/#/admin -
   paste a FHIR bundle, click upload, done. Requires the admin key
   (`ADMIN_KEY` env var on the Railway server).
-- **CLI** (terminal): `python3 scripts/admin_add_patient.py <bundle.json>` —
+- **CLI** (terminal): `python3 scripts/admin_add_patient.py <bundle.json>` -
   same logic; convenient for batch ingestion or generated bundles.
 
 Both call the same backend endpoint and produce identical results. Pick
@@ -39,16 +39,16 @@ Source of patient data ────────────┼─ Hand-written b
 
 ---
 
-## Option 0 — Admin dashboard (no terminal needed)
+## Option 0, Admin dashboard (no terminal needed)
 
 1. Open **https://sriksven.github.io/chronocare/#/admin**
-2. Enter the admin key (the value of `ADMIN_KEY` set on Railway —
+2. Enter the admin key (the value of `ADMIN_KEY` set on Railway -
    set via `railway variables --set "ADMIN_KEY=..."`).
    The key is stored in `localStorage` so you only enter it once per browser.
 3. Either:
-   - **Upload .json** — pick a FHIR bundle file
-   - **Paste JSON** — drop the bundle into the textarea
-   - **Insert sample** — load a minimal bundle to see the format
+   - **Upload .json**, pick a FHIR bundle file
+   - **Paste JSON**, drop the bundle into the textarea
+   - **Insert sample**, load a minimal bundle to see the format
 4. Click **Add patient →**.
 5. The dashboard displays the resulting Patient ID, FHIR URL, and how many
    entries were uploaded.
@@ -61,7 +61,7 @@ use the CLI with the `--register` flag.
 
 ---
 
-## Option A — Hand-written bundle (recommended for the demo)
+## Option A, Hand-written bundle (recommended for the demo)
 
 This is what we used for the four demo patients. Each is reproducible from
 [`scripts/generate_demo_patients.py`](../../scripts/generate_demo_patients.py).
@@ -100,7 +100,7 @@ To add a new one:
 
 ---
 
-## Option B — Synthea-generated bundle
+## Option B, Synthea-generated bundle
 
 Synthea produces realistic synthetic patients with full history. Slower
 than hand-writing but no data design needed. See
@@ -117,7 +117,7 @@ python3 scripts/admin_add_patient.py path/to/synthea-output/john-smith.json \
 
 ---
 
-## Option C — Bundle from an external source
+## Option C, Bundle from an external source
 
 If you have a FHIR R4 transaction Bundle from any source (real EHR export,
 public dataset, etc.):
@@ -151,7 +151,7 @@ python3 scripts/admin_add_patient.py <bundle.json>
 5. With `--register`, **appends** the patient to
    `frontend/src/lib/patients.ts` so the Demo page picker shows them.
 
-The script is **idempotent** — re-running with the same bundle just updates
+The script is **idempotent**, re-running with the same bundle just updates
 the existing resources (PUT semantics).
 
 ---
@@ -214,5 +214,5 @@ Or open the live demo and pick the patient from the catalog:
    ```bash
    curl -X DELETE https://hapi.fhir.org/baseR4/Patient/<patient-id>
    ```
-   (HAPI public also auto-purges occasionally — re-upload if needed.)
+   (HAPI public also auto-purges occasionally, re-upload if needed.)
 4. Rebuild + push the frontend.

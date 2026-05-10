@@ -1,4 +1,4 @@
-# ChronoCare — Status
+# ChronoCare, Status
 
 **Last updated:** 2026-05-09
 **Deadline:** 2026-05-11
@@ -8,7 +8,7 @@
 
 ## TL;DR
 
-End-to-end pipeline **verified working in production**. ChronoCore agent on Prompt Opinion successfully chains all 13 tools, fetches data from HAPI public R4 FHIR, runs 8 LLM calls (GPT-4o + Llama-3.3-70b), and returns a unified clinical brief in 25–35 seconds.
+End-to-end pipeline **verified working in production**. ChronoCore agent on Prompt Opinion successfully chains all 13 tools, fetches data from HAPI public R4 FHIR, runs 8 LLM calls (GPT-4o + Llama-3.3-70b), and returns a unified clinical brief in 25-35 seconds.
 
 Remaining work is non-code: demo recording, Devpost submission, first git commit.
 
@@ -20,30 +20,30 @@ Remaining work is non-code: demo recording, Devpost submission, first git commit
 
 All 14 MCP tools implemented, deployed, and verified end-to-end via live tool calls.
 
-**`tools/time_traveler.py`** — Tools 1–4
+**`tools/time_traveler.py`**, Tools 1-4
 - `get_full_patient_history`: parallel FHIR fetch (7 resource types), code normalization, TTL cache
 - `order_events_chronologically`: pure Python sort + dedup
 - `identify_clinical_turning_points`: → Groq Llama-3.3-70b
 - `generate_patient_narrative`: → OpenAI GPT-4o
 
-**`tools/deterioration.py`** — Tools 5–7
+**`tools/deterioration.py`**, Tools 5-7
 - `get_recent_signals`: filters timeline to past N days (default 90)
 - `analyze_weak_patterns`: → OpenAI GPT-4o (deepest reasoning step)
 - `generate_early_warning_report`: → Groq Llama-3.3-70b
 
-**`tools/root_cause.py`** — Tools 8–9
+**`tools/root_cause.py`**, Tools 8-9
 - `correlate_events`: → Groq Llama-3.3-70b
 - `generate_causal_hypothesis`: → OpenAI GPT-4o
 
-**`tools/recommendations.py`** — Tools 10–12
+**`tools/recommendations.py`**, Tools 10-12
 - `map_comorbidities`: → Groq Llama-3.3-70b
 - `match_clinical_guidelines`: → OpenAI GPT-4o-mini
 - `generate_recommendations`: → OpenAI GPT-4o
 
-**`tools/synthesis.py`** — Tool 13
+**`tools/synthesis.py`**, Tool 13
 - `generate_unified_brief`: pure Python assembly; no LLM call
 
-**`voice/tts.py`** — Tool 14
+**`voice/tts.py`**, Tool 14
 - `text_to_speech_brief`: OpenAI TTS primary (model `tts-1`, voice `alloy`); Google Cloud TTS fallback if `GOOGLE_TTS_API_KEY` set
 
 **`fhir/client.py`**
@@ -54,7 +54,7 @@ All 14 MCP tools implemented, deployed, and verified end-to-end via live tool ca
 **`fhir/normalizer.py`**
 - Decodes LOINC → lab names, ICD-10 → condition names, RxNorm → drug names
 - Falls back to raw code on miss
-- Produces flat sorted `events` list — the single shape all reasoning tools consume
+- Produces flat sorted `events` list, the single shape all reasoning tools consume
 
 **`fhir/cache.py`**
 - 38-line in-memory TTL cache; default 300s
@@ -73,7 +73,7 @@ All 14 MCP tools implemented, deployed, and verified end-to-end via live tool ca
 
 **`utils/logging.py`**
 - `structlog` JSON output
-- `hash_patient_id()` — SHA-256 prefix; raw IDs never logged
+- `hash_patient_id()`, SHA-256 prefix; raw IDs never logged
 
 **`server.py`**
 - 14 tools registered with full JSON schemas
@@ -85,14 +85,14 @@ All 14 MCP tools implemented, deployed, and verified end-to-end via live tool ca
 
 ### Tests (`tests/`)
 
-**42 passing tests** — unit + integration, all green:
+**42 passing tests**, unit + integration, all green:
 
-- `test_cache.py` — TTL expiry, set/get, invalidate, clear
-- `test_normalizer.py` — each resource type, empty inputs, chronological sort, malformed data
-- `test_time_traveler.py` — sort, dedup, sparse timeline, LLM success + failure
-- `test_deterioration.py` — date filtering, empty signals, medium risk detection, LLM fallback
-- `test_synthesis.py` — required keys, patient summary, schema version, ISO timestamp
-- `test_full_pipeline.py` — full 13-tool chain on the demo fixture (mocked LLM)
+- `test_cache.py`, TTL expiry, set/get, invalidate, clear
+- `test_normalizer.py`, each resource type, empty inputs, chronological sort, malformed data
+- `test_time_traveler.py`, sort, dedup, sparse timeline, LLM success + failure
+- `test_deterioration.py`, date filtering, empty signals, medium risk detection, LLM fallback
+- `test_synthesis.py`, required keys, patient summary, schema version, ISO timestamp
+- `test_full_pipeline.py`, full 13-tool chain on the demo fixture (mocked LLM)
 
 **Demo fixture** (`tests/fixtures/demo_patient_fhir.json`): fully synthetic 57-resource FHIR R4 bundle. John Doe, 62yo male: HTN (2019), T2DM (2020), CKD Stage 2 (2022), Creatinine 1.3, BP 138/88, HbA1c 7.8%, Lisinopril, Metformin.
 
@@ -100,28 +100,28 @@ All 14 MCP tools implemented, deployed, and verified end-to-end via live tool ca
 
 ### Infrastructure
 
-- **Dockerfile** — `python:3.11-slim`, deps cached layer, healthcheck on `/health`
-- **docker-compose.yml** — single service, env file mount
-- **`.github/workflows/deploy.yml`** — `pytest` on push to `main`; deploys via Railway CLI if tests pass
-- **`pyproject.toml`** — `pytest-asyncio` auto mode, version 1.0.0
-- **`requirements.txt`** — pinned: `mcp`, `httpx`, `uvicorn`, `starlette`, `openai`, `groq`, `structlog`, `slowapi`, `fhir.resources`, `pytest`, `pytest-asyncio`
-- **`.env.example`** — documents all env vars (required + optional)
+- **Dockerfile**, `python:3.11-slim`, deps cached layer, healthcheck on `/health`
+- **docker-compose.yml**, single service, env file mount
+- **`.github/workflows/deploy.yml`**, `pytest` on push to `main`; deploys via Railway CLI if tests pass
+- **`pyproject.toml`**, `pytest-asyncio` auto mode, version 1.0.0
+- **`requirements.txt`**, pinned: `mcp`, `httpx`, `uvicorn`, `starlette`, `openai`, `groq`, `structlog`, `slowapi`, `fhir.resources`, `pytest`, `pytest-asyncio`
+- **`.env.example`**, documents all env vars (required + optional)
 
 ---
 
 ### Data (`data/`)
 
-- `code_mappings/loinc.json` — 37 codes (labs, vitals, BMI, CBC, CMP, lipids, HbA1c, eGFR)
-- `code_mappings/icd10.json` — 32 codes (HTN, CKD stages, T2DM, COPD, heart failure, lipid disorders)
-- `code_mappings/rxnorm.json` — 30 codes (Lisinopril, Metformin, Atorvastatin, Empagliflozin, Warfarin, Apixaban, etc.)
-- `synthea/README_synthea.md` — optional Synthea instructions (current demo doesn't use Synthea)
+- `code_mappings/loinc.json`, 37 codes (labs, vitals, BMI, CBC, CMP, lipids, HbA1c, eGFR)
+- `code_mappings/icd10.json`, 32 codes (HTN, CKD stages, T2DM, COPD, heart failure, lipid disorders)
+- `code_mappings/rxnorm.json`, 30 codes (Lisinopril, Metformin, Atorvastatin, Empagliflozin, Warfarin, Apixaban, etc.)
+- `synthea/README_synthea.md`, optional Synthea instructions (current demo doesn't use Synthea)
 
 ---
 
 ### Scripts (`scripts/`)
 
-- `upload_fhir_bundle.py` — POST a FHIR transaction bundle; prints created Patient ID
-- `test_mcp_connection.py` — smoke test against the live deploy; verifies all 14 tools enumerate (Streamable HTTP + SSE compatible)
+- `upload_fhir_bundle.py`, POST a FHIR transaction bundle; prints created Patient ID
+- `test_mcp_connection.py`, smoke test against the live deploy; verifies all 14 tools enumerate (Streamable HTTP + SSE compatible)
 
 ---
 
@@ -157,13 +157,13 @@ Deadline: 2026-05-11.
 
 These were added during the build:
 
-- **React/Vite frontend** (`frontend/`) — 5 routes: Landing, How it works, Tools catalog, Live demo, Admin dashboard. Hand-crafted clinical aesthetic with custom Tailwind theme. Animated SVG hero on the landing page.
-- **`POST /api/demo/analyze`** — public endpoint that runs the full 13-step pipeline server-side. Used by the React `/demo` page so visitors can test the system without Prompt Opinion.
-- **`POST /api/admin/patients`** — admin endpoint for adding new patients. Auth via `X-Admin-Key` header (matches `ADMIN_KEY` env var). Used by the React `/admin` page.
-- **CLI admin tool** (`scripts/admin_add_patient.py`) — command-line equivalent of the admin dashboard for bulk/automated ingestion.
-- **Patient picker UI** — Demo page shows all 4 demo patients (John, Maria, Robert, Sarah) as selectable cards.
-- **Patient generator** (`scripts/generate_demo_patients.py`) — reproducible synthetic FHIR bundle generation.
-- **CI/CD** — `Frontend / GitHub Pages` builds Vite app, deploys to Pages, smoke-tests live URL. `Backend / Tests` runs pytest, smoke-tests live Railway endpoints. Path-filtered triggers prevent unnecessary cross-runs.
+- **React/Vite frontend** (`frontend/`), 5 routes: Landing, How it works, Tools catalog, Live demo, Admin dashboard. Hand-crafted clinical aesthetic with custom Tailwind theme. Animated SVG hero on the landing page.
+- **`POST /api/demo/analyze`**, public endpoint that runs the full 13-step pipeline server-side. Used by the React `/demo` page so visitors can test the system without Prompt Opinion.
+- **`POST /api/admin/patients`**, admin endpoint for adding new patients. Auth via `X-Admin-Key` header (matches `ADMIN_KEY` env var). Used by the React `/admin` page.
+- **CLI admin tool** (`scripts/admin_add_patient.py`), command-line equivalent of the admin dashboard for bulk/automated ingestion.
+- **Patient picker UI**, Demo page shows all 4 demo patients (John, Maria, Robert, Sarah) as selectable cards.
+- **Patient generator** (`scripts/generate_demo_patients.py`), reproducible synthetic FHIR bundle generation.
+- **CI/CD**, `Frontend / GitHub Pages` builds Vite app, deploys to Pages, smoke-tests live URL. `Backend / Tests` runs pytest, smoke-tests live Railway endpoints. Path-filtered triggers prevent unnecessary cross-runs.
 
 ---
 

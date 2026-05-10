@@ -99,7 +99,7 @@ Filter timeline to past N days.
 
 ### `analyze_weak_patterns`
 
-Holistic multi-signal analysis — the core AI step.
+Holistic multi-signal analysis, the core AI step.
 
 **Input:** `{"recent_signals": [...]}`  
 **Output:**

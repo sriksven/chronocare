@@ -21,13 +21,13 @@ Locally: `cp .env.example .env` and fill in values.
 
 ### `Illegal header value b'Bearer '` (FHIR call fails)
 
-Means `FHIR_TOKEN` is unset or empty AND something is still trying to send an Authorization header. Already fixed in [src/chronocare/fhir/client.py](../../src/chronocare/fhir/client.py) — only adds the header when token is non-empty. If you see this error on a fresh deploy, redeploy (`railway up --detach`).
+Means `FHIR_TOKEN` is unset or empty AND something is still trying to send an Authorization header. Already fixed in [src/chronocare/fhir/client.py](../../src/chronocare/fhir/client.py), only adds the header when token is non-empty. If you see this error on a fresh deploy, redeploy (`railway up --detach`).
 
 ---
 
 ### FHIR calls return 401
 
-Token expired or wrong. For HAPI public R4 there is no auth — `FHIR_TOKEN` should be unset/empty. For Prompt Opinion FHIR workspaces, refresh the OAuth token via `POST /openid/connect/token` (grant: client_credentials, scope: po_fhir).
+Token expired or wrong. For HAPI public R4 there is no auth, `FHIR_TOKEN` should be unset/empty. For Prompt Opinion FHIR workspaces, refresh the OAuth token via `POST /openid/connect/token` (grant: client_credentials, scope: po_fhir).
 
 ---
 
@@ -64,14 +64,14 @@ The model gave a response outside the expected JSON schema, usually on edge-case
 
 ### Pipeline takes > 35 seconds
 
-Verified baseline: ~25–35s end-to-end through the full 13-step pipeline.
+Verified baseline: ~25-35s end-to-end through the full 13-step pipeline.
 
 If slower, check which tool is slow:
-1. `railway logs --deployment | grep llm_call` — look for high `latency_ms`
+1. `railway logs --deployment | grep llm_call`, look for high `latency_ms`
 2. Common culprits:
-   - GPT-4o latency spike (OpenAI side) — typically 3–7s/call
-   - Groq rate-limit retry — check for `llm_rate_limit` warnings
-   - HAPI public sandbox slow at peak — workaround: spin up HAPI locally or move to a paid FHIR tier
+   - GPT-4o latency spike (OpenAI side), typically 3-7s/call
+   - Groq rate-limit retry, check for `llm_rate_limit` warnings
+   - HAPI public sandbox slow at peak, workaround: spin up HAPI locally or move to a paid FHIR tier
 
 ---
 
@@ -97,9 +97,9 @@ Run 30 seconds before the demo. Container stays warm for ~15 min after activity.
 
 ---
 
-### Agent (ChronoCore) only chains 1–2 tools instead of 13
+### Agent (ChronoCore) only chains 1-2 tools instead of 13
 
-Symptom: only 1–2 `Processing request of type CallToolRequest` log entries despite asking for "full clinical analysis."
+Symptom: only 1-2 `Processing request of type CallToolRequest` log entries despite asking for "full clinical analysis."
 
 **Root cause:** weaker model (`gpt-4.1-mini`) doesn't reliably chain 13 sequential tool calls.
 
@@ -122,4 +122,4 @@ All logs are JSON via `structlog`. Railway streams them to the Logs tab.
 FHIR_CONTEXT fhir_url=https://hapi.fhir.org/baseR4 patient_id=<hash>
 ```
 
-Patient IDs are hashed to a SHA-256 prefix before logging — real IDs never appear.
+Patient IDs are hashed to a SHA-256 prefix before logging, real IDs never appear.
