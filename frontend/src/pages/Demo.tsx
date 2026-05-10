@@ -443,7 +443,7 @@ function BriefView({
                       </span>
                     </div>
                     <div className="text-[14px] mt-1 text-ink-2">{g.recommendation}</div>
-                    {g.note && <div className="text-[12px] italic text-muted mt-1">{g.note}</div>}
+                    {g.note && <div className="text-[12px] text-muted mt-1">{g.note}</div>}
                   </div>
                 );
               })}

@@ -35,7 +35,7 @@ export default function Tools() {
         <h1 className="font-serif text-[56px] md:text-[72px] leading-[0.98] tracking-tightest font-bold mb-8 max-w-[900px]">
           Fourteen tools.
           <br />
-          <em className="text-teal-deep">Each does one thing well.</em>
+          <span className="highlight">Each does one thing well.</span>
         </h1>
         <p className="text-[18px] text-ink-2 leading-[1.6] max-w-[720px] mb-12">
           Every tool is exposed via the Model Context Protocol over Streamable HTTP. Authentication
