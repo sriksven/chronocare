@@ -11,8 +11,24 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [loc.pathname]);
+    // On route change, either scroll to top OR to a hash-anchored element.
+    // HashRouter URLs look like /#/path#section. React Router exposes the
+    // in-app hash via loc.hash. Wait a tick for the route to render the
+    // target id before scrolling.
+    if (loc.hash) {
+      const id = loc.hash.replace(/^#/, '');
+      requestAnimationFrame(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.scrollTo(0, 0);
+        }
+      });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [loc.pathname, loc.hash]);
 
   const navItem = (to: string, label: string) => {
     const active = loc.pathname === to;
