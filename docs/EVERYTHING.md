@@ -6,6 +6,108 @@ verified live. If something exists in the project, it's documented here.
 
 ---
 
+## What this project is
+
+### The problem
+
+Modern electronic health records answer **one question well**:
+*"What is happening to this patient right now?"* Today's vitals, today's
+labs, today's medications. The snapshot is excellent.
+
+They miss **two more questions** that matter just as much:
+
+- **"What has been happening?"** A patient's creatinine drifts from 0.9
+  to 1.3 mg/dL over 36 months. Each individual lab is flagged "normal"
+  inside the reference range, so no alert ever fires. The slope, the
+  trajectory, the cascade is invisible at any single visit. Three
+  different clinicians saw three snapshots. None saw the pattern.
+- **"What is coming?"** Hypertension diagnosed in 2019 became Stage 2
+  CKD by 2022, but no system flagged the cardiometabolic cascade in
+  progress. A 12-minute visit doesn't have time to read hundreds of
+  FHIR resources. The chart has the answer; nobody has time to read
+  the chart.
+
+The result is a reasoning gap that gets paid in late diagnoses.
+
+### What ChronoCare does
+
+ChronoCare fills the two missing tenses. It is a clinical reasoning
+engine that:
+
+1. **Reconstructs the past** from a patient's full FHIR history,
+   normalized into a single chronological timeline.
+2. **Detects silent deterioration** through multi-signal pattern
+   analysis that looks at BP, creatinine, BMI, HbA1c **together**, not
+   one threshold at a time.
+3. **Explains the trajectory** with cited causal hypotheses linking
+   diagnoses, medication changes, and lab drift.
+4. **Recommends next steps** as patient-specific actions cross-checked
+   against ADA, JNC, KDIGO, and ACC/AHA guidelines.
+
+A clinician asks for an analysis. ~30 seconds later, they get an
+evidence-grounded clinical brief: narrative, early-warning risk score,
+turning points, causal hypothesis, comorbidity map, guideline gaps,
+and prioritized recommendations. Every claim cites specific dates and
+specific values from the patient's data. No generic advice.
+
+### How we approach it
+
+The system is **four replaceable layers** held together by open
+standards:
+
+```
+Frontend (React app or Prompt Opinion chat)
+    ↓
+Orchestration (ChronoCore A2A agent, GPT-4.1)
+    ↓
+Reasoning (this MCP server, 13-step pipeline + 1 voice tool)
+    ↓
+Data (FHIR R4) and Capacity (OpenAI GPT-4o + Groq Llama-3.3-70b)
+```
+
+**Why each piece:**
+
+- **MCP (Model Context Protocol)** so the reasoning server is callable
+  from any compliant agent platform, not locked to one vendor.
+- **A2A (agent-to-agent handoff)** so a generalist chat agent can
+  delegate to a specialist (ChronoCore) when the user asks for clinical
+  analysis.
+- **FHIR R4** because that's the actual data standard real EHRs use.
+  We target HAPI public sandbox for demos but the same code targets
+  Epic, Cerner, or any FHIR R4 endpoint by changing one env var.
+- **Multi-model routing** because no single model is best at
+  everything: GPT-4o for prose and deep reasoning, Llama-3.3-70b for
+  fast structured JSON, GPT-4o-mini for guideline-lookup tasks. Two
+  providers also gives partial-failure resilience.
+- **Streamable HTTP transport** because that's what Prompt Opinion
+  speaks, and it works equally well as a normal HTTP API for the
+  custom React frontend.
+
+### What we use (stack at a glance)
+
+| Layer | Technology |
+|---|---|
+| Frontend | Vite, React 18, TypeScript, Tailwind CSS, Framer Motion, React Router |
+| Frontend hosting | GitHub Pages (static), CI auto-deploys |
+| Orchestration agent | Prompt Opinion (ChronoCore, A2A, GPT-4.1) |
+| Reasoning server | Python 3.11, Starlette + Uvicorn, MCP SDK (Streamable HTTP) |
+| Reasoning hosting | Railway |
+| LLMs | OpenAI (GPT-4o, GPT-4o-mini, TTS-1), Groq (Llama-3.3-70b-versatile) |
+| Patient data | HAPI FHIR R4 public sandbox (synthetic only, no PHI) |
+| Code systems | LOINC (labs), ICD-10 (conditions), RxNorm (drugs) |
+| Tests | pytest with 42 unit + integration cases, plus live-deploy smoke checks in CI |
+| Logging | structlog (JSON, hashed patient IDs, no prompt content) |
+
+### Who built it and why
+
+ChronoCare was built for the **Agents Assemble Hackathon**. The thesis:
+clinical AI is most useful when it integrates into the platforms
+clinicians already use, follows the data standards healthcare already
+runs on, and cites its work so a human can verify the reasoning. The
+project is fully open-source. All demo data is synthetic.
+
+---
+
 ## TL;DR
 
 ChronoCare is a clinical reasoning engine that reconstructs a patient's
