@@ -1,0 +1,1249 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7",
+        "name": [
+          {
+            "family": "Chen",
+            "given": [
+              "Robert"
+            ]
+          }
+        ],
+        "birthDate": "1955-09-10",
+        "gender": "male",
+        "address": [
+          {
+            "city": "Cambridge",
+            "state": "MA"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "rc-enc-2018-11",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "period": {
+          "start": "2018-11-04",
+          "end": "2018-11-04"
+        },
+        "reasonCode": [
+          {
+            "text": "Chronic cough, shortness of breath"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "rc-cond-copd",
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "J44.9",
+              "display": "Chronic obstructive pulmonary disease"
+            }
+          ],
+          "text": "Chronic obstructive pulmonary disease"
+        },
+        "onsetDateTime": "2018-11-04"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "rc-dx-pft-2018",
+        "status": "final",
+        "code": {
+          "text": "Pulmonary function test"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2018-11-04",
+        "conclusion": "Moderate COPD. FEV1 65% predicted. FEV1/FVC 0.62."
+      },
+      "request": {
+        "method": "POST",
+        "url": "DiagnosticReport"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "rc-med-tiotropium",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "authoredOn": "2018-11-04",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "311054",
+              "display": "Tiotropium 18mcg inhaler daily"
+            }
+          ],
+          "text": "Tiotropium 18mcg inhaler daily"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "rc-enc-2020-06",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "period": {
+          "start": "2020-06-15",
+          "end": "2020-06-15"
+        },
+        "reasonCode": [
+          {
+            "text": "Palpitations, fatigue"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "rc-cond-afib",
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "I48.91",
+              "display": "Atrial fibrillation"
+            }
+          ],
+          "text": "Atrial fibrillation"
+        },
+        "onsetDateTime": "2020-06-15"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "rc-med-apixaban",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "authoredOn": "2020-06-15",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "1364430",
+              "display": "Apixaban 5mg BID"
+            }
+          ],
+          "text": "Apixaban 5mg BID"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "rc-med-metoprolol",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "authoredOn": "2020-06-15",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "866427",
+              "display": "Metoprolol tartrate 25mg BID"
+            }
+          ],
+          "text": "Metoprolol tartrate 25mg BID"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-bp-2020",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood pressure panel"
+            }
+          ],
+          "text": "Blood pressure panel"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2020-06-15",
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 142,
+              "unit": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 88,
+              "unit": "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-hr-2020",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8867-4",
+              "display": "Heart rate"
+            }
+          ],
+          "text": "Heart rate"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2020-06-15",
+        "valueQuantity": {
+          "value": 110,
+          "unit": "bpm",
+          "system": "http://unitsofmeasure.org",
+          "code": "bpm"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "rc-enc-2022-09",
+        "status": "finished",
+        "class": {
+          "code": "IMP"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "period": {
+          "start": "2022-09-22",
+          "end": "2022-09-22"
+        },
+        "reasonCode": [
+          {
+            "text": "Heart failure exacerbation \u2014 hospitalized 5 days"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "rc-cond-chf",
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "I50.32",
+              "display": "Chronic heart failure with reduced ejection fraction"
+            }
+          ],
+          "text": "Chronic heart failure with reduced ejection fraction"
+        },
+        "onsetDateTime": "2022-09-22"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "rc-dx-echo-2022",
+        "status": "final",
+        "code": {
+          "text": "Echocardiogram"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2022-09-22",
+        "conclusion": "LVEF 35%. Moderate global hypokinesis. Mild mitral regurgitation."
+      },
+      "request": {
+        "method": "POST",
+        "url": "DiagnosticReport"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-bnp-2022",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "30934-4",
+              "display": "BNP"
+            }
+          ],
+          "text": "BNP"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2022-09-22",
+        "valueQuantity": {
+          "value": 1250,
+          "unit": "pg/mL",
+          "system": "http://unitsofmeasure.org",
+          "code": "pg/mL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-creat-2022",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0",
+              "display": "Creatinine"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2022-09-22",
+        "valueQuantity": {
+          "value": 1.3,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-spo2-2022",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "59408-5",
+              "display": "SpO2"
+            }
+          ],
+          "text": "SpO2"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2022-09-22",
+        "valueQuantity": {
+          "value": 91,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "rc-med-carvedilol",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "authoredOn": "2022-09-22",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "200033",
+              "display": "Carvedilol 12.5mg BID"
+            }
+          ],
+          "text": "Carvedilol 12.5mg BID"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "rc-med-spironolactone",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "authoredOn": "2022-09-22",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "313096",
+              "display": "Spironolactone 25mg daily"
+            }
+          ],
+          "text": "Spironolactone 25mg daily"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "rc-med-lisinopril-rc",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "authoredOn": "2022-09-22",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "314076",
+              "display": "Lisinopril 5mg daily"
+            }
+          ],
+          "text": "Lisinopril 5mg daily"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "rc-med-furosemide",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "authoredOn": "2022-09-22",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "310429",
+              "display": "Furosemide 40mg daily"
+            }
+          ],
+          "text": "Furosemide 40mg daily"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "rc-enc-2023-03",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "period": {
+          "start": "2023-03-12",
+          "end": "2023-03-12"
+        },
+        "reasonCode": [
+          {
+            "text": "CHF follow-up"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-bnp-2023",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "30934-4",
+              "display": "BNP"
+            }
+          ],
+          "text": "BNP"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2023-03-12",
+        "valueQuantity": {
+          "value": 480,
+          "unit": "pg/mL",
+          "system": "http://unitsofmeasure.org",
+          "code": "pg/mL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-creat-2023",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0",
+              "display": "Creatinine"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2023-03-12",
+        "valueQuantity": {
+          "value": 1.4,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-egfr-2023",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "33914-3",
+              "display": "eGFR"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2023-03-12",
+        "valueQuantity": {
+          "value": 56,
+          "unit": "mL/min/1.73m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "mL/min/1.73m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-k-2023",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2823-3",
+              "display": "Potassium"
+            }
+          ],
+          "text": "Potassium"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2023-03-12",
+        "valueQuantity": {
+          "value": 4.6,
+          "unit": "mmol/L",
+          "system": "http://unitsofmeasure.org",
+          "code": "mmol/L"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "rc-enc-2024-05",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "period": {
+          "start": "2024-05-08",
+          "end": "2024-05-08"
+        },
+        "reasonCode": [
+          {
+            "text": "Annual cardiology"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-bnp-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "30934-4",
+              "display": "BNP"
+            }
+          ],
+          "text": "BNP"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2024-05-08",
+        "valueQuantity": {
+          "value": 620,
+          "unit": "pg/mL",
+          "system": "http://unitsofmeasure.org",
+          "code": "pg/mL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-creat-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0",
+              "display": "Creatinine"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2024-05-08",
+        "valueQuantity": {
+          "value": 1.5,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-egfr-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "33914-3",
+              "display": "eGFR"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2024-05-08",
+        "valueQuantity": {
+          "value": 51,
+          "unit": "mL/min/1.73m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "mL/min/1.73m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-spo2-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "59408-5",
+              "display": "SpO2"
+            }
+          ],
+          "text": "SpO2"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2024-05-08",
+        "valueQuantity": {
+          "value": 93,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "rc-enc-2025-02",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "period": {
+          "start": "2025-02-19",
+          "end": "2025-02-19"
+        },
+        "reasonCode": [
+          {
+            "text": "ED visit \u2014 dyspnea"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "rc-cond-copd-exac",
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "J44.1",
+              "display": "COPD with acute exacerbation"
+            }
+          ],
+          "text": "COPD with acute exacerbation"
+        },
+        "onsetDateTime": "2025-02-19"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-spo2-2025",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "59408-5",
+              "display": "SpO2"
+            }
+          ],
+          "text": "SpO2"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2025-02-19",
+        "valueQuantity": {
+          "value": 88,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-bnp-2025",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "30934-4",
+              "display": "BNP"
+            }
+          ],
+          "text": "BNP"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2025-02-19",
+        "valueQuantity": {
+          "value": 750,
+          "unit": "pg/mL",
+          "system": "http://unitsofmeasure.org",
+          "code": "pg/mL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "rc-enc-2026-03",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "period": {
+          "start": "2026-03-22",
+          "end": "2026-03-22"
+        },
+        "reasonCode": [
+          {
+            "text": "Multidisciplinary review"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-bnp-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "30934-4",
+              "display": "BNP"
+            }
+          ],
+          "text": "BNP"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2026-03-22",
+        "valueQuantity": {
+          "value": 920,
+          "unit": "pg/mL",
+          "system": "http://unitsofmeasure.org",
+          "code": "pg/mL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-creat-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0",
+              "display": "Creatinine"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2026-03-22",
+        "valueQuantity": {
+          "value": 1.7,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-egfr-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "33914-3",
+              "display": "eGFR"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2026-03-22",
+        "valueQuantity": {
+          "value": 44,
+          "unit": "mL/min/1.73m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "mL/min/1.73m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-k-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2823-3",
+              "display": "Potassium"
+            }
+          ],
+          "text": "Potassium"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2026-03-22",
+        "valueQuantity": {
+          "value": 5.1,
+          "unit": "mmol/L",
+          "system": "http://unitsofmeasure.org",
+          "code": "mmol/L"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rc-obs-bp-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood pressure panel"
+            }
+          ],
+          "text": "Blood pressure panel"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2026-03-22",
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 124,
+              "unit": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 78,
+              "unit": "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "rc-dx-cmp-2026",
+        "status": "final",
+        "code": {
+          "text": "Comprehensive metabolic panel + BNP"
+        },
+        "subject": {
+          "reference": "Patient/b3e7d2a8-9f4c-4b1e-8a6d-c5f2b9e0a4d7"
+        },
+        "effectiveDateTime": "2026-03-22",
+        "conclusion": "BNP rising despite optimized therapy. Creatinine worsening \u2014 cardiorenal syndrome. Potassium upper-normal limit on spironolactone+lisinopril."
+      },
+      "request": {
+        "method": "POST",
+        "url": "DiagnosticReport"
+      }
+    }
+  ]
+}

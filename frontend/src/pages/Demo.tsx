@@ -6,11 +6,12 @@ import {
   type ToolTrace,
   type UnifiedBrief,
 } from '../lib/api';
+import { DEMO_PATIENTS } from '../lib/patients';
 
 type StepStatus = 'pending' | 'active' | 'done' | 'error';
 
 export default function Demo() {
-  const [patientId, setPatientId] = useState('d0be5a00-57c5-4417-adeb-824beb93e4c3');
+  const [patientId, setPatientId] = useState(DEMO_PATIENTS[0].id);
   const [fhirUrl, setFhirUrl] = useState('https://hapi.fhir.org/baseR4');
   const [running, setRunning] = useState(false);
   const [stepStatus, setStepStatus] = useState<Record<string, StepStatus>>({});
@@ -90,7 +91,49 @@ export default function Demo() {
 
       <section className="max-w-[1100px] mx-auto px-8 pb-12">
         <div className="border border-rule bg-paper rounded-sm p-8">
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-4 items-end">
+          <div className="mb-6">
+            <label className="block text-[10px] uppercase tracking-widest text-muted font-semibold mb-3">
+              Choose a demo patient
+            </label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {DEMO_PATIENTS.map(p => {
+                const selected = p.id === patientId;
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => !running && setPatientId(p.id)}
+                    disabled={running}
+                    className={`text-left p-4 border rounded-sm transition-all ${
+                      selected
+                        ? 'border-teal-deep bg-teal-soft/40 ring-1 ring-teal-deep/20'
+                        : 'border-rule bg-bg hover:border-ink-3 hover:bg-paper'
+                    } ${running ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  >
+                    <div className="flex items-baseline justify-between gap-3 mb-1">
+                      <div className="font-serif text-[18px] font-bold tracking-tighter">{p.name}</div>
+                      <div className="text-[12px] text-muted whitespace-nowrap">
+                        {p.age} · {p.sex}
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {p.conditions.map(c => (
+                        <span
+                          key={c}
+                          className="text-[10px] uppercase tracking-widest font-semibold text-teal-deep bg-teal-soft px-2 py-0.5 rounded-sm"
+                        >
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="text-[13px] text-ink-2 leading-[1.5]">{p.story}</div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-4 items-end pt-6 border-t border-rule">
             <div>
               <label className="block text-[10px] uppercase tracking-widest text-muted font-semibold mb-2">
                 Patient ID (FHIR)

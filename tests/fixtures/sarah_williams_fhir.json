@@ -1,0 +1,848 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e",
+        "name": [
+          {
+            "family": "Williams",
+            "given": [
+              "Sarah"
+            ]
+          }
+        ],
+        "birthDate": "1981-05-30",
+        "gender": "female",
+        "address": [
+          {
+            "city": "Boston",
+            "state": "MA"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "sw-enc-2024-09",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "period": {
+          "start": "2024-09-12",
+          "end": "2024-09-12"
+        },
+        "reasonCode": [
+          {
+            "text": "Annual physical exam"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "sw-cond-prediabetes",
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "R73.03",
+              "display": "Prediabetes"
+            }
+          ],
+          "text": "Prediabetes"
+        },
+        "onsetDateTime": "2024-09-12"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-hba1c-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "HbA1c"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2024-09-12",
+        "valueQuantity": {
+          "value": 6.0,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-glucose-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2339-0",
+              "display": "Fasting glucose"
+            }
+          ],
+          "text": "Fasting glucose"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2024-09-12",
+        "valueQuantity": {
+          "value": 108,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-bp-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood pressure panel"
+            }
+          ],
+          "text": "Blood pressure panel"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2024-09-12",
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 132,
+              "unit": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 84,
+              "unit": "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-bmi-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5",
+              "display": "BMI"
+            }
+          ],
+          "text": "BMI"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2024-09-12",
+        "valueQuantity": {
+          "value": 27.8,
+          "unit": "kg/m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg/m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-ldl-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "13457-7",
+              "display": "LDL cholesterol"
+            }
+          ],
+          "text": "LDL cholesterol"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2024-09-12",
+        "valueQuantity": {
+          "value": 128,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "sw-enc-2025-03",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "period": {
+          "start": "2025-03-04",
+          "end": "2025-03-04"
+        },
+        "reasonCode": [
+          {
+            "text": "Lifestyle modification follow-up"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-hba1c-2025-q1",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "HbA1c"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2025-03-04",
+        "valueQuantity": {
+          "value": 5.9,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-bp-2025-q1",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood pressure panel"
+            }
+          ],
+          "text": "Blood pressure panel"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2025-03-04",
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 128,
+              "unit": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 82,
+              "unit": "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-bmi-2025-q1",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5",
+              "display": "BMI"
+            }
+          ],
+          "text": "BMI"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2025-03-04",
+        "valueQuantity": {
+          "value": 26.9,
+          "unit": "kg/m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg/m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "sw-enc-2025-09",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "period": {
+          "start": "2025-09-15",
+          "end": "2025-09-15"
+        },
+        "reasonCode": [
+          {
+            "text": "6-month re-check"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-hba1c-2025-q3",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "HbA1c"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2025-09-15",
+        "valueQuantity": {
+          "value": 5.7,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-bp-2025-q3",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood pressure panel"
+            }
+          ],
+          "text": "Blood pressure panel"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2025-09-15",
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 124,
+              "unit": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 78,
+              "unit": "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-bmi-2025-q3",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5",
+              "display": "BMI"
+            }
+          ],
+          "text": "BMI"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2025-09-15",
+        "valueQuantity": {
+          "value": 26.0,
+          "unit": "kg/m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg/m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-ldl-2025",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "13457-7",
+              "display": "LDL cholesterol"
+            }
+          ],
+          "text": "LDL cholesterol"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2025-09-15",
+        "valueQuantity": {
+          "value": 115,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "sw-enc-2026-04",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "period": {
+          "start": "2026-04-22",
+          "end": "2026-04-22"
+        },
+        "reasonCode": [
+          {
+            "text": "Annual physical"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-hba1c-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "HbA1c"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2026-04-22",
+        "valueQuantity": {
+          "value": 5.6,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-glucose-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2339-0",
+              "display": "Fasting glucose"
+            }
+          ],
+          "text": "Fasting glucose"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2026-04-22",
+        "valueQuantity": {
+          "value": 95,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-bp-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood pressure panel"
+            }
+          ],
+          "text": "Blood pressure panel"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2026-04-22",
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 122,
+              "unit": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 76,
+              "unit": "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-bmi-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5",
+              "display": "BMI"
+            }
+          ],
+          "text": "BMI"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2026-04-22",
+        "valueQuantity": {
+          "value": 25.4,
+          "unit": "kg/m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg/m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-ldl-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "13457-7",
+              "display": "LDL cholesterol"
+            }
+          ],
+          "text": "LDL cholesterol"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2026-04-22",
+        "valueQuantity": {
+          "value": 108,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sw-obs-creat-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0",
+              "display": "Creatinine"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2026-04-22",
+        "valueQuantity": {
+          "value": 0.9,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "sw-dx-cmp-2026",
+        "status": "final",
+        "code": {
+          "text": "Comprehensive metabolic panel"
+        },
+        "subject": {
+          "reference": "Patient/f4a9c1e6-7b3d-4f82-8e5a-1d6c3f0b9a7e"
+        },
+        "effectiveDateTime": "2026-04-22",
+        "conclusion": "Excellent response to lifestyle intervention. HbA1c trending toward normal range. BP improved without medication."
+      },
+      "request": {
+        "method": "POST",
+        "url": "DiagnosticReport"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1247 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c",
+        "name": [
+          {
+            "family": "Rodriguez",
+            "given": [
+              "Maria"
+            ]
+          }
+        ],
+        "birthDate": "1968-02-22",
+        "gender": "female",
+        "address": [
+          {
+            "city": "Worcester",
+            "state": "MA"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mr-enc-2020-04",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "period": {
+          "start": "2020-04-15",
+          "end": "2020-04-15"
+        },
+        "reasonCode": [
+          {
+            "text": "Annual physical \u2014 fatigue, polyuria"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "mr-cond-t2dm",
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "E11.9",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "onsetDateTime": "2020-04-15"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-hba1c-2020",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "HbA1c"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2020-04-15",
+        "valueQuantity": {
+          "value": 8.2,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-glucose-2020",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2339-0",
+              "display": "Fasting glucose"
+            }
+          ],
+          "text": "Fasting glucose"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2020-04-15",
+        "valueQuantity": {
+          "value": 178,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-bp-2020",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood pressure panel"
+            }
+          ],
+          "text": "Blood pressure panel"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2020-04-15",
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 138,
+              "unit": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 88,
+              "unit": "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-bmi-2020",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5",
+              "display": "BMI"
+            }
+          ],
+          "text": "BMI"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2020-04-15",
+        "valueQuantity": {
+          "value": 31.2,
+          "unit": "kg/m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg/m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mr-enc-2021-05",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "period": {
+          "start": "2021-05-22",
+          "end": "2021-05-22"
+        },
+        "reasonCode": [
+          {
+            "text": "Diabetes follow-up"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "mr-med-metformin",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "authoredOn": "2021-05-22",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "860975",
+              "display": "Metformin 500mg BID"
+            }
+          ],
+          "text": "Metformin 500mg BID"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-hba1c-2021",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "HbA1c"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2021-05-22",
+        "valueQuantity": {
+          "value": 7.8,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-ldl-2021",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "13457-7",
+              "display": "LDL cholesterol"
+            }
+          ],
+          "text": "LDL cholesterol"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2021-05-22",
+        "valueQuantity": {
+          "value": 142,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mr-enc-2022-03",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "period": {
+          "start": "2022-03-10",
+          "end": "2022-03-10"
+        },
+        "reasonCode": [
+          {
+            "text": "Quarterly diabetes review"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-hba1c-2022",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "HbA1c"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2022-03-10",
+        "valueQuantity": {
+          "value": 9.1,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "mr-cond-htn",
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "I10",
+              "display": "Essential hypertension"
+            }
+          ],
+          "text": "Essential hypertension"
+        },
+        "onsetDateTime": "2022-03-10"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-bp-2022",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood pressure panel"
+            }
+          ],
+          "text": "Blood pressure panel"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2022-03-10",
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 146,
+              "unit": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 92,
+              "unit": "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-creat-2022",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0",
+              "display": "Creatinine"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2022-03-10",
+        "valueQuantity": {
+          "value": 1.0,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mr-enc-2023-04",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "period": {
+          "start": "2023-04-08",
+          "end": "2023-04-08"
+        },
+        "reasonCode": [
+          {
+            "text": "Adding SGLT2 inhibitor"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "mr-med-empagliflozin",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "authoredOn": "2023-04-08",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "1545653",
+              "display": "Empagliflozin 10mg daily"
+            }
+          ],
+          "text": "Empagliflozin 10mg daily"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "mr-med-lisinopril",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "authoredOn": "2023-04-08",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "314076",
+              "display": "Lisinopril 10mg daily"
+            }
+          ],
+          "text": "Lisinopril 10mg daily"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-hba1c-2023",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "HbA1c"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2023-04-08",
+        "valueQuantity": {
+          "value": 8.4,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-ldl-2023",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "13457-7",
+              "display": "LDL cholesterol"
+            }
+          ],
+          "text": "LDL cholesterol"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2023-04-08",
+        "valueQuantity": {
+          "value": 138,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mr-enc-2024-02",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "period": {
+          "start": "2024-02-19",
+          "end": "2024-02-19"
+        },
+        "reasonCode": [
+          {
+            "text": "6-month follow-up"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-hba1c-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "HbA1c"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2024-02-19",
+        "valueQuantity": {
+          "value": 7.9,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-bp-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood pressure panel"
+            }
+          ],
+          "text": "Blood pressure panel"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2024-02-19",
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 134,
+              "unit": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 84,
+              "unit": "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-creat-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0",
+              "display": "Creatinine"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2024-02-19",
+        "valueQuantity": {
+          "value": 1.1,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-egfr-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "33914-3",
+              "display": "eGFR"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2024-02-19",
+        "valueQuantity": {
+          "value": 72,
+          "unit": "mL/min/1.73m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "mL/min/1.73m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-uacr-2024",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "14959-1",
+              "display": "Urine albumin/creatinine ratio"
+            }
+          ],
+          "text": "Urine albumin/creatinine ratio"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2024-02-19",
+        "valueQuantity": {
+          "value": 38,
+          "unit": "mg/g",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/g"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mr-enc-2025-08",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "period": {
+          "start": "2025-08-12",
+          "end": "2025-08-12"
+        },
+        "reasonCode": [
+          {
+            "text": "Annual labs"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-hba1c-2025",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "HbA1c"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2025-08-12",
+        "valueQuantity": {
+          "value": 7.5,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-ldl-2025",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "13457-7",
+              "display": "LDL cholesterol"
+            }
+          ],
+          "text": "LDL cholesterol"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2025-08-12",
+        "valueQuantity": {
+          "value": 145,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-bmi-2025",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5",
+              "display": "BMI"
+            }
+          ],
+          "text": "BMI"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2025-08-12",
+        "valueQuantity": {
+          "value": 31.0,
+          "unit": "kg/m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg/m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "mr-med-atorva",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "authoredOn": "2025-08-12",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "617310",
+              "display": "Atorvastatin 40mg daily"
+            }
+          ],
+          "text": "Atorvastatin 40mg daily"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mr-enc-2026-03",
+        "status": "finished",
+        "class": {
+          "code": "AMB"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "period": {
+          "start": "2026-03-15",
+          "end": "2026-03-15"
+        },
+        "reasonCode": [
+          {
+            "text": "Quarterly diabetes review"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-hba1c-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "HbA1c"
+            }
+          ],
+          "text": "HbA1c"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2026-03-15",
+        "valueQuantity": {
+          "value": 7.6,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-bp-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood pressure panel"
+            }
+          ],
+          "text": "Blood pressure panel"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2026-03-15",
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 132,
+              "unit": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 82,
+              "unit": "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-creat-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0",
+              "display": "Creatinine"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2026-03-15",
+        "valueQuantity": {
+          "value": 1.2,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-egfr-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "33914-3",
+              "display": "eGFR"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2026-03-15",
+        "valueQuantity": {
+          "value": 68,
+          "unit": "mL/min/1.73m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "mL/min/1.73m2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "mr-obs-uacr-2026",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "14959-1",
+              "display": "Urine albumin/creatinine ratio"
+            }
+          ],
+          "text": "Urine albumin/creatinine ratio"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2026-03-15",
+        "valueQuantity": {
+          "value": 52,
+          "unit": "mg/g",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/g"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "mr-dx-cmp-2026",
+        "status": "final",
+        "code": {
+          "text": "Comprehensive metabolic panel"
+        },
+        "subject": {
+          "reference": "Patient/a8c2f1d5-3e6b-4a91-9c4f-2d8e7b0a5f3c"
+        },
+        "effectiveDateTime": "2026-03-15",
+        "conclusion": "Stable creatinine. eGFR mildly reduced. UACR rising \u2014 early diabetic nephropathy."
+      },
+      "request": {
+        "method": "POST",
+        "url": "DiagnosticReport"
+      }
+    }
+  ]
+}
