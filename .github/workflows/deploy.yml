@@ -78,17 +78,14 @@ jobs:
       - name: /api/demo/analyze CORS preflight ok
         run: |
           set -e
-          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 \
+          # Preflight confirms the route exists AND CORS is configured
+          # without burning a 30s pipeline run on every CI push.
+          headers=$(curl -s -i --max-time 5 \
             -X OPTIONS "$URL/api/demo/analyze" \
             -H "Origin: https://sriksven.github.io" \
             -H "Access-Control-Request-Method: POST" \
             -H "Access-Control-Request-Headers: content-type")
-          echo "preflight=$code"
-          [ "$code" = "200" ] || (echo "FAIL: CORS preflight returned $code"; exit 1)
-
-      - name: /api/demo/analyze GET responds
-        run: |
-          set -e
-          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$URL/api/demo/analyze")
-          echo "GET=$code"
-          [ "$code" = "200" ] || (echo "FAIL: endpoint missing, got $code"; exit 1)
+          echo "$headers" | head -8
+          echo "$headers" | grep -qi "^HTTP/.* 200" || (echo "FAIL: preflight not 200"; exit 1)
+          echo "$headers" | grep -qi "access-control-allow-origin" || (echo "FAIL: CORS header missing"; exit 1)
+          echo "$headers" | grep -qi "access-control-allow-methods" || (echo "FAIL: methods header missing"; exit 1)
