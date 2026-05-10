@@ -89,6 +89,35 @@ export default function Demo() {
         </p>
       </section>
 
+      {/* Quick-copy patient IDs */}
+      <section className="max-w-[1100px] mx-auto px-8 pb-6">
+        <details className="group">
+          <summary className="cursor-pointer flex items-center gap-3 text-[12px] text-muted hover:text-ink list-none">
+            <span className="eyebrow">Quick reference: patient IDs</span>
+            <span className="text-muted group-open:rotate-90 transition-transform">›</span>
+          </summary>
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2 text-[12px]">
+            {DEMO_PATIENTS.map(p => (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => navigator.clipboard?.writeText(p.id)}
+                className="text-left flex items-center justify-between gap-3 px-3 py-2 bg-paper border border-rule rounded-sm hover:border-teal-deep transition-colors group/btn"
+                title="Click to copy ID"
+              >
+                <span className="font-medium text-ink-2 whitespace-nowrap">
+                  {p.name} <span className="text-muted font-normal">({p.age}, {p.sex})</span>
+                </span>
+                <span className="font-mono text-[10px] text-muted truncate">
+                  {p.id}
+                  <span className="text-teal-deep ml-2 opacity-0 group-hover/btn:opacity-100">⧉</span>
+                </span>
+              </button>
+            ))}
+          </div>
+        </details>
+      </section>
+
       <section className="max-w-[1100px] mx-auto px-8 pb-12">
         <div className="border border-rule bg-paper rounded-sm p-8">
           <div className="mb-6">

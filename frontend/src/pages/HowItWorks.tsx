@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { DEMO_PATIENTS } from '../lib/patients';
 
 export default function HowItWorks() {
   return (
@@ -12,9 +13,9 @@ export default function HowItWorks() {
           <em className="text-teal-deep">One outcome.</em>
         </h1>
         <p className="text-[18px] text-ink-2 leading-[1.6] max-w-[680px]">
-          ChronoCare separates the front-end (Prompt Opinion), the orchestration agent
-          (ChronoCore), the reasoning server (this repo), and the data store (FHIR R4). Each is
-          replaceable; the whole is composable.
+          ChronoCare separates the front-end (Prompt Opinion or this React app),
+          the orchestration layer, the reasoning server (this repo), and the data
+          store (FHIR R4). Each is replaceable; the whole is composable.
         </p>
       </section>
 
@@ -22,9 +23,28 @@ export default function HowItWorks() {
         <ArchitectureDiagram />
       </section>
 
-      {/* PER-LAYER WALK */}
-      <section className="border-t border-rule mt-16">
+      {/* REQUEST LIFECYCLE — the cinematic explanation */}
+      <section className="border-t border-rule mt-16 bg-paper">
         <div className="max-w-[1100px] mx-auto px-8 py-24">
+          <div className="eyebrow mb-4">Request lifecycle</div>
+          <h2 className="font-serif text-[44px] md:text-[52px] leading-[1.05] tracking-tighter font-bold mb-6 max-w-[820px]">
+            What happens when you click <em className="text-teal-deep">"Run analysis."</em>
+          </h2>
+          <p className="text-[16px] text-ink-2 max-w-[640px] leading-[1.6] mb-12">
+            One HTTP POST kicks off a 13-step pipeline. Eight LLM calls, seven
+            FHIR queries, ~25–35s of wall time. Each step's output feeds the next.
+          </p>
+          <RequestLifecycle />
+        </div>
+      </section>
+
+      {/* PER-LAYER WALK */}
+      <section className="border-t border-rule">
+        <div className="max-w-[1100px] mx-auto px-8 py-24">
+          <div className="eyebrow mb-4">The four layers</div>
+          <h2 className="font-serif text-[40px] leading-[1.05] tracking-tighter font-bold mb-12">
+            Each does one thing well.
+          </h2>
           <div className="space-y-24">
             {LAYERS.map((l, i) => (
               <motion.div
@@ -60,38 +80,51 @@ export default function HowItWorks() {
         </div>
       </section>
 
-      {/* CALL FLOW */}
+      {/* ADMIN FLOW */}
       <section className="border-t border-rule bg-paper">
         <div className="max-w-[1100px] mx-auto px-8 py-24">
-          <div className="eyebrow mb-4">Call sequence</div>
-          <h2 className="font-serif text-[40px] leading-[1.05] tracking-tighter font-bold mb-12">
-            What happens when a clinician hits send.
+          <div className="eyebrow mb-4">Admin flow</div>
+          <h2 className="font-serif text-[44px] leading-[1.05] tracking-tighter font-bold mb-6 max-w-[820px]">
+            Bringing a new patient into the system.
           </h2>
-          <ol className="space-y-8">
-            {CALL_FLOW.map((c, i) => (
-              <motion.li
-                key={i}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.5, delay: i * 0.05 }}
-                className="grid grid-cols-[40px_1fr] gap-6 items-baseline pb-8 border-b border-rule last:border-b-0"
-              >
-                <div className="font-mono text-[20px] text-teal-deep font-medium">
-                  {String(i + 1).padStart(2, '0')}
-                </div>
-                <div>
-                  <div className="font-medium text-[17px] mb-1">{c.title}</div>
-                  <div className="text-[14px] text-ink-2 leading-[1.65]">{c.detail}</div>
-                </div>
-              </motion.li>
+          <p className="text-[16px] text-ink-2 max-w-[640px] leading-[1.6] mb-12">
+            Admins upload synthetic FHIR R4 bundles via the dashboard. The server
+            validates, rewrites POST entries to PUT (preserving IDs), and pushes
+            the data to the configured FHIR server. Patient records propagate
+            instantly — the next analyze run sees them.
+          </p>
+          <AdminFlow />
+          <div className="mt-10">
+            <Link to="/admin" className="text-sm font-medium text-teal-deep link-underline">
+              Open the admin dashboard →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* DEMO PATIENT IDS */}
+      <section className="border-t border-rule">
+        <div className="max-w-[1100px] mx-auto px-8 py-24">
+          <div className="eyebrow mb-4">Demo patients on HAPI</div>
+          <h2 className="font-serif text-[36px] leading-[1.1] tracking-tighter font-bold mb-6">
+            Copy any ID and use it on the demo page.
+          </h2>
+          <p className="text-[14px] text-muted mb-8">
+            Click an ID to copy it. All four are fully synthetic (no PHI) and live on
+            <code className="font-mono text-[12px] mx-1 bg-rule px-1.5 py-0.5 rounded-sm">
+              hapi.fhir.org/baseR4
+            </code>.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {DEMO_PATIENTS.map(p => (
+              <PatientIdCard key={p.id} pid={p.id} name={p.name} story={p.story} age={p.age} sex={p.sex} />
             ))}
-          </ol>
+          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="border-t border-rule">
+      <section className="border-t border-rule bg-paper">
         <div className="max-w-[1100px] mx-auto px-8 py-24 text-center">
           <p className="font-serif text-[36px] tracking-tighter font-bold mb-6">
             Ready to see it run?
@@ -122,8 +155,8 @@ const LAYERS = [
   {
     name: 'ChronoCare MCP server',
     role: 'Reasoning backend',
-    desc: 'The Python server in this repo, deployed on Railway. Exposes 14 MCP tools over Streamable HTTP. Each tool either deterministically transforms data, fetches FHIR resources in parallel, or makes a focused LLM call with a tightly scoped prompt.',
-    tags: ['Python 3.11', 'starlette + uvicorn', 'mcp.server.streamable_http', 'CORS-enabled /api/demo/analyze'],
+    desc: 'The Python server in this repo, deployed on Railway. Exposes 14 MCP tools over Streamable HTTP. Each tool either deterministically transforms data, fetches FHIR resources in parallel, or makes a focused LLM call with a tightly scoped prompt. Also exposes /api/demo/analyze and /api/admin/patients for the React frontend.',
+    tags: ['Python 3.11', 'starlette + uvicorn', 'mcp.server.streamable_http', 'CORS-enabled HTTP routes'],
   },
   {
     name: 'FHIR R4 + LLMs',
@@ -133,41 +166,13 @@ const LAYERS = [
   },
 ];
 
-const CALL_FLOW = [
-  {
-    title: 'User asks for a clinical analysis in Prompt Opinion General Chat.',
-    detail: '"I need a full clinical analysis of patient d0be5a00-…" — sent to the workspace\'s General Chat agent.',
-  },
-  {
-    title: 'General Chat decides ChronoCore is the right specialist.',
-    detail: 'A2A skill matching: ChronoCore\'s registered skill ("analyze_patient_clinical_history") matches the user intent. General Chat hands off the conversation.',
-  },
-  {
-    title: 'ChronoCore consults its system prompt and starts calling MCP tools.',
-    detail: 'Step 1: get_full_patient_history. ChronoCore sends a JSON-RPC tools/call request to Railway over Streamable HTTP, with X-ChronoCare-Key auth.',
-  },
-  {
-    title: 'The MCP server fetches all 7 FHIR resource types in parallel from HAPI.',
-    detail: 'Patient, Condition, Observation, MedicationRequest, Encounter, DocumentReference, DiagnosticReport. Codes normalized via LOINC / ICD-10 / RxNorm lookups.',
-  },
-  {
-    title: 'ChronoCore receives the normalized timeline and chains the next 12 tools.',
-    detail: 'Each tool is a focused, single-purpose reasoning step. Some return structured JSON via Groq Llama-3.3-70b. Others generate prose via GPT-4o.',
-  },
-  {
-    title: 'After the 13th tool, ChronoCore presents the unified brief in chat.',
-    detail: 'Total wall-clock: 25–35 seconds. The brief cites specific dates and lab values from the patient — never generic.',
-  },
-];
-
 function ArchitectureDiagram() {
   return (
     <div className="border border-rule bg-paper rounded-sm p-8 md:p-12 dotted">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-        {/* User */}
-        <Box label="USER" tag="clinician" subtle />
+        <Box label="USER" tag="clinician / admin" subtle />
         <Arrow />
-        <Box label="PROMPT OPINION" tag="ui · a2a · agents" />
+        <Box label="FRONTEND" tag="this React app · or Prompt Opinion chat" />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center mt-6">
         <div />
@@ -188,8 +193,8 @@ function ArchitectureDiagram() {
       </div>
       <div className="mt-6 max-w-[640px] mx-auto">
         <Box
-          label="ChronoCare MCP server"
-          tag="Railway · Python · 14 tools · /mcp/ + /api/demo/analyze"
+          label="ChronoCare MCP server (Railway)"
+          tag="14 MCP tools · /mcp/ + /api/demo/analyze + /api/admin/patients"
           highlight
           big
         />
@@ -200,11 +205,132 @@ function ArchitectureDiagram() {
         <div className="flex justify-center"><Down /></div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch mt-6">
-        <Box label="HAPI FHIR R4" tag="patient data" />
+        <Box label="HAPI FHIR R4" tag="patient data · synthetic" />
         <Box label="OpenAI" tag="gpt-4o, gpt-4o-mini" />
         <Box label="Groq" tag="llama-3.3-70b" />
       </div>
     </div>
+  );
+}
+
+function RequestLifecycle() {
+  const steps = [
+    { actor: 'Browser', text: 'User clicks "Run analysis"', detail: 'POST /api/demo/analyze body: {patient_id, fhir_base_url}' },
+    { actor: 'Railway server', text: 'Validates request, dispatches to pipeline', detail: 'Sets up FHIR context, traces each tool call' },
+    { actor: 'Tools 1–2', text: 'Fetch + normalize patient history', detail: '7 parallel HTTP GETs to HAPI · LOINC/ICD-10/RxNorm decoding · single sorted timeline' },
+    { actor: 'Tools 3–4', text: 'Identify turning points + write narrative', detail: 'Llama-3.3-70b for structured JSON · GPT-4o for prose handoff' },
+    { actor: 'Tools 5–7', text: 'Detect silent deterioration', detail: 'Filter to recent 90d · holistic multi-signal pattern analysis (GPT-4o) · structured early warning report' },
+    { actor: 'Tools 8–9', text: 'Reason about cause', detail: 'Find causal pairs (Llama) · synthesize causal narrative (GPT-4o)' },
+    { actor: 'Tools 10–12', text: 'Map context + recommend', detail: 'Comorbidity interactions · cross-check ADA/JNC/KDIGO/ACC-AHA · 3–5 cited recommendations' },
+    { actor: 'Tool 13', text: 'Assemble unified brief', detail: 'Pure-Python JSON assembly · schema v1.0 · no LLM call' },
+    { actor: 'Browser', text: 'Render the brief', detail: 'Animated trace becomes "all done" — patient banner, narrative, risk panel, recs cards' },
+  ];
+
+  return (
+    <div className="relative">
+      {/* vertical track */}
+      <div className="absolute left-[14px] top-3 bottom-3 w-px bg-rule" aria-hidden />
+      <ol className="space-y-4">
+        {steps.map((s, i) => (
+          <motion.li
+            key={i}
+            initial={{ opacity: 0, x: -8 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.5, delay: i * 0.04 }}
+            className="grid grid-cols-[32px_1fr] gap-5 items-start"
+          >
+            <div className="relative flex items-center justify-center pt-2">
+              <span className="block w-2 h-2 rounded-full bg-teal-deep ring-4 ring-bg" />
+            </div>
+            <div className="border border-rule bg-paper rounded-sm px-5 py-4">
+              <div className="flex items-baseline justify-between gap-3 flex-wrap">
+                <div className="font-mono text-[11px] uppercase tracking-widest text-teal-deep font-semibold">
+                  {s.actor}
+                </div>
+                <div className="font-mono text-[10px] text-muted">step {i + 1}/9</div>
+              </div>
+              <div className="font-medium text-[15px] mt-1">{s.text}</div>
+              <div className="text-[13px] text-ink-2 leading-[1.5] mt-1">{s.detail}</div>
+            </div>
+          </motion.li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function AdminFlow() {
+  const lanes = [
+    { actor: 'Admin', side: 'left' as const, items: ['Opens /admin', 'Pastes admin key', 'Pastes / uploads bundle'] },
+    { actor: 'Browser', side: 'left' as const, items: ['Stores key in localStorage', 'POST /api/admin/patients with X-Admin-Key'] },
+    { actor: 'Server', side: 'right' as const, items: ['Verifies X-Admin-Key', 'Validates Bundle (must have Patient + id)', 'Rewrites POST → PUT to preserve IDs', 'POSTs to HAPI / configured FHIR'] },
+    { actor: 'FHIR', side: 'right' as const, items: ['Stores resources', 'Returns per-entry status (201/200)'] },
+    { actor: 'Server → Browser', side: 'right' as const, items: ['{ ok, patient_id, entries_uploaded }', 'Dashboard shows success card'] },
+  ];
+
+  return (
+    <div className="border border-rule bg-bg rounded-sm p-8 md:p-10 dotted">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+        {lanes.map((l, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: i * 0.08 }}
+            className={`${l.side === 'right' ? 'md:col-start-2' : 'md:col-start-1'} bg-paper border border-rule rounded-sm px-5 py-4`}
+          >
+            <div className="font-mono text-[11px] uppercase tracking-widest text-teal-deep font-semibold mb-2">
+              {l.actor}
+            </div>
+            <ul className="space-y-1.5">
+              {l.items.map((item, j) => (
+                <li key={j} className="text-[13px] text-ink-2 leading-[1.5] flex gap-2">
+                  <span className="text-teal-deep">›</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PatientIdCard({
+  pid,
+  name,
+  story,
+  age,
+  sex,
+}: {
+  pid: string;
+  name: string;
+  story: string;
+  age: string;
+  sex: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => navigator.clipboard?.writeText(pid)}
+      className="text-left border border-rule bg-paper rounded-sm p-5 hover:border-teal-deep transition-all group"
+      title="Click to copy ID"
+    >
+      <div className="flex items-baseline justify-between gap-3 mb-1">
+        <div className="font-serif text-[18px] font-bold tracking-tighter">{name}</div>
+        <div className="text-[11px] text-muted whitespace-nowrap">
+          {age} · {sex}
+        </div>
+      </div>
+      <div className="text-[12px] text-ink-2 mb-3 leading-[1.5]">{story}</div>
+      <div className="flex items-center gap-2 font-mono text-[11px] text-muted bg-bg group-hover:bg-rule transition-colors px-3 py-1.5 rounded-sm">
+        <span className="truncate flex-1">{pid}</span>
+        <span className="text-teal-deep opacity-60 group-hover:opacity-100">⧉ copy</span>
+      </div>
+    </button>
   );
 }
 

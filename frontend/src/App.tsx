@@ -35,7 +35,7 @@ export default function App() {
           <Link to="/" className="font-serif text-[22px] font-bold tracking-tightest">
             Chrono<span className="text-teal-deep">Care</span>
           </Link>
-          <nav className="flex items-center gap-8">
+          <nav className="flex items-center gap-6">
             {navItem('/how', 'How it works')}
             {navItem('/tools', 'Tools')}
             {navItem('/demo', 'Try it')}
@@ -64,6 +64,16 @@ export default function App() {
               />
               {live === null ? 'checking…' : live ? 'live' : 'offline'}
             </span>
+            <Link
+              to="/admin"
+              className={`text-sm font-medium px-3 py-1.5 rounded-sm border transition-all ${
+                loc.pathname === '/admin'
+                  ? 'bg-teal-deep text-bg border-teal-deep'
+                  : 'border-rule text-ink-2 hover:border-teal-deep hover:text-teal-deep'
+              }`}
+            >
+              Admin
+            </Link>
           </nav>
         </div>
       </header>
