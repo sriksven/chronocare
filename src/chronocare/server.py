@@ -1,6 +1,6 @@
 """ChronoCare MCP Server entry point.
 
-Exposes 13 MCP tools over Streamable HTTP. Authentication via
+Exposes 15 MCP tools over Streamable HTTP. Authentication via
 X-ChronoCare-Key header (validated against MCP_API_KEY env var).
 
 Run locally:
@@ -232,6 +232,26 @@ async def list_tools() -> list[Tool]:
             },
         ),
         Tool(
+            name="run_full_analysis",
+            description=(
+                "Run the complete ChronoCare clinical pipeline for a patient in one call. "
+                "Wraps all 13 analysis steps (history retrieval, timeline construction, "
+                "turning points, narrative, early-warning detection, causal hypothesis, "
+                "comorbidity mapping, guideline matching, recommendations, unified brief) "
+                "and returns the final unified clinical brief. Use this instead of "
+                "orchestrating each tool individually when you want the full analysis."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "patient_id": {"type": "string"},
+                    "fhir_base_url": {"type": "string"},
+                    "fhir_token": {"type": "string"},
+                },
+                "required": ["patient_id"],
+            },
+        ),
+        Tool(
             name="text_to_speech_brief",
             description="Convert selected clinical brief sections to speech audio.",
             inputSchema={
@@ -310,6 +330,12 @@ async def _dispatch(name: str, args: dict[str, Any]) -> Any:
                 guideline_matches=args.get("guideline_matches", []),
                 recommendations=args.get("recommendations", []),
             )
+        case "run_full_analysis":
+            return await _run_full_pipeline(
+                patient_id=args.get("patient_id") or fhir.get("patient_id") or "",
+                fhir_base_url=args.get("fhir_base_url") or fhir.get("fhir_url") or "",
+                fhir_token=args.get("fhir_token") or fhir.get("fhir_token") or "",
+            )
         case "text_to_speech_brief":
             return text_to_speech_brief(
                 brief=args["brief"],
@@ -319,6 +345,74 @@ async def _dispatch(name: str, args: dict[str, Any]) -> Any:
             )
         case _:
             return {"error": f"Unknown tool: {name}"}
+
+
+async def _run_full_pipeline(
+    patient_id: str,
+    fhir_base_url: str = "",
+    fhir_token: str = "",
+) -> dict[str, Any]:
+    """Run the full 13-step ChronoCare pipeline, return unified brief.
+
+    Five independent reasoning branches execute in parallel via asyncio.gather;
+    sync LLM calls are offloaded to worker threads with asyncio.to_thread.
+    """
+    import asyncio
+
+    history = await time_traveler.get_full_patient_history(
+        patient_id=patient_id,
+        fhir_base_url=fhir_base_url or config.fhir_base_url,
+        fhir_token=fhir_token or config.fhir_token or "",
+        cache=_cache,
+    )
+    timeline = await asyncio.to_thread(time_traveler.order_events_chronologically, history)
+    recent_signals = await asyncio.to_thread(deterioration.get_recent_signals, timeline, 90)
+    events = history.get("events", []) if isinstance(history, dict) else []
+
+    async def _reconstruct():
+        tp = await asyncio.to_thread(
+            time_traveler.identify_clinical_turning_points, timeline, _llm
+        )
+        narr = await asyncio.to_thread(
+            time_traveler.generate_patient_narrative, timeline, tp, _llm
+        )
+        return tp, narr
+
+    async def _detect():
+        patterns = await asyncio.to_thread(
+            deterioration.analyze_weak_patterns, recent_signals, _llm
+        )
+        return await asyncio.to_thread(
+            deterioration.generate_early_warning_report, patterns, _llm
+        )
+
+    async def _explain():
+        corr = await asyncio.to_thread(root_cause.correlate_events, timeline, _llm)
+        return await asyncio.to_thread(root_cause.generate_causal_hypothesis, corr, _llm)
+
+    async def _comorbid():
+        return await asyncio.to_thread(recommendations.map_comorbidities, events, _llm)
+
+    async def _guidelines():
+        return await asyncio.to_thread(
+            recommendations.match_clinical_guidelines, events, recent_signals, _llm
+        )
+
+    (tp, narrative), early_warning, causal_hypothesis, comorbidity_map, guideline_matches = (
+        await asyncio.gather(_reconstruct(), _detect(), _explain(), _comorbid(), _guidelines())
+    )
+
+    recs = await asyncio.to_thread(
+        recommendations.generate_recommendations,
+        causal_hypothesis, guideline_matches, early_warning, _llm,
+    )
+    brief = await asyncio.to_thread(
+        synthesis.generate_unified_brief,
+        history.get("patient", {}) if isinstance(history, dict) else {},
+        narrative, tp, early_warning, causal_hypothesis,
+        comorbidity_map, guideline_matches, recs,
+    )
+    return brief
 
 
 # ---------------------------------------------------------------------------
@@ -364,7 +458,7 @@ if __name__ == "__main__":
         return JSONResponse({
             "status": "ok",
             "version": "1.0.0",
-            "tools_count": 14,
+            "tools_count": 15,
             "llm_backend": "gpt-4o+groq-llama3.3",
         })
 
